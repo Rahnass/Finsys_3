@@ -4,34 +4,9 @@
 
 <style>
 
-    #div1{
-        /* background-color: rgb(0, 255, 21); */
-        width: 33.33%;
-        float: left;
-        height: 100px;
-        text-align: left;
-    }
-    #div2{
-        /* background-color: rgb(204, 0, 255); */
-        width: 33.33%;
-        margin: auto;
-        height: 100px;
-        text-align: left;
-    }
-    #div3{
-        /* background-color: rgb(255, 162, 0); */
-        width: 33.33%;
-        
-        float: right;
-        margin-top: -100px;
-        height: 100px;
-       
-        
-        
-    }
+ 
     .ribbon .ribbon-inner {
 text-align: center;
-font-size:10px;
 color: #fff;
 top: -20px;
 left: -90px;
@@ -44,14 +19,179 @@ transform: rotate(-45deg); */
 background-color: #268ddd;
 border-color: #1c72b4;
 }
-div.tempinv{
-    color:black;
+
+:root {
+--body-bg: rgb(204, 204, 204);
+--white: #ffffff;
+--darkWhite: #ccc;
+--black: #000000;
+--dark: #615c60;
+--themeColor: #22b8d1;
+--pageShadow: 0 0 0.5cm rgba(0, 0, 0, 0.5);
+}
+
+/* Font Include */
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600&display=swap');
+
+body {
+background-color: var(--body-bg);
+}
+
+.page {
+background: var(--white);
+display: block;
+margin: 0 auto;
+position: relative;
+box-shadow: var(--pageShadow);
+}
+
+.page[size="A4"] {
+width: A4;
+height: A4;
+overflow: hidden;
+}
+
+.bb {
+border-bottom: 1px solid var(--darkWhite);
+}
+
+/* Top Section */
+.top-content {
+padding-bottom: 1px;
+}
+
+.logo img {
+height: 60px;
+}
+
+.top-left p {
+margin: 0;
+color: #000000;
+}
+
+.top-left .graphic-path {
+height: 30px;
+position: relative;
+}
+
+.top-left .graphic-path::before {
+content: "";
+height: 20px;
+background-color: var(--dark);
+position: absolute;
+left: 15px;
+right: 0;
+top: -15px;
+z-index: 2;
+}
+
+.top-left .graphic-path::after {
+content: "";
+height: 22px;
+width: 17px;
+background: var(--black);
+position: absolute;
+top: -13px;
+left: 6px;
+transform: rotate(45deg);
+}
+
+.top-left .graphic-path p {
+height: 25px;
+left: 0;
+right: -100px;
+text-transform: uppercase;
+background-color: var(--themeColor);
+font-size: 13px;
+z-index: 3;
+position: absolute;
+padding-left: 10px;
+}
+
+/* User Store Section */
+.store-user {
+padding-bottom: 10px;
+}
+
+.store-user p {
+    font-size:11px;
+margin: 0;
+font-weight: 600;
+color: #000000;
+}
+
+.store-user .address {
+font-weight: 400;
+}
+
+.store-user h6 {
+color: var(--themeColor);
+font-family: 'Rajdhani', sans-serif;
+}
+
+.extra-info p span {
+font-weight: 400;
+
+}
+
+/* Product Section */
+thead {
+    font-size:10px;
+color: var(--white);
+background: var(--themeColor);
+}
+
+.table td,
+.table th {
+text-align: center;
+vertical-align: middle;
+}
+
+tr th:first-child,
+tr td:first-child {
+text-align: left;
+}
+
+.media img {
+height: 60px;
+width: 60px;
+}
+
+.media p {
+font-weight: 400;
+margin: 0;
+
+}
+
+.media p.title {
+font-weight: 600;
+
+}
+
+/* Balance Info Section */
+.balance-info .table td,
+.balance-info .table th {
+padding: 0;
+border: 0;
+}
+
+.balance-info tr td:first-child {
+font-weight: 600;
+}
+.balance-info{
     font-size:10px;
 }
-table{
-    border-collapse: collapse;
-    border-spacing: 0;
-  }
+
+tfoot {
+border-top: 2px solid var(--darkWhite);
+}
+
+tfoot td {
+font-weight: 600;
+}
+
+
+
 </style>
 
 <div class="page-content">
@@ -98,7 +238,7 @@ table{
                                         <div class="row bb pb-3">
                                             <div class="col-7">
                                                 <p>FROM,</p>
-                                                <h5>{{cmp1.cname }}</h5>
+                                                <h6>{{cmp1.cname }}</h6>
                                                 <p class="address "> {{cmp1.caddress}}<br>
                                                     {{cmp1.city}},
                                                     {{cmp1.state}}<br>
@@ -257,11 +397,7 @@ table{
                                                 </tfoot>
                                             </table>
                     
-                                            <!-- Signature -->
-                                            <!-- <div class="col-12">
-                                                <img src="signature.png" class="img-fluid" alt="">
-                                                <p class="text-center m-0" style="color:black"> Director Signature </p>
-                                            </div> -->
+                                          
                                         </div>
                                     </div>
                                 </section>
@@ -269,34 +405,7 @@ table{
                                 <!-- Cart BG -->
                                 <img src="cart.jpg" class="img-fluid cart-bg" alt="">
                     
-                                <!-- <footer>
-                                    <hr>
-                                    <p class="m-0 text-center">
-                                        View THis Invoice Online At - <a href="#!"> invoice/saburbd.com/#868 </a>
-                                    </p>
-                                    <div class="social pt-3">
-                                        <span class="pr-2">
-                                            <i class="fas fa-mobile-alt"></i>
-                                            <span>0123456789</span>
-                                        </span>
-                                        <span class="pr-2">
-                                            <i class="fas fa-envelope"></i>
-                                            <span>me@saburali.com</span>
-                                        </span>
-                                        <span class="pr-2">
-                                            <i class="fab fa-facebook-f"></i>
-                                            <span>/sabur.7264</span>
-                                        </span>
-                                        <span class="pr-2">
-                                            <i class="fab fa-youtube"></i>
-                                            <span>/abdussabur</span>
-                                        </span>
-                                        <span class="pr-2">
-                                            <i class="fab fa-github"></i>
-                                            <span>/example</span>
-                                        </span>
-                                    </div>
-                                </footer> -->
+                               
                             </div>
                         </div>
         

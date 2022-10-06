@@ -27973,4 +27973,20 @@ def temp_vendst(request):
         cmp1 = company.objects.get(id=request.session['uid'])
         return render(request,'app1/tem_vend_stmnt.html')
     except:
-        return redirect('gotemplates')       
+        return redirect('gotemplates')      
+
+@login_required(login_url='regcomp')
+def temp_deliveryc(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/tem_deliveryc.html')
+    except:
+        return redirect('gotemplates')        
+
+@login_required(login_url='regcomp')
+def temp_creditnote(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/tem_creditnote.html')
+    except:
+        return redirect('gotemplates')             
