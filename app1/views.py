@@ -27990,3 +27990,11 @@ def temp_creditnote(request):
         return render(request,'app1/tem_creditnote.html')
     except:
         return redirect('gotemplates')             
+
+@login_required(login_url='regcomp')
+def temp_salesorder(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/tem_salesorder.html')
+    except:
+        return redirect('gotemplates')                     

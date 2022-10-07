@@ -504,6 +504,7 @@ urlpatterns = [
     re_path(r'^temp_vendst$',views.temp_vendst,name='temp_vendst'),
     re_path(r'^temp_deliveryc$',views.temp_deliveryc,name='temp_deliveryc'),
     re_path(r'^temp_creditnote$',views.temp_creditnote,name='temp_creditnote'),
+    re_path(r'^temp_salesorder$',views.temp_salesorder,name='temp_salesorder'),
     
     
 
