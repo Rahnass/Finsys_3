@@ -27997,4 +27997,37 @@ def temp_salesorder(request):
         cmp1 = company.objects.get(id=request.session['uid'])
         return render(request,'app1/tem_salesorder.html')
     except:
-        return redirect('gotemplates')                     
+        return redirect('gotemplates')   
+
+@login_required(login_url='regcomp')
+def temp_purchaseorder(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/tem_purchaseorder.html')
+    except:
+        return redirect('gotemplates')       
+
+@login_required(login_url='regcomp')
+def temp_vendorcredit(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/tem_vendorcredit.html')
+    except:
+        return redirect('gotemplates')   
+
+@login_required(login_url='regcomp')
+def temp_journal(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/tem_journal.html')
+    except:
+        return redirect('gotemplates')                                     
+
+
+@login_required(login_url='regcomp')
+def temp_bill(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/tem_bill.html')
+    except:
+        return redirect('gotemplates')             

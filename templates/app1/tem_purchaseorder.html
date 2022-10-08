@@ -255,7 +255,7 @@ overflow: hidden;
 <div class="card radius-15 h-20">
   <div class="row">
       <div class="col-md-12">
-          <center><h2 class="mt-3">SALES ORDER TEMPLATES</h2></center>
+          <center><h2 class="mt-3">PURCHASE ORDER TEMPLATES</h2></center>
           
           <hr style="width:95%">
       </div>
@@ -283,10 +283,10 @@ overflow: hidden;
                                         </div>
                                         <div class="top-left">
                                             <div class="graphic-path">
-                                                <p>SALES ORDER</p>
+                                                <p>PURCHASE ORDER</p>
                                             </div>
                                             <div class="position-relative">
-                                                <p>Sales order No. <span>1</span></p>
+                                                <p> Purchase Order NO :  <span>1</span></p>
                                             </div>
                                         </div>
                                     </section>
@@ -313,10 +313,13 @@ overflow: hidden;
                                             </div>
                                             <div class="row extra-info ">
                                                 <div class="col-7">
-                                                    <p>Sales order Date: <span>{{estimate.estimatedate | date:'d-m-Y'}}</span></p>
+                                                    <p>Deliver To Details: </p>
+                                                    <p>{{pordr.contact_name}}</p>
+                                                    <p class="address col-6" style="margin-left: -14px;"> {{ pordr.deliverto}} </p>   
                                                 </div>
                                                 <div class="col-5">
-                                                    <p>Expected Shipment date : <span>{{estimate.expirationdate | date:'d-m-Y'}}</span></p>
+                                                    <p>Date : <span>{{ pordr.date | date:'d-m-Y' }}</span></p>
+                                                    <p>Excpected Date : <span> {{ pordr.deliver_date | date:'d-m-Y' }}</span></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -326,9 +329,9 @@ overflow: hidden;
                                         <table border="1" style="background-color:#444;" class="table table-hover">
                                             <thead>
                                                 <tr>
-                                                    <td>Item Description</td>
-                                                    <td>Price</td>
+                                                    <td>Items</td>
                                                     <td>Quantity</td>
+                                                    <td>Rate</td>
                                                     <td>Total</td>
                                                 </tr>
                                             </thead>
@@ -336,40 +339,17 @@ overflow: hidden;
             
                                                 
                                                 <tr>
-                                                    <td>
-                                                        <div class="media" >
-                                                            
-                                                            <div class="media-body">
-                                                                <p class="mt-0 title" style="color:black">{{estimate.product}}</p>
-                                                                <span style="color:black">{{estimate.description}}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td style="color:black">{{estimate.rate}}</td>
-                                                    <td style="color:black">{{estimate.qty}}</td>
-                                                    <td style="color:black">{{estimate.total}}</td>
+                                                    <td class="text-center" style="color:#000">{{ pordr.items }}</td>
+                                                    <td class="text-center" style="color:#000">{{ pordr.quantity }}</td>
+                                                    <td class="text-center" style="color:#000">{{ pordr.rate  }}</td>
+                                                    <td class="text-center" style="color:#000">{{ pordr.amount }}</td>
                                                 </tr>
-                                                
-            
-                                                {% if estimate.product3 == NIL  %}
-            
                                                 <tr>
-                                                    <td>
-                                                        <div class="media">
-                                                            
-                                                            <div class="media-body">
-                                                                <p class="mt-0 title" style="color:black">{{estimate.product3}}</p>
-                                                                <span style="color:black">{{estimate.description3}}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td style="color:black">{{estimate.rate3}}</td>
-                                                    <td style="color:black">{{estimate.qty3}}</td>
-                                                    <td style="color:black">{{estimate.total3}}</td>
+                                                    <td class="text-center" style="color:#000">{{ pordr.items }}</td>
+                                                    <td class="text-center" style="color:#000">{{ pordr.quantity }}</td>
+                                                    <td class="text-center" style="color:#000">{{ pordr.rate  }}</td>
+                                                    <td class="text-center" style="color:#000">{{ pordr.amount }}</td>
                                                 </tr>
-            
-                                                {% endif %}
-            
             
             
             
@@ -425,6 +405,11 @@ overflow: hidden;
                                               
                                             </div>
                                         </div>
+                                        <div class="row container-fluid  p-2 m-0">
+                                            <div class="col-sm-3 m-0 p-0"><label style="color: #000;"><b>Authorized Signature</b></label></div>
+                                            <div class="col-sm-4 m-0 p-0"><input type="text" id="sign"></div>
+                                            <div class="col-sm-4 m-0 p-0"></div>
+                                        </div>
                                     </section>
                         
                                     <!-- Cart BG -->
@@ -463,7 +448,7 @@ overflow: hidden;
       <div class="modal-body" >
         <div class="tempinv modalpage">
             <div>
-    
+                
                 <div  >
                     <div class="p-2">
                         <div id="ember2512" class="tooltip-container ember-view ribbon text-ellipsis">
@@ -474,10 +459,10 @@ overflow: hidden;
                             </div>
                             <div class="top-left">
                                 <div class="graphic-path">
-                                    <p>Sales order</p>
+                                    <p>PURCHASE ORDER</p>
                                 </div>
                                 <div class="position-relative">
-                                    <p>Sales Order No. <span>1</span></p>
+                                    <p> Purchase Order NO :  <span>1</span></p>
                                 </div>
                             </div>
                         </section>
@@ -504,10 +489,13 @@ overflow: hidden;
                                 </div>
                                 <div class="row extra-info ">
                                     <div class="col-7">
-                                        <p>Sales order Date: <span>{{estimate.estimatedate | date:'d-m-Y'}}</span></p>
+                                        <p>Deliver To Details: </p>
+                                        <p>{{pordr.contact_name}}</p>
+                                        <p class="address col-6" style="margin-left: -14px;"> {{ pordr.deliverto}} </p>   
                                     </div>
                                     <div class="col-5">
-                                        <p>Expected Shipment Date : <span>{{estimate.expirationdate | date:'d-m-Y'}}</span></p>
+                                        <p>Date : <span>{{ pordr.date | date:'d-m-Y' }}</span></p>
+                                        <p>Excpected Date : <span> {{ pordr.deliver_date | date:'d-m-Y' }}</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -517,9 +505,9 @@ overflow: hidden;
                             <table border="1" style="background-color:#444;" class="table table-hover">
                                 <thead>
                                     <tr>
-                                        <td>Item Description</td>
-                                        <td>Price</td>
+                                        <td>Items</td>
                                         <td>Quantity</td>
+                                        <td>Rate</td>
                                         <td>Total</td>
                                     </tr>
                                 </thead>
@@ -527,40 +515,17 @@ overflow: hidden;
 
                                     
                                     <tr>
-                                        <td>
-                                            <div class="media" >
-                                                
-                                                <div class="media-body">
-                                                    <p class="mt-0 title" style="color:black">{{estimate.product}}</p>
-                                                    <span style="color:black">{{estimate.description}}</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="color:black">{{estimate.rate}}</td>
-                                        <td style="color:black">{{estimate.qty}}</td>
-                                        <td style="color:black">{{estimate.total}}</td>
+                                        <td class="text-center" style="color:#000">{{ pordr.items }}</td>
+                                        <td class="text-center" style="color:#000">{{ pordr.quantity }}</td>
+                                        <td class="text-center" style="color:#000">{{ pordr.rate  }}</td>
+                                        <td class="text-center" style="color:#000">{{ pordr.amount }}</td>
                                     </tr>
-                                    
-
-                                    {% if estimate.product3 == NIL  %}
-
                                     <tr>
-                                        <td>
-                                            <div class="media">
-                                                
-                                                <div class="media-body">
-                                                    <p class="mt-0 title" style="color:black">{{estimate.product3}}</p>
-                                                    <span style="color:black">{{estimate.description3}}</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="color:black">{{estimate.rate3}}</td>
-                                        <td style="color:black">{{estimate.qty3}}</td>
-                                        <td style="color:black">{{estimate.total3}}</td>
+                                        <td class="text-center" style="color:#000">{{ pordr.items }}</td>
+                                        <td class="text-center" style="color:#000">{{ pordr.quantity }}</td>
+                                        <td class="text-center" style="color:#000">{{ pordr.rate  }}</td>
+                                        <td class="text-center" style="color:#000">{{ pordr.amount }}</td>
                                     </tr>
-
-                                    {% endif %}
-
 
 
 
@@ -616,6 +581,11 @@ overflow: hidden;
                                   
                                 </div>
                             </div>
+                            <div class="row container-fluid  p-2 m-0">
+                                <div class="col-sm-3 m-0 p-0"><label style="color: #000;"><b>Authorized Signature</b></label></div>
+                                <div class="col-sm-4 m-0 p-0"><input type="text" id="sign"></div>
+                                <div class="col-sm-4 m-0 p-0"></div>
+                            </div>
                         </section>
             
                         <!-- Cart BG -->
@@ -629,6 +599,7 @@ overflow: hidden;
       
         
             </div>
+        
 
 </div>
     

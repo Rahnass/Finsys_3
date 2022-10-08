@@ -505,6 +505,11 @@ urlpatterns = [
     re_path(r'^temp_deliveryc$',views.temp_deliveryc,name='temp_deliveryc'),
     re_path(r'^temp_creditnote$',views.temp_creditnote,name='temp_creditnote'),
     re_path(r'^temp_salesorder$',views.temp_salesorder,name='temp_salesorder'),
+    re_path(r'^temp_purchaseorder$',views.temp_purchaseorder,name='temp_purchaseorder'),
+    re_path(r'^temp_vendorcredit$',views.temp_vendorcredit,name='temp_vendorcredit'),
+    re_path(r'^temp_journal$',views.temp_journal,name='temp_journal'),
+    re_path(r'^temp_bill$',views.temp_bill,name='temp_bill'),
+
     
     
 
