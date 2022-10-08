@@ -163,39 +163,13 @@ position: absolute;
 padding-left: 10px;
 }
 
-/* User Store Section */
-.store-user {
-font-size:10px;
-padding-bottom: 10px;
-}
 
-.store-user p {
-font-size:10px;
-margin: 0;
-font-weight: 600;
-color: #000000;
-}
-
-.store-user .address {
-font-weight: 400;
-}
-
-.store-user h6 {
-color: var(--themeColor);
-font-family: 'Rajdhani', sans-serif;
-}
 
 .extra-info p span {
 font-weight: 400;
 
 }
 
-/* Product Section */
-thead {
-font-size:10px;
-color: var(--white);
-background: var(--themeColor);
-}
 
 .table td,
 .table th {
@@ -209,20 +183,6 @@ text-align: left;
 }
 
 
-
-/* Balance Info Section */
-.balance-info .table td,
-.balance-info .table th {
-padding: 0;
-border: 0;
-}
-
-.balance-info tr td:first-child {
-font-weight: 600;
-}
-.balance-info{
-font-size:10px;
-}
 
 tfoot {
 border-top: 2px solid var(--darkWhite);
@@ -247,8 +207,102 @@ box-shadow: var(--pageShadow);
     margin: 0;
 overflow: hidden;
 }
+.cardh{
+    width:fit-content;
+    height:fit-content;
+}
+.modal-dialog { /* Width */
+    width:500px;
+    height:800px;
+    display: inline-block;
+    font-size:20px;
+}
+.modal {
+    z-index: -1;
+    width:A4;
+    height:A4;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-open .modal {
+     z-index: 1050;
+  }
 
 
+  /* User Store Section */
+.store-userh {
+    font-size:10px;
+    padding-bottom: 10px;
+    }
+    
+    .store-userh p {
+    font-size:10px;
+    margin: 0;
+    font-weight: 600;
+    color: #000000;
+    }
+    .store-user {
+        font-size:13px;
+        padding-bottom: 10px;
+        }
+        
+        .store-user p {
+        font-size:13px;
+        margin: 0;
+        font-weight: 600;
+        color: #000000;
+        }
+    
+    .store-user .address {
+    font-weight: 400;
+    }
+    
+    .store-user h6 {
+    color: var(--themeColor);
+    font-family: 'Rajdhani', sans-serif;
+    }
+    
+    
+    
+    /* Balance Info Section */
+    .balance-infoh .table td,
+    .balance-infoh .table th {
+    padding: 0;
+    border: 0;
+    }
+    
+    .balance-infoh tr td:first-child {
+    font-weight: 600;
+    }
+    .balance-infoh{
+    font-size:10px;
+    }
+    .balance-info .table td,
+    .balance-info .table th {
+    padding: 0;
+    border: 0;
+    }
+    
+    .balance-info tr td:first-child {
+    font-weight: 600;
+    }
+    .balance-info{
+        font-size:13px;
+        }
+    
+    thead.head {
+    font-size:10px;
+    color: var(--white);
+    background: var(--themeColor);
+    }
+    thead {
+        font-size:14px;
+        color: var(--white);
+        background: var(--themeColor);
+        }
+    
 </style>
 
 <div class="page-content">
@@ -266,14 +320,14 @@ overflow: hidden;
     <div class="container">
       <div class="row hidden-md-up">
         <div class="col-md-5">
-          <div class="card">
+          <div class="card cardh">
             <div class="card-block">
               <div class="card-body">
                 <a data-toggle="modal" href="#MyModal">
                     <div class="tempinv page">
                         <div>
                 
-                            <div  >
+                            <div>
                                 <div class="p-2">
                                     <div id="ember2512" class="tooltip-container ember-view ribbon text-ellipsis">
                                         <div class="ribbon-inner ribbon-open">status<!----></div></div>
@@ -283,15 +337,15 @@ overflow: hidden;
                                         </div>
                                         <div class="top-left">
                                             <div class="graphic-path">
-                                                <p>SALES ORDER</p>
+                                                <p>Bill</p>
                                             </div>
                                             <div class="position-relative">
-                                                <p>Sales order No. <span>1</span></p>
+                                                <p> Bill NO : <span>{{pbill.bill_no }}</span></p>
                                             </div>
                                         </div>
                                     </section>
                         
-                                    <section class="store-user mt-1">
+                                    <section class="store-userh mt-1">
                                         <div class="col-12">
                                             <div class="row bb pb-3">
                                                 <div class="col-7">
@@ -313,10 +367,13 @@ overflow: hidden;
                                             </div>
                                             <div class="row extra-info ">
                                                 <div class="col-7">
-                                                    <p>Sales order Date: <span>{{estimate.estimatedate | date:'d-m-Y'}}</span></p>
+                                                    <p>Deliver To Details: </p>
+                                                    <p>{{pbill.contact_name}}</p>
+                                                    <p class="address col-6" style="margin-left: -14px;"> {{ pbill.deliverto}} </p>   
                                                 </div>
                                                 <div class="col-5">
-                                                    <p>Expected Shipment date : <span>{{estimate.expirationdate | date:'d-m-Y'}}</span></p>
+                                                    <p>Date : <span>{{ pbill.date | date:'d-m-Y' }}</span></p>
+                                                    <p>Excpected Date : <span> {{ pbill.deliver_date | date:'d-m-Y' }}</span></p>
                                                 </div>
                                             </div>
                                         </div>
@@ -324,11 +381,11 @@ overflow: hidden;
                         
                                     <section class="product-area mt-2">
                                         <table border="1" style="background-color:#444;" class="table table-hover">
-                                            <thead>
+                                            <thead class="head">
                                                 <tr>
-                                                    <td>Item Description</td>
-                                                    <td>Price</td>
+                                                    <td>Items</td>
                                                     <td>Quantity</td>
+                                                    <td>Rate</td>
                                                     <td>Total</td>
                                                 </tr>
                                             </thead>
@@ -336,40 +393,18 @@ overflow: hidden;
             
                                                 
                                                 <tr>
-                                                    <td>
-                                                        <div class="media" >
-                                                            
-                                                            <div class="media-body">
-                                                                <p class="mt-0 title" style="color:black">{{estimate.product}}</p>
-                                                                <span style="color:black">{{estimate.description}}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td style="color:black">{{estimate.rate}}</td>
-                                                    <td style="color:black">{{estimate.qty}}</td>
-                                                    <td style="color:black">{{estimate.total}}</td>
+                                                    <td class="text-center" style="color:#000">{{ pbill.items }}</td>
+                                                    <td class="text-center" style="color:#000">{{ pbill.quantity }}</td>
+                                                    <td class="text-center" style="color:#000">{{ pbill.rate  }}</td>
+                                                    <td class="text-center" style="color:#000">{{ pbill.amount }}</td>
                                                 </tr>
                                                 
-            
-                                                {% if estimate.product3 == NIL  %}
-            
                                                 <tr>
-                                                    <td>
-                                                        <div class="media">
-                                                            
-                                                            <div class="media-body">
-                                                                <p class="mt-0 title" style="color:black">{{estimate.product3}}</p>
-                                                                <span style="color:black">{{estimate.description3}}</span>
-                                                            </div>
-                                                        </div>
-                                                    </td>
-                                                    <td style="color:black">{{estimate.rate3}}</td>
-                                                    <td style="color:black">{{estimate.qty3}}</td>
-                                                    <td style="color:black">{{estimate.total3}}</td>
+                                                    <td class="text-center" style="color:#000">{{ pbill.items }}</td>
+                                                    <td class="text-center" style="color:#000">{{ pbill.quantity }}</td>
+                                                    <td class="text-center" style="color:#000">{{ pbill.rate  }}</td>
+                                                    <td class="text-center" style="color:#000">{{ pbill.amount }}</td>
                                                 </tr>
-            
-                                                {% endif %}
-            
             
             
             
@@ -378,7 +413,7 @@ overflow: hidden;
                                         </table>
                                     </section>
                         
-                                    <section class="balance-info">
+                                    <section class="balance-infoh">
                                         <div class="row">
                                             <div class="col-6">
                                                 <p class="m-0 font-weight-bold" style="color:black"> Note: </p>
@@ -425,6 +460,11 @@ overflow: hidden;
                                               
                                             </div>
                                         </div>
+                                        <div class="row container-fluid  p-2 m-0">
+                                            <div class="col-sm-3 m-0 p-0"><label style="color: #000;"><b>Authorized Signature</b></label></div>
+                                            <div class="col-sm-4 m-0 p-0"><input type="text" id="sign"></div>
+                                            <div class="col-sm-4 m-0 p-0"></div>
+                                        </div>
                                     </section>
                         
                                     <!-- Cart BG -->
@@ -465,7 +505,7 @@ overflow: hidden;
             <div>
     
                 <div  >
-                    <div class="p-2">
+                    <div class=" modalpp p-2">
                         <div id="ember2512" class="tooltip-container ember-view ribbon text-ellipsis">
                             <div class="ribbon-inner ribbon-open">status<!----></div></div>
                         <section class="top-content bb d-flex justify-content-between">
@@ -474,10 +514,10 @@ overflow: hidden;
                             </div>
                             <div class="top-left">
                                 <div class="graphic-path">
-                                    <p>Sales order</p>
+                                    <p>bill</p>
                                 </div>
                                 <div class="position-relative">
-                                    <p>Sales Order No. <span>1</span></p>
+                                    <p>BILL No. <span>1</span></p>
                                 </div>
                             </div>
                         </section>
@@ -485,7 +525,7 @@ overflow: hidden;
                         <section class="store-user mt-1">
                             <div class="col-12">
                                 <div class="row bb pb-3">
-                                    <div class="col-7">
+                                    <div class="col-7" style="font-size:15px;">
                                         <p>FROM,</p>
                                         <h6>{{cmp1.cname }}</h6>
                                         <p class="address "> {{cmp1.caddress}}<br>
@@ -504,10 +544,11 @@ overflow: hidden;
                                 </div>
                                 <div class="row extra-info ">
                                     <div class="col-7">
-                                        <p>Sales order Date: <span>{{estimate.estimatedate | date:'d-m-Y'}}</span></p>
+                                        <p>Deliver to details: <span>{{estimate.estimatedate | date:'d-m-Y'}}</span></p>
                                     </div>
                                     <div class="col-5">
-                                        <p>Expected Shipment Date : <span>{{estimate.expirationdate | date:'d-m-Y'}}</span></p>
+                                        <p>Date : <span>{{ pbill.date | date:'d-m-Y' }}</span></p>
+                                        <p>Excpected Date : <span> {{ pbill.deliver_date | date:'d-m-Y' }}</span></p>
                                     </div>
                                 </div>
                             </div>
@@ -515,9 +556,9 @@ overflow: hidden;
             
                         <section class="product-area mt-2">
                             <table border="1" style="background-color:#444;" class="table table-hover">
-                                <thead>
+                                <thead >
                                     <tr>
-                                        <td>Item Description</td>
+                                        <td>Items</td>
                                         <td>Price</td>
                                         <td>Quantity</td>
                                         <td>Total</td>
@@ -569,7 +610,7 @@ overflow: hidden;
                             </table>
                         </section>
             
-                        <section class="balance-info">
+                        <section class="balance-infoh">
                             <div class="row">
                                 <div class="col-6">
                                     <p class="m-0 font-weight-bold" style="color:black"> Note: </p>
@@ -616,6 +657,11 @@ overflow: hidden;
                                   
                                 </div>
                             </div>
+                            <div class="row container-fluid  p-2 m-0">
+                                <div class="col-sm-3 m-0 p-0"><label style="color: #000;"><b>Authorized Signature</b></label></div>
+                                <div class="col-sm-4 m-0 p-0"><input type="text" id="sign"></div>
+                                <div class="col-sm-4 m-0 p-0"></div>
+                            </div>
                         </section>
             
                         <!-- Cart BG -->
@@ -629,6 +675,7 @@ overflow: hidden;
       
         
             </div>
+
 
 </div>
     

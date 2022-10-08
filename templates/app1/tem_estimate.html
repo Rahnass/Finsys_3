@@ -36,14 +36,7 @@
   }
   
 
-  
-  body{
-    background-color: #eee;
-    padding-top: 25px;
-    -webkit-print-color-adjust: exact !important;
-    height: 100%;
-    margin-top: 40px;
-  }
+ 
   
   div.tempinv{
     background-color: white;
@@ -85,12 +78,9 @@ border-color: #1c72b4;
 /* Font Include */
 @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@600&display=swap');
 
-body {
-font-size:10px;
-background-color: var(--body-bg);
-}
 
-.page {
+
+.pageh {
 font-size:10px;
 background: var(--white);
 display: block;
@@ -99,12 +89,27 @@ position: relative;
 box-shadow: var(--pageShadow);
 }
 
-.page {
+.pageh {
 font-size:10px;
 width: 310px;
 height: 438px;
 overflow: hidden;
 }
+.page {
+    font-size:13px;
+    background: var(--white);
+    display: block;
+    margin: 0 auto;
+    position: relative;
+    box-shadow: var(--pageShadow);
+    }
+    
+    .page {
+    font-size:13px;
+    width: 310px;
+    height: 438px;
+    overflow: hidden;
+    }
 
 .bb {
 border-bottom: 1px solid var(--darkWhite);
@@ -166,17 +171,28 @@ padding-left: 10px;
 }
 
 /* User Store Section */
-.store-user {
+.store-userh {
 font-size:10px;
 padding-bottom: 10px;
 }
 
-.store-user p {
+.store-userh p {
 font-size:10px;
 margin: 0;
 font-weight: 600;
 color: #000000;
 }
+.store-user {
+    font-size:13px;
+    padding-bottom: 10px;
+    }
+    
+    .store-user p {
+    font-size:13px;
+    margin: 0;
+    font-weight: 600;
+    color: #000000;
+    }
 
 .store-user .address {
 font-weight: 400;
@@ -193,11 +209,16 @@ font-weight: 400;
 }
 
 /* Product Section */
-thead {
+thead.head {
 font-size:10px;
 color: var(--white);
 background: var(--themeColor);
 }
+thead {
+    font-size:14px;
+    color: var(--white);
+    background: var(--themeColor);
+    }
 
 .table td,
 .table th {
@@ -213,6 +234,18 @@ text-align: left;
 
 
 /* Balance Info Section */
+.balance-infoh .table td,
+.balance-infoh .table th {
+padding: 0;
+border: 0;
+}
+
+.balance-infoh tr td:first-child {
+font-weight: 600;
+}
+.balance-infoh{
+font-size:10px;
+}
 .balance-info .table td,
 .balance-info .table th {
 padding: 0;
@@ -223,8 +256,8 @@ border: 0;
 font-weight: 600;
 }
 .balance-info{
-font-size:10px;
-}
+    font-size:13px;
+    }
 
 tfoot {
 border-top: 2px solid var(--darkWhite);
@@ -244,13 +277,36 @@ box-shadow: var(--pageShadow);
 }
 
 .modalpage {
-    font-size:15px;
     size: A4;
     margin: 0;
 overflow: hidden;
 }
+.modalpp{
 
 
+}
+.cardh{
+    width:fit-content;
+    height:fit-content;
+}
+.modal-dialog { /* Width */
+    width:500px;
+    height:800px;
+    display: inline-block;
+    font-size:20px;
+}
+.modal {
+    z-index: -1;
+    width:A4;
+    height:A4;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-open .modal {
+     z-index: 1050;
+  }
 </style>
 
 <div class="page-content">
@@ -268,11 +324,11 @@ overflow: hidden;
     <div class="container">
       <div class="row hidden-md-up">
         <div class="col-md-5">
-          <div class="card">
+          <div class="card cardh">
             <div class="card-block">
               <div class="card-body">
                 <a data-toggle="modal" href="#MyModal">
-                    <div class="tempinv page">
+                    <div class="tempinv pageh">
                         <div>
                 
                             <div  >
@@ -293,7 +349,7 @@ overflow: hidden;
                                         </div>
                                     </section>
                         
-                                    <section class="store-user mt-1">
+                                    <section class="store-userh mt-1">
                                         <div class="col-12">
                                             <div class="row bb pb-3">
                                                 <div class="col-7">
@@ -326,7 +382,7 @@ overflow: hidden;
                         
                                     <section class="product-area mt-2">
                                         <table border="1" style="background-color:#444;" class="table table-hover">
-                                            <thead>
+                                            <thead class="head">
                                                 <tr>
                                                     <td>Item Description</td>
                                                     <td>Price</td>
@@ -380,7 +436,7 @@ overflow: hidden;
                                         </table>
                                     </section>
                         
-                                    <section class="balance-info">
+                                    <section class="balance-infoh">
                                         <div class="row">
                                             <div class="col-6">
                                                 <p class="m-0 font-weight-bold" style="color:black"> Note: </p>
@@ -467,7 +523,7 @@ overflow: hidden;
             <div>
     
                 <div  >
-                    <div class="p-2">
+                    <div class=" modalpp p-2">
                         <div id="ember2512" class="tooltip-container ember-view ribbon text-ellipsis">
                             <div class="ribbon-inner ribbon-open">status<!----></div></div>
                         <section class="top-content bb d-flex justify-content-between">
@@ -487,7 +543,7 @@ overflow: hidden;
                         <section class="store-user mt-1">
                             <div class="col-12">
                                 <div class="row bb pb-3">
-                                    <div class="col-7">
+                                    <div class="col-7" style="font-size:15px;">
                                         <p>FROM,</p>
                                         <h6>{{cmp1.cname }}</h6>
                                         <p class="address "> {{cmp1.caddress}}<br>

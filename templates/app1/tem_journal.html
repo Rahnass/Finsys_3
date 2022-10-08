@@ -11,7 +11,24 @@
         font-size:10px;
     }
        
-        
+    .modal-dialog { /* Width */
+        width:500px;
+        height:800px;
+        display: inline-block;
+        font-size:20px;
+    }
+    .modal {
+        z-index: -1;
+        width:A4;
+        height:A4;
+        display: flex !important;
+        justify-content: center;
+        align-items: center;
+      }
+      
+      .modal-open .modal {
+         z-index: 1050;
+      }  
 </style>
 
 <div class="page-content">
@@ -227,7 +244,7 @@
         
                                  <div class="pcs-template-body">
                                    
-                                    <p style="width:80px;height:25px;font-size:10px;" class="btn btn-outline-success" >STATUS</p>
+                                    <p style="width:80px;height:25px;font-size:12px;" class="btn btn-outline-success" >STATUS</p>
                                  
                                  
                                     
@@ -238,7 +255,7 @@
                                                
                                             </div>
                                             <img src="/media/images/default.png" style="width:30px;">
-                                            <span class="pcs-orgname"><b style="font-size:10px;">abc</b></span><br>
+                                            <span class="pcs-orgname"><b style="font-size:12px;">abc</b></span><br>
                                             <span class="pcs-label">
                                             <span style="white-space: pre-wrap;" id="tmp_org_address">address</span>
                                             </span>
@@ -249,7 +266,7 @@
                                         <tbody><tr>
                                             <td style="width:50%;vertical-align:bottom;word-wrap: break-word;">
                                                     <div style="padding-bottom: 5px;">
-                                                        <label style="font-size: 10px;" id="notes_label" class="pcs-label">NOTES</label>
+                                                        <label style="font-size: 12px;" id="notes_label" class="pcs-label">NOTES</label>
                                                         <br>
                                                         <span style="color:black;" id="notes">{{ a.notes }}</span>
                                                     </div>
@@ -258,7 +275,7 @@
                                                 <table style="float:right;width: 100%;table-layout: fixed;word-wrap: break-word;" border="0" cellspacing="0" cellpadding="0">
                                                     <tbody>
                                                         <tr>
-                                                            <td style="font-size:;" class="text-align-right">
+                                                            <td style="font-size:12px;" class="text-align-right">
                                                                 <span class="pcs-label">Journal No:</span>
                                                             </td>
                                                             <td class="text-align-right">
@@ -266,7 +283,7 @@
                                                             </td>
                                                         </tr>
                                                             <tr>
-                                                                <td style="font-size:10px;" class="text-align-right">
+                                                                <td style="font-size:12px;" class="text-align-right">
                                                                     <span class="pcs-label">Date:</span>
                                                                 </td>
                                                                 <td class="text-align-right">
@@ -274,7 +291,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="font-size:10px;" class="text-align-right">
+                                                                <td style="font-size:12px;" class="text-align-right">
                                                                     <span class="pcs-label">Amount:</span>
                                                                 </td>
                                                                 <td class="text-align-right">
@@ -282,7 +299,7 @@
                                                                 </td>
                                                             </tr>
                                                             <tr>
-                                                                <td style="font-size: 10px;" class="text-align-right">
+                                                                <td style="font-size: 12px;" class="text-align-right">
                                                                     <span class="pcs-label">Reference No:</span>
                                                                 </td>
                                                                 <td class="text-align-right">
@@ -295,7 +312,7 @@
                                         </tr>
                                     </tbody></table><br>
                                 
-                                    <table style="width:100%;margin-top:20px;table-layout:fixed;" border="0" cellspacing="0" cellpadding="0" class="pcs-itemtable">
+                                    <table style="width:100%;margin-top:20px;table-layout:fixed;font-size:12px;" border="0" cellspacing="0" cellpadding="0" class="pcs-itemtable">
                                         <thead style="background-color:rgba(0,0,0,.4)">
                                             <tr style="height:40px;">
                                                 <td style="" class="table-head">
@@ -316,51 +333,51 @@
                                         <tbody>
                                                 <tr style="border-bottom:1px solid #ededed" class="breakrow-inside breakrow-after">
                                 
-                                                        <td  style=" font-size:10px;" class="pcs-item-row">
+                                                        <td  style=" font-size:12px;" class="pcs-item-row">
                                                           ACCOUNT 1
                                                             <p style="color: grey;"> </p>
                                                             <p style="margin-bottom: 0px;color: grey; word-wrap: break-word;"></p>
                                                         </td>
                                 
-                                                        <td  style="font-size:10px;" class="pcs-item-row">
+                                                        <td  style="font-size:12px;" class="pcs-item-row">
                                                           Contact 1
                                                         </td>
                                 
-                                                    <td style="font-size:10px;" class="table-head">
+                                                    <td style="font-size:12px;" class="table-head">
                                                         ₹{{ a.debit1 }}.00
                                                     </td>
-                                                    <td  style="font-size:10px;" class="table-head">
+                                                    <td  style="font-size:12px;" class="table-head">
                                                         ₹{{ a.credit1 }}.00
                                                     </td>
                                                 </tr>
                                                 <tr style="border-bottom:1px solid #ededed" class="breakrow-inside breakrow-after">
-                                                    <td  style=" font-size:10px;" class="pcs-item-row">
+                                                    <td  style=" font-size:12px;" class="pcs-item-row">
                                                         ACCOUNT 1
                                                           <p style="color: grey;"> </p>
                                                           <p style="margin-bottom: 0px;color: grey; word-wrap: break-word;"></p>
                                                       </td>
                               
-                                                      <td  style="font-size:10px;" class="pcs-item-row">
+                                                      <td  style="font-size:12px;" class="pcs-item-row">
                                                         Contact 1
                                                       </td>
                               
-                                                  <td style="font-size:10px;" class="table-head">
+                                                  <td style="font-size:12px;" class="table-head">
                                                       ₹{{ a.debit1 }}.00
                                                   </td>
-                                                  <td  style="font-size:10px;" class="table-head">
+                                                  <td  style="font-size:12px;" class="table-head">
                                                       ₹{{ a.credit1 }}.00
                                                   </td>
                                                 </tr>
                                                 <tr></tr>
                                                 <tr style="width: 100%;margin-top: 1px;"  >
-                                                    <td colspan="2" class="table-head" style="font-size:11px;">Sub Total</td>
+                                                    <td colspan="2" class="table-head" style="font-size:13px;">Sub Total</td>
                                                     <td class="pcs-total-section-value text-align-center" >₹{{ a.s_totaldeb }}.00</td>
                                                     <td class="pcs-total-section-value text-align-right">₹{{ a.s_totalcre }}.00</td>
                                                 </tr>
                                                     <tr  style="height:40px;" class="pcs-balance">
-                                                        <td colspan="2"  style="padding:5px 10px 5px 0;font-size:12px;"><b>Total</b></td>
-                                                        <td style="font-size:11px;"><b>₹{{ a.total_deb }}.00</b></td>
-                                                        <td style="font-size:12px;"><b>₹{{ a.total_cre }}.00</b></td>
+                                                        <td colspan="2"  style="padding:5px 10px 5px 0;font-size:14px;"><b>Total</b></td>
+                                                        <td style="font-size:13px;"><b>₹{{ a.total_deb }}.00</b></td>
+                                                        <td style="font-size:15px;"><b>₹{{ a.total_cre }}.00</b></td>
                                                     </tr>
                                         </tbody>
                                     </table>
@@ -371,7 +388,8 @@
                                     </div>
                                 </div>
         </div>
-        <br>
+    </div>
+</div>
         
 
             

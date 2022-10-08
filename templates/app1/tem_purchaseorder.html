@@ -37,14 +37,6 @@
   
 
   
-  body{
-    background-color: #eee;
-    padding-top: 25px;
-    -webkit-print-color-adjust: exact !important;
-    height: 100%;
-    margin-top: 40px;
-  }
-  
   div.tempinv{
     background-color: white;
     border-radius: 10px;
@@ -61,7 +53,7 @@ text-align: center;
 color: #fff;
 top: -20px;
 left: -90px;
-width: 120px;
+width: 122px;
 padding: 3px;
 /* position: relative;
 transform: rotate(-45deg); */
@@ -125,7 +117,7 @@ color: #000000;
 .top-left .graphic-path {
 height: 25px;
 position: relative;
-width:120px;
+width:125px;
 }
 
 .top-left .graphic-path::before {
@@ -163,39 +155,12 @@ position: absolute;
 padding-left: 10px;
 }
 
-/* User Store Section */
-.store-user {
-font-size:10px;
-padding-bottom: 10px;
-}
-
-.store-user p {
-font-size:10px;
-margin: 0;
-font-weight: 600;
-color: #000000;
-}
-
-.store-user .address {
-font-weight: 400;
-}
-
-.store-user h6 {
-color: var(--themeColor);
-font-family: 'Rajdhani', sans-serif;
-}
 
 .extra-info p span {
 font-weight: 400;
 
 }
 
-/* Product Section */
-thead {
-font-size:10px;
-color: var(--white);
-background: var(--themeColor);
-}
 
 .table td,
 .table th {
@@ -208,21 +173,80 @@ tr td:first-child {
 text-align: left;
 }
 
+/* User Store Section */
+.store-userh {
+    font-size:10px;
+    padding-bottom: 10px;
+    }
+    
+    .store-userh p {
+    font-size:10px;
+    margin: 0;
+    font-weight: 600;
+    color: #000000;
+    }
+    .store-user {
+        font-size:13px;
+        padding-bottom: 10px;
+        }
+        
+        .store-user p {
+        font-size:13px;
+        margin: 0;
+        font-weight: 600;
+        color: #000000;
+        }
+    
+    .store-user .address {
+    font-weight: 400;
+    }
+    
+    .store-user h6 {
+    color: var(--themeColor);
+    font-family: 'Rajdhani', sans-serif;
+    }
+    
+    
+    
+    /* Balance Info Section */
+    .balance-infoh .table td,
+    .balance-infoh .table th {
+    padding: 0;
+    border: 0;
+    }
+    
+    .balance-infoh tr td:first-child {
+    font-weight: 600;
+    }
+    .balance-infoh{
+    font-size:10px;
+    }
+    .balance-info .table td,
+    .balance-info .table th {
+    padding: 0;
+    border: 0;
+    }
+    
+    .balance-info tr td:first-child {
+    font-weight: 600;
+    }
+    .balance-info{
+        font-size:13px;
+        }
+    
+    thead.head {
+    font-size:10px;
+    color: var(--white);
+    background: var(--themeColor);
+    }
+    thead {
+        font-size:14px;
+        color: var(--white);
+        background: var(--themeColor);
+        }
+    
 
 
-/* Balance Info Section */
-.balance-info .table td,
-.balance-info .table th {
-padding: 0;
-border: 0;
-}
-
-.balance-info tr td:first-child {
-font-weight: 600;
-}
-.balance-info{
-font-size:10px;
-}
 
 tfoot {
 border-top: 2px solid var(--darkWhite);
@@ -248,6 +272,29 @@ box-shadow: var(--pageShadow);
 overflow: hidden;
 }
 
+.cardh{
+    width:fit-content;
+    height:fit-content;
+}
+.modal-dialog { /* Width */
+    width:500px;
+    height:800px;
+    display: inline-block;
+    font-size:20px;
+}
+.modal {
+    z-index: -1;
+    width:A4;
+    height:A4;
+    display: flex !important;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-open .modal {
+     z-index: 1050;
+  }
+
 
 </style>
 
@@ -266,7 +313,7 @@ overflow: hidden;
     <div class="container">
       <div class="row hidden-md-up">
         <div class="col-md-5">
-          <div class="card">
+          <div class="card cardh">
             <div class="card-block">
               <div class="card-body">
                 <a data-toggle="modal" href="#MyModal">
@@ -291,7 +338,7 @@ overflow: hidden;
                                         </div>
                                     </section>
                         
-                                    <section class="store-user mt-1">
+                                    <section class="store-userh mt-1">
                                         <div class="col-12">
                                             <div class="row bb pb-3">
                                                 <div class="col-7">
@@ -327,7 +374,7 @@ overflow: hidden;
                         
                                     <section class="product-area mt-2">
                                         <table border="1" style="background-color:#444;" class="table table-hover">
-                                            <thead>
+                                            <thead class="head">
                                                 <tr>
                                                     <td>Items</td>
                                                     <td>Quantity</td>
@@ -358,7 +405,7 @@ overflow: hidden;
                                         </table>
                                     </section>
                         
-                                    <section class="balance-info">
+                                    <section class="balance-infoh">
                                         <div class="row">
                                             <div class="col-6">
                                                 <p class="m-0 font-weight-bold" style="color:black"> Note: </p>

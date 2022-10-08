@@ -34,56 +34,56 @@
                               background-color: #213b52;width:400px;height:1px;">
                               
                                  <ul id="searchList" class="one radius-15" style="background-color: #213b52;">
-                                    {% for a in items %}
-                                    <a href="view_item/{{ a.id }}"><li>{{ a.name }}</li></a>
-                                  {% endfor %}
-                             
-                                 </ul>
-                                 </div>
-                
-                            </div>
-                        </div>
-                      </div>
-                 
+                                    
+                                    <a href="{% url 'temp_est' %}"><li>Estimate</li></a>
+                                    <a href="{% url 'temp_salesorder' %}"><li>Sales Order</li></a>
+                                    <a href="{% url 'temp_deliveryc' %}"><li>Delivery Challan</li></a>
+                                    <a href="{% url 'temp_inv' %}"><li>Invoice</li></a>
+                                    <a href="{% url 'temp_creditnote' %}"><li>Credit Note</li></a>
+                                    <a href="{% url 'temp_purchaseorder' %}"><li>Purchase Order</li></a>
+                                    <a href="{% url 'temp_payrec' %}"><li>Payment Receipts</li></a>
+                                    <a href="{% url 'temp_custst' %}"><li>Customer Statement</li></a>
+                                    <a href="{% url 'temp_bill' %}"><li>Bill</li></a>
+                                    <a href="{% url 'temp_vendorcredit' %}"><li>Vendor Credit</li></a>
+                                    <a href="{% url 'temp_vendpay' %}"><li>Vendor Payment</li></a>
+                                    <a href="{% url 'temp_vendst' %}"><li>Vendor Statement</li></a>
+                                    <a href="{% url 'temp_journal' %}"><li>Journal</li></a>
+                                </ul>
+                                 </div></div>
+                        </div> </div>
                 <div class="col">
                     <div class="dropdown">
                         <button type="button" class="btn btn-outline-info text-light dropdown-toggle"
-                                data-toggle="dropdown">New
-                            Template
-                        </button>
+                                data-toggle="dropdown">View Templates </button>
                         <div class="dropdown-menu" style="background-color: black;">
                             <a class="dropdown-item" href="{% url 'temp_est' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Estimates</a>
+                               style="height: 40px; font-size: 15px; color: white;">Estimate</a>
                             <a class="dropdown-item" href="{% url 'temp_salesorder' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Sales Orders</a>
-                            <!-- <a class="dropdown-item" href="{% url 'gocheque' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Cheque</a> -->
+                               style="height: 40px; font-size: 15px; color: white;">Sales Order</a>
                             <a class="dropdown-item" href="{% url 'temp_deliveryc' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Delivery Challans</a>
+                               style="height: 40px; font-size: 15px; color: white;">Delivery Challan</a>
                             <a class="dropdown-item" href="{% url 'temp_inv' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Invoices</a>
+                               style="height: 40px; font-size: 15px; color: white;">Invoice</a>
                             <a class="dropdown-item" href="{% url 'temp_creditnote' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Credit Notes</a>
+                               style="height: 40px; font-size: 15px; color: white;">Credit Note</a>
                                <a class="dropdown-item" href="{% url 'temp_purchaseorder' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Purchase Orders</a>
+                               style="height: 40px; font-size: 15px; color: white;">Purchase Order</a>
                             <a class="dropdown-item" href="{% url 'temp_payrec' %}"
                                style="height: 40px; font-size: 15px; color: white;">Payment Receipts</a>
-                            <!-- <a class="dropdown-item" href="{% url 'gocheque' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Cheque</a> -->
                             <a class="dropdown-item" href="{% url 'temp_custst' %}"
                                style="height: 40px; font-size: 15px; color: white;">Customer Statement</a>
                             <a class="dropdown-item" href="{% url 'temp_bill' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Bills</a>
+                               style="height: 40px; font-size: 15px; color: white;">Bill</a>
                             <a class="dropdown-item" href="{% url 'temp_vendorcredit' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Vendor Credits</a>
+                               style="height: 40px; font-size: 15px; color: white;">Vendor Credit</a>
                                <a class="dropdown-item" href="{% url 'temp_vendpay' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Vendor Payments</a>
+                               style="height: 40px; font-size: 15px; color: white;">Vendor Payment</a>
                             <a class="dropdown-item" href="{% url 'temp_vendst' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Vendor Statements</a>
+                               style="height: 40px; font-size: 15px; color: white;">Vendor Statement</a>
                             <!-- <a class="dropdown-item" href="{% url 'gocheque' %}"
                                style="height: 40px; font-size: 15px; color: white;">Cheque</a> -->
                             <a class="dropdown-item" href="{% url 'temp_journal' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Journals</a>
+                               style="height: 40px; font-size: 15px; color: white;">Journal</a>
                             
                             <!-- <a class="dropdown-item" href="{% url 'addpdcc' %}"
                                style="height: 40px; font-size: 15px; color: white;">Pay down credit card</a> -->
