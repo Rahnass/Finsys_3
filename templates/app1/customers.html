@@ -56,6 +56,9 @@ body{
   left: 50%; */
   /* transform: translate(-50%, -50%); */
 }
+.table-row{
+        cursor:pointer;
+}
       </style>
         <div class="page-content">
             <div class="card radius-15">
@@ -73,7 +76,7 @@ body{
                         
                         
                         
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                             <div class="wrap" style="width: 60%; margin-top: 8px;">
                                 <form action="{% url 'gosearch' %}" method="POST">{% csrf_token %}
                                 <div class="search">
@@ -88,7 +91,7 @@ body{
                              </div>
                              
                         </div>
-                        <div class="col-md-5">
+                        <div class="col-md-4">
                           
                             <select class="form-control btn btn-outline-info dropdown-toggle text-grey" aria-label=".form-select-lg example" style="width: 40%; margin-top: 8px;" name="type">
                                 
@@ -104,6 +107,24 @@ body{
 
 
                             </form>
+                            </div>
+                            <div class="col-md-2" style="width: 40%; margin-top: 8px;">
+
+                                <div class="dropdown">
+                                    <button type="button" class="btn btn-outline-info dropdown-toggle text-grey"
+                                            data-toggle="dropdown">filter by
+                                    </button>
+                                    <div class="dropdown-menu" style="background-color: black;">
+                                        <a class="dropdown-item" href="{% url 'gocustomers' %}"
+                                           style="height: 40px; font-size: 15px; color: white; text-align: center;" >All</a>
+                                        <a class="dropdown-item" href="{% url 'gocustomers1' %}"
+                                           style="height: 40px; font-size: 15px; color: white; text-align: center;" >Active</a>
+                                        <a class="dropdown-item" href="{% url 'gocustomers2' %}"
+                                           style="height: 40px; font-size: 15px; color: white; text-align: center;">Inactive</a>
+                                        
+                                        
+                                </div> 
+                              </div>
                             </div>
                             
                             
@@ -128,24 +149,24 @@ body{
                                 <th>PAN NO</th>
                                 <th>EMAIL ID</th>
                                 <th>MOBILE NO</th>
-                                <th>ACTION</th>
+                                <!-- <th>ACTION</th> -->
                             </tr>
                             </thead>
                             <tbody>
                             {% for customer in customers %}
                                 {% if customer.cid_id == cmp1.cid %}
-                                    <tr>
+                                    <tr  class="table-row " data-href="{% url 'customer_profile' customer.customerid %}">
                                         <td>{{ customer.firstname }} {{ customer.lastname }}</td>
                                         <td>{{ customer.gsttype }}</td>
                                         <td>{{ customer.gstin }}</td>
                                         <td>{{ customer.panno }}</td>
                                         <td>{{ customer.email }}</td>
                                         <td>{{ customer.mobile }}</td>
-                                        <td><a href="editcustomer/{{ customer.customerid }}"
+                                        <!-- <td><a href="editcustomer/{{ customer.customerid }}"
                                                style="color: white; font-size: 15px;"><i class="bx bx-edit">EDIT</i></a><br>
                                             <a href="deletecustomer/{{ customer.customerid }}"
                                                style="color:white; font-size: 15px;"><i
-                                                    class="bx bx-trash">DELETE</i></a><br></td>
+                                                    class="bx bx-trash">DELETE</i></a><br></td> -->
                                     </tr>
                                 {% endif %}
                             {% endfor %}
@@ -183,7 +204,13 @@ body{
             }
         </script>
         
-        
+        <script>
+            $(document).ready(function($) {
+                $(".table-row").dblclick(function() {
+                    window.document.location = $(this).data("href");
+                });
+            });
+        </script>
         <!-- <script>
             const searchInput = document.getElementById("search");
             const rows = document.querySelectorAll("tbody tr");

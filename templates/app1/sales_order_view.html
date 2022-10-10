@@ -323,11 +323,14 @@ footer p {
                 </li>
                     <ul class="dropdown-menu" style="background-color: black;">
                         <a class="dropdown-item " href="{% url 'sale_convert1' sale.id  %}"> &nbsp;Approved </a>
+
+                        {% if sale.status != 'Invoice' %}
                         <a class="dropdown-item " href="{% url 'sale_convert2' sale.id  %}"> &nbsp;Invoced</a>
-                        
+                        {% endif %}
                         
                     </ul>
             </div>
+            <a class="fa fa-download" style="padding: 10px; cursor: pointer;" download  href="{{ sale.file.url }}" >Attachedfile</a>
 
             </div>    
             </div>
@@ -393,81 +396,31 @@ footer p {
                                         <td>Item Description</td>
                                         <td>Price</td>
                                         <td>Quantity</td>
+                                        <td>Tax</td>
                                         <td>Total</td>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    
+                                    {% for j in saleitem %}
                                     <tr>
                                         <td>
                                             <div class="media">
                                                 
                                                 <div class="media-body">
-                                                    <p class="mt-0 title" style="color:black">{{sale.product}}</p>
-                                                    <span style="color:black">{{sale.description}}</span>
+                                                    <p class="mt-0 title" style="color:black">{{j.product}}</p>
+                                                    <span style="color:black">{{j.description}}</span>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td style="color:black">{{sale.rate}}</td>
-                                        <td style="color:black">{{sale.qty}}</td>
-                                        <td style="color:black">{{sale.total}}</td>
+                                        <td style="color:black">{{j.price}}</td>
+                                        <td style="color:black">{{j.qty}}</td>
+                                        <td style="color:black">{{j.tax}} %</td>
+                                        <td style="color:black">{{j.total}}</td>
                                     </tr>
-                                    
+                                    {% endfor %}
 
-                                    {% if sale.product1 == NIL  %}
-                                    <tr>
-                                        <td>
-                                            <div class="media">
-                                                
-                                                <div class="media-body">
-                                                    <p class="mt-0 title" style="color:black">{{sale.product1}}</p>
-                                                    <span style="color:black">{{sale.description1}}</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="color:black">{{salerate1}}</td>
-                                        <td style="color:black">{{sale.qty1}}</td>
-                                        <td style="color:black">{{sale.total1}}</td>
-                                    </tr>
-                                    {% endif %}
-
-                                    {% if sale.product2 == NIL  %}
-                                    <tr>
-                                        <td>
-                                            <div class="media">
-                                                
-                                                <div class="media-body">
-                                                    <p class="mt-0 title" style="color:black">{{sale.product2}}</p>
-                                                    <span style="color:black">{{sale.description2}}</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="color:black">{{sale.rate2}}</td>
-                                        <td style="color:black">{{sale.qty2}}</td>
-                                        <td style="color:black">{{sale.total2}}</td>
-                                    </tr>
-                                    {% endif %}
-                                    {% if sale.product3 == NIL  %}
-
-                                    <tr>
-                                        <td>
-                                            <div class="media">
-                                                
-                                                <div class="media-body">
-                                                    <p class="mt-0 title" style="color:black">{sale.product3}}</p>
-                                                    <span style="color:black">{{sale.description3}}</span>
-                                                </div>
-                                            </div>
-                                        </td>
-                                        <td style="color:black">{{sale.rate3}}</td>
-                                        <td style="color:black">{sale.qty3}}</td>
-                                        <td style="color:black">{{sale.total3}}</td>
-                                    </tr>
-
-                                    {% endif %}
-
-
+                                   
 
 
                                     
@@ -487,25 +440,25 @@ footer p {
                                             <td style="color:black">Sub Total :</td>
                                             <td style="color:black">{{sale.subtotal}}</td>
                                         </tr>
-                                        {% if sale.IGST != "0.00" %}
+                                        {% if sale.IGST != "" %}
                                         <tr>
                                             <td style="color:black">IGST :</td>
                                             <td style="color:black">{{sale.IGST}}</td>
                                         </tr>
                                         {% endif %}
-                                        {% if sale.CGST != "0.00" %}
+                                        {% if sale.CGST != "" %}
                                         <tr>
                                             <td style="color:black">CGST :</td>
                                             <td style="color:black">{{sale.CGST}}</td>
                                         </tr>
                                         {% endif %}
-                                        {% if sale.SGST != "0.00" %}
+                                        {% if sale.SGST != "" %}
                                         <tr>
                                             <td style="color:black">SGST:</td>
                                             <td style="color:black">{{sale.SGST}}</td>
                                         </tr>
                                         {% endif %}
-                                        {% if sale.TCS != "0.00" %}
+                                        {% if sale.TCS != "" %}
                                         <tr>
                                             <td style="color:black">TCS:</td>
                                             <td style="color:black">{{sale.TCS}}</td>

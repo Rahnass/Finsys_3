@@ -64,6 +64,8 @@ body{
   /* transform: translate(-50%, -50%); */
 }
       </style>
+
+      
         <div class="page-content">
             <div class="card radius-15">
                 <div class="card-body">
@@ -160,7 +162,7 @@ body{
                             <tbody>
                                 {% for estimate in est1 %}
                                 {% if estimate.cid_id == cmp1.cid %}
-                                    <tr tr class="table-row " data-href="{% url 'estimate_view' estimate.estimateid %}" >
+                                    <tr  class="table-row " data-href="{% url 'estimate_view' estimate.estimateid %}" >
                                         <th style="text-align: center;">{{ estimate.estimatedate | date:'d-m-Y' }}</th>
                                         <td style="text-align: center;">{{ estimate.estimateno }}</td>
                                         <td style="text-align: center;"> {{ estimate.reference_number }}</td>

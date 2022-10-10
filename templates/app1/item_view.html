@@ -94,9 +94,21 @@
                                     </a>
                                 </div>
                                 <div class="col-md-1 mt-4 mb-4">
-                                    <a href="{% url 'itemedit_page' a.id %}" title="edit" class="dropdown-item"
+                                    <ul class="navbar navbar-expand" style="list-style-type: none; margin: 0; padding: 0;">
+                                        <a class="nav-link dropdown-toggle dropdown-toggle-nocaret position-relative" href="javascript:;" data-toggle="dropdown" style=" color: white; font-size: 25px; display: block; padding: 8px 16px; text-decoration: none;">
+                                            <i class='bx bx-dots-vertical-rounded'></i>
+                                        </a>
+                                        <div class="dropdown-menu dropdown-menu-right">
+                                          <ul class="a" style=" list-style-type: none; margin: 0; padding: 0; width: 200px;">
+                                            <li><a href="{% url 'itemedit_page' a.id %}" style="display: block; padding: 8px 16px; text-decoration: none">Edit {{ a.name }}</a></li>
+                                            <li><a href="{% url 'item_trans' a.id %}" style="display: block; padding: 8px 16px; text-decoration: none">Transactions</a></li>
+
+                                          </ul>
+                                        </div>
+                                      </ul>
+                                    <!--<a href="{% url 'itemedit_page' a.id %}" title="edit" class="dropdown-item"
                                        style="color: white; font-size: 25px;">
-                                       <i class='bx bx-edit'></i>
+                                       <i class='bx bx-edit'></i>-->
                                     </a>
                                 </div>
                             </div>

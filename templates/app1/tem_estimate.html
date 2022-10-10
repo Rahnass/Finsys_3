@@ -2,38 +2,23 @@
 
 {% block body %}
 
+
+<script>
+    function printDiv() {
+        var divContents = document.getElementById("GFG").innerHTML;
+        var a = window.open( '', 'height=1000, width=2000');
+        a.document.write('<html>');
+        a.document.write(divContents);
+        a.document.write('</body></html>');
+        a.document.close();
+        a.print();
+    }
+</script>
+
 <style>
 
-  @page {
-    bleed: 1cm;
-    size: A4 portrait;
-    size:  auto;   /* auto is the initial value */
-    margin-bottom: 50pt;
-    margin-top: 0cm;
-    font-size: 12pt;
-  
-    #content, #page {
-    width: 100%;
-    margin: 0;
-    float: none;
-    }
-  }
-  
-  
-  @media print {
-    .page {
-      border: initial;
-      border-radius: initial;
-      width: initial;
-      min-height: initial;
-      box-shadow: initial;
-      background: initial;
-      page-break-after: always;
-    }
-  
-   
-  
-  }
+
+
   
 
  
@@ -519,6 +504,7 @@ overflow: hidden;
     
       <!-- Modal Body -->  
       <div class="modal-body" >
+        <div id="GFG">
         <div class="tempinv modalpage">
             <div>
     
@@ -687,13 +673,13 @@ overflow: hidden;
       
         
             </div>
-
+        </div>
 </div>
     
       <!-- Modal Footer -->
       <div class="modal-footer">
        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-      <button onclick="window.print()" type="button" class="btn btn-default">Print</button>
+      <button onclick="printDiv()" type="button" class="btn btn-default">Print</button>
       </div>
     
     </div>
@@ -702,6 +688,8 @@ overflow: hidden;
 </div>
 </div>
 </div>
+
+
 
 
 

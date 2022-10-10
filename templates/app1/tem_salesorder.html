@@ -2,48 +2,11 @@
 
 {% block body %}
 
+
+
 <style>
 
-  @page {
-    bleed: 1cm;
-    size: A4 portrait;
-    size:  auto;   /* auto is the initial value */
-    margin-bottom: 50pt;
-    margin-top: 0cm;
-    font-size: 12pt;
-  
-    #content, #page {
-    width: 100%;
-    margin: 0;
-    float: none;
-    }
-  }
-  
-  
-  @media print {
-    .page {
-      border: initial;
-      border-radius: initial;
-      width: initial;
-      min-height: initial;
-      box-shadow: initial;
-      background: initial;
-      page-break-after: always;
-    }
-  
-   
-  
-  }
-  
 
-  
-  body{
-    background-color: #eee;
-    padding-top: 25px;
-    -webkit-print-color-adjust: exact !important;
-    height: 100%;
-    margin-top: 40px;
-  }
   
   div.tempinv{
     background-color: white;
@@ -687,7 +650,7 @@ overflow: hidden;
       <!-- Modal Footer -->
       <div class="modal-footer">
        <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
-      <button onclick="window.print()" type="button" class="btn btn-default">Print</button>
+      <button id="btn-print-this" type="button" class="btn btn-default">Print</button>
       </div>
     
     </div>
@@ -696,7 +659,6 @@ overflow: hidden;
 </div>
 </div>
 </div>
-
 
 
 {% endblock %}

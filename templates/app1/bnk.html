@@ -304,11 +304,21 @@
                 <select class="under form-control" id="select"   name="under" id="under"  >
                     
                     <option  value="yes"></option>
-                 
-                    <option value="Undepposited Funds">Undepposited Funds</option>
+                  
+                    <option value="Current Liabilities">Current Liabilities</option>
+                    <option value="Account Receivable">Account Receivable</option>
+                    <option value="Current Assets">Current Assets</option>
                     <option value="Bank">Bank</option>
-                    <option value="Cash">Petty Cash</option>
-                    
+                    <option value="Fixed Assets">Fixed Assets</option>
+                    <option value="Non-Current Assets">Non-Current Assets</option>
+                    <option value="Accounts Payable">Accounts Payable</option>
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Non-Current Liabilities">Non-Current Liabilities</option>
+                    <option value="Equity">Equity</option>
+                    <option value="Income">Income</option>
+                    <option value="Other Incomes">Other Incomes</option>
+                    <option value="Cost Of Goods">Cost Of Goods</option>
+                    <option value="Expenses">Expenses</option>
                   
                    
                       
@@ -1006,28 +1016,28 @@
 
 $('.under').change(function(){
             var responseID = $(this).val();
-            if(responseID =="Cash"){
+            if(responseID =="Account Receivable"){
                 $('#pDetails').removeClass("hidden");
                 $('#pDetails').addClass("show");
            }else{
                 $('#pDetails').removeClass("show");
                 $('#pDetails').addClass("hidden");
             }
-            if(responseID =="Undepposited Funds"){
+            if(responseID =="Current Liabilities"){
                 $('#pDetail').removeClass("hi");
                 $('#pDetail').addClass("show");
            }else{
                 $('#pDetail').removeClass("show");
                 $('#pDetail').addClass("hi");
             }
-            if(responseID =="Bank"){
+            if(responseID =="Current Assets"){
                 $('#odac').removeClass("od");
                 $('#odac').addClass("show");
            }else{
                 $('#odac').removeClass("show");
                 $('#odac').addClass("od");
             }
-            if(responseID ==""){
+            if(responseID =="Bank"){
                 $('#bnk1').removeClass("bnk");
                 $('#bnk1').addClass("show");
            }else{
