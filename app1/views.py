@@ -2060,7 +2060,7 @@ def deletesale(request, id):
         cmp1 = company.objects.get(id=request.session['uid'])
         sl = salesrecpts.objects.get(salesrecptsid=id, cid=cmp1)
         sl.delete()
-        return redirect('gosalesrecords')
+        return redirect('gorecords')
     except:
         return redirect('gosalesrecords')
 
@@ -28584,13 +28584,12 @@ def temp_bill(request):
 
 @login_required(login_url='regcomp')
 def item_trans(request,id):   
-    try:
         cmp1 = company.objects.get(id=request.session['uid'])
         item = itemtable.objects.filter(id=id)
-        unit = unittable.objects.filter(cid=cmp1)
-        acc  = accounts1.objects.filter(acctype='Cost of Goods Sold',cid=cmp1)
-        acc1  = accounts1.objects.filter(acctype='Sales',cid=cmp1)
-        context = {'item':item,'unit':unit,'acc':acc,'acc1':acc1,'cmp1': cmp1}
+        sales = salesorder.objects.filter(cid=cmp1)
+        purchase = purchaseorder.objects.all()
+        pitems  = porder_item.objects.all()
+        sitems  = sales_item.objects.all()
+        context = {'item':item,'sales':sales,'pitems':pitems,'sitems':sitems,'cmp1': cmp1,'purchase':purchase}
         return render(request,'app1/item_transactions.html',context) 
-    except:
-        return redirect('goitem')         
+      
