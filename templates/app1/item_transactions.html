@@ -9,6 +9,15 @@
     .showpurchase{
         display:none;
     }
+    .showest{
+        display:none;
+    }
+    .showinv{
+        display:none;
+    }
+    .showbill{
+        display:none;
+    }
 </style>
 {% for a in item %}
 <div class="page-content">
@@ -24,11 +33,11 @@
                                 data-toggle="dropdown">filter by
                         </button>
                             <div class="dropdown-menu" style="background-color: black;">
-                            <a class="dropdown-item" href="{% url 'goitem' %}"
+                            <a class="dropdown-item" onclick="showDiv2()"
                                style="height: 40px; font-size: 15px; color: white;" >Estimate</a>
                             <a class="dropdown-item " onclick="showDiv()"
                                style="height: 40px; font-size: 15px; color: white;">Sales Order</a>
-                            <a class="dropdown-item" href="{% url 'inactive' %}"
+                            <a class="dropdown-item" onclick="showDiv3()"
                                style="height: 40px; font-size: 15px; color: white;">Invoice</a>
                             <a class="dropdown-item" href="{% url 'ipurchase' %}"
                                style="height: 40px; font-size: 15px; color: white;">Delivery Challan</a>
@@ -38,7 +47,7 @@
                                style="height: 40px; font-size: 15px; color: white;">Recurring Invoice</a>
                             <a class="dropdown-item" onclick="showDiv1()" 
                                style="height: 40px; font-size: 15px; color: white;">Purchase Order</a>
-                               <a class="dropdown-item" href="{% url 'iservices' %}"
+                               <a class="dropdown-item" onclick="showDiv4()"
                                style="height: 40px; font-size: 15px; color: white;">Bill</a>
                             <a class="dropdown-item" href="{% url 'igoods' %}"
                                style="height: 40px; font-size: 15px; color: white;">Vendor Credit</a>
@@ -84,7 +93,7 @@
     <!--------------------------------------------SALES------------------------------------------------->
 
 
-    <div class="card radius-15 showsales" id="hidesale">
+    <div class="card radius-15 showsales" >
         <div class="card-body">
             <div class="table-responsive">
                 <table class="table table-responsive-md mt-4 table-hover">
@@ -168,7 +177,140 @@
 
 
 
+<!------------------------------------ESTIMATES---------------------------------------------------------->
 
+
+
+<div class="card radius-15 showest" >
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-responsive-md mt-4 table-hover">
+                <thead>
+                <tr>
+                    <th style="text-align: center;">Date</th>
+                    <th style="text-align: center;">Estimate No</th>
+                    <th style="text-align: center;">Customer Name</th>
+                    <th style="text-align: center;">QTY Sold</th>
+                    <th style="text-align: center;">Price</th>
+                    <th style="text-align: center;">Total</th>
+                    <th style="text-align: center;">Status</th>
+                    <!-- <th style="text-align: center;">ACTION</th> -->
+                </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for sale in eitems %}
+                    {% if sale.item == a.name %}
+                       
+                            <tr tr class="clickable-row " data-href="#" >
+                            <th style="text-align: center;">{{ sale.estimate.estimatedate | date:'d-m-Y' }}</th>
+                            <td style="text-align: center;">{{ sale.estimate.estimateno }}</td>
+                            <td style="text-align: center;"> {{ sale.estimate.customer }}</td>
+                            <td style="text-align: center;">{{ sale.quantity }}</td>
+                            <td style="text-align: center;"> {{ sale.rate }}</td>
+                            <td style="text-align: center;">{{ sale.total }}</td>
+                            <td style="text-align: center;"> {{ sale.estimate.status }}</td>
+                           
+                        </tr>
+                  {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+<!---------------------------------------INVOICES-------------------------------------------------------->
+
+
+
+
+
+<div class="card radius-15 showinv" >
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-responsive-md mt-4 table-hover">
+                <thead>
+                <tr>
+                    <th style="text-align: center;">Date</th>
+                    <th style="text-align: center;">Invoice No</th>
+                    <th style="text-align: center;">Customer Name</th>
+                    <th style="text-align: center;">QTY Sold</th>
+                    <th style="text-align: center;">Price</th>
+                    <th style="text-align: center;">Total</th>
+                    <th style="text-align: center;">Status</th>
+                    <!-- <th style="text-align: center;">ACTION</th> -->
+                </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for sale in iitems %}
+                    {% if sale.product == a.name %}
+                       
+                            <tr tr class="clickable-row " data-href="#" >
+                            <th style="text-align: center;">{{ sale.invoice.invoicedate }}</th>
+                            <td style="text-align: center;">{{ sale.invoice.invoiceno }}</td>
+                            <td style="text-align: center;"> {{ sale.invoice.customername }}</td>
+                            <td style="text-align: center;">{{ sale.qty }}</td>
+                            <td style="text-align: center;"> {{ sale.price }}</td>
+                            <td style="text-align: center;">{{ sale.total }}</td>
+                            <td style="text-align: center;"> {{ sale.invoice.status }}</td>
+                           
+                        </tr>
+                  {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+
+
+
+<!------------------------------------BILL------------------------------------------------------------------>
+
+
+
+<div class="card radius-15 showbill" >
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-responsive-md mt-4 table-hover">
+                <thead>
+                <tr>
+                    <th style="text-align: center;">Date</th>
+                    <th style="text-align: center;">Bill No</th>
+                    <th style="text-align: center;">Vendor Name</th>
+                    <th style="text-align: center;">QTY Purchased</th>
+                    <th style="text-align: center;">Price</th>
+                    <th style="text-align: center;">Total</th>
+                    <th style="text-align: center;">Status</th>
+                    <!-- <th style="text-align: center;">ACTION</th> -->
+                </tr>
+                </thead>
+                <tbody>
+                    
+                    {% for sale in bitems %}
+                    {% if sale.items == a.name %}
+                       
+                            <tr tr class="clickable-row " data-href="#" >
+                            <th style="text-align: center;">{{ sale.bid.date | date:'d-m-Y' }}</th>
+                            <td style="text-align: center;">{{ sale.bid.bill_no }}</td>
+                            <td style="text-align: center;"> {{ sale.bid.vendor_name }}</td>
+                            <td style="text-align: center;">{{ sale.quantity }}</td>
+                            <td style="text-align: center;"> {{ sale.rate }}</td>
+                            <td style="text-align: center;">{{ sale.amount }}</td>
+                            <td style="text-align: center;"> {{ sale.bid.status }}</td>
+                           
+                        </tr>
+                  {% endif %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
 
 </div>
 <script>
@@ -183,14 +325,47 @@ function showDiv() {
 
     document.querySelector(".showsales").style.display = "block";
     document.querySelector(".showpurchase").style.display = "none";
+    document.querySelector(".showest").style.display = "none";
+    document.querySelector(".showinv").style.display = "none";
+    document.querySelector(".showbill").style.display = "none";
   }
 </script>
 <script>
   function showDiv1() {
     document.querySelector(".showpurchase").style.display = "block";
     document.querySelector(".showsales").style.display = "none";
+    document.querySelector(".showest").style.display = "none";
+    document.querySelector(".showinv").style.display = "none";
+    document.querySelector(".showbill").style.display = "none";
   }
 </script>
+<script>
+    function showDiv2() {
+      document.querySelector(".showest").style.display = "block";
+      document.querySelector(".showpurchase").style.display = "none";
+      document.querySelector(".showsales").style.display = "none";
+      document.querySelector(".showinv").style.display = "none";
+      document.querySelector(".showbill").style.display = "none";
+    }
+  </script>
+  <script>
+    function showDiv3() {
+      document.querySelector(".showinv").style.display = "block";
+      document.querySelector(".showest").style.display = "none";
+      document.querySelector(".showpurchase").style.display = "none";
+      document.querySelector(".showsales").style.display = "none";
+      document.querySelector(".showbill").style.display = "none";
+    }
+  </script>
+<script>
+    function showDiv4() {
+      document.querySelector(".showbill").style.display = "block";
+      document.querySelector(".showinv").style.display = "none";
+      document.querySelector(".showest").style.display = "none";
+      document.querySelector(".showpurchase").style.display = "none";
+      document.querySelector(".showsales").style.display = "none";
+    }
+  </script>  
 {% endfor %}
 {% endblock %}
 

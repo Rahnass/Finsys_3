@@ -28590,6 +28590,12 @@ def item_trans(request,id):
         purchase = purchaseorder.objects.all()
         pitems  = porder_item.objects.all()
         sitems  = sales_item.objects.all()
-        context = {'item':item,'sales':sales,'pitems':pitems,'sitems':sitems,'cmp1': cmp1,'purchase':purchase}
+        est = estimate.objects.filter(cid=cmp1)
+        eitems = estimate_item.objects.all()
+        inv = invoice.objects.filter(cid=cmp1)
+        iitems = invoice_item.objects.all()
+        bill = purchasebill.objects.all()
+        bitems = bill_item.objects.all()
+        context = {'item':item,'bill':bill,'bitems':bitems,'inv':inv,'iitems':iitems,'sales':sales,'pitems':pitems,'sitems':sitems,'cmp1': cmp1,'purchase':purchase,'est':est,'eitems':eitems}
         return render(request,'app1/item_transactions.html',context) 
-      
+        
