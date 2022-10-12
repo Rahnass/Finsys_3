@@ -27934,6 +27934,8 @@ def purchase_order(request):
             tax = request.POST.getlist("tax[]")
             amount = request.POST.getlist("amount[]")
 
+            
+
             prid=purchaseorder.objects.get(porderid=porder.porderid)
 
             if len(items)==len(quantity)==len(rate)==len(tax)==len(amount) and items and quantity and rate and tax and amount:
@@ -27942,6 +27944,7 @@ def purchase_order(request):
                 for ele in mapped:
                     porderAdd,created = porder_item.objects.get_or_create(items = ele[0],quantity=ele[1],rate=ele[2],
                     tax=ele[3],amount=ele[4],pid=prid)
+        
             return redirect('gopurchaseorder')
         return render(request,'app1/purchaseorder.html',{'cmp1': cmp1})
     return redirect('/') 
@@ -28599,3 +28602,21 @@ def item_trans(request,id):
         context = {'item':item,'bill':bill,'bitems':bitems,'inv':inv,'iitems':iitems,'sales':sales,'pitems':pitems,'sitems':sitems,'cmp1': cmp1,'purchase':purchase,'est':est,'eitems':eitems}
         return render(request,'app1/item_transactions.html',context) 
         
+@login_required(login_url='regcomp')
+def gostock_adjust(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        context = {'cmp1':cmp1}
+        return render(request, 'app1/gostock_adjust.html',context)  
+    except:
+        return redirect('gostock_adjust')        
+
+
+@login_required(login_url='regcomp')
+def stock_adjustpage(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        context = {'cmp1':cmp1}
+        return render(request, 'app1/add_stock_adjust.html',context)  
+    except:
+        return redirect('gostock_adjust')                

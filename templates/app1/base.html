@@ -279,9 +279,20 @@
               </a>
             </li>
             <li>
-              <a href="{% url 'goitem' %}"><i class='bx bxs-package' ></i>
-                <div class="menu-title">Item</div>
-              </a>
+              <a href="javascript:;" class="has-arrow">
+              <div class="parent-icon"><i class='bx bxs-package' ></i>
+              </div>
+              <div class="menu-title">Item</div>
+            </a>
+            <ul>
+              <li><a href="{% url 'goitem' %}"><i class="bx bx-right-arrow-alt"></i>Items</a>
+              </li>
+              <li><a href="{% url 'gostock_adjust' %}"><i class="bx bx-right-arrow-alt"></i>Stock
+                  Adjustments</a>
+              </li>
+             
+            </ul>
+             
             </li>
             <li>
               <a href="javascript:;" class="has-arrow">

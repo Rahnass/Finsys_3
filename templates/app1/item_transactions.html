@@ -58,12 +58,12 @@
                  
                     <div class="dropdown">
                         <button type="button" class="btn btn-outline-info dropdown-toggle text-grey"
-                                data-toggle="dropdown">Status: All
+                                data-toggle="dropdown">Status:All
                         </button>
                         <div class="dropdown-menu" style="background-color: black;">
-                            <a class="dropdown-item" href="{% url 'iordername' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Draft</a>
-                            <a class="dropdown-item" href="{% url 'iod_rate' %}"
+                            <a class="dropdown-item" href="#"
+                               style="height: 40px; font-size: 15px; color: white;">All</a>
+                            <!--<a class="dropdown-item" href="{% url 'iod_rate' %}"
                                style="height: 40px; font-size: 15px; color: white;">Sent</a>
                             <a class="dropdown-item" href="{% url 'iodhsn' %}"
                                style="height: 40px; font-size: 15px; color: white;">Client Viewed</a>
@@ -75,7 +75,7 @@
                                <a class="dropdown-item" href="{% url 'iod_import' %}"
                                style="height: 40px; font-size: 15px; color: white;">Declined</a>
                             <a class="dropdown-item" href="{% url 'iod_export' %}"
-                               style="height: 40px; font-size: 15px; color: white;">Expired</a>
+                               style="height: 40px; font-size: 15px; color: white;">Expired</a>-->
                         </div>
                     </div>
             
@@ -101,7 +101,7 @@
                     <tr>
                         <th style="text-align: center;">Date</th>
                         <th style="text-align: center;">Sales Order No</th>
-                        <th style="text-align: center;">Coustomer Name</th>
+                        <th style="text-align: center;">Customer Name</th>
                         <th style="text-align: center;">QTY Sold</th>
                         <th style="text-align: center;">Price</th>
                         <th style="text-align: center;">Total</th>
@@ -202,7 +202,7 @@
                     {% for sale in eitems %}
                     {% if sale.item == a.name %}
                        
-                            <tr tr class="clickable-row " data-href="#" >
+                            <tr tr class="clickable-row " data-href="{% url 'estimate_view' sale.estimate.estimateid %}" >
                             <th style="text-align: center;">{{ sale.estimate.estimatedate | date:'d-m-Y' }}</th>
                             <td style="text-align: center;">{{ sale.estimate.estimateno }}</td>
                             <td style="text-align: center;"> {{ sale.estimate.customer }}</td>
@@ -248,7 +248,7 @@
                     {% for sale in iitems %}
                     {% if sale.product == a.name %}
                        
-                            <tr tr class="clickable-row " data-href="#" >
+                            <tr tr class="clickable-row " data-href="{% url 'invoice_view' sale.invoice.invoiceid %}" >
                             <th style="text-align: center;">{{ sale.invoice.invoicedate }}</th>
                             <td style="text-align: center;">{{ sale.invoice.invoiceno }}</td>
                             <td style="text-align: center;"> {{ sale.invoice.customername }}</td>
@@ -294,7 +294,7 @@
                     {% for sale in bitems %}
                     {% if sale.items == a.name %}
                        
-                            <tr tr class="clickable-row " data-href="#" >
+                            <tr tr class="clickable-row " data-href="{% url 'viewbill' sale.bid.billid %}"  >
                             <th style="text-align: center;">{{ sale.bid.date | date:'d-m-Y' }}</th>
                             <td style="text-align: center;">{{ sale.bid.bill_no }}</td>
                             <td style="text-align: center;"> {{ sale.bid.vendor_name }}</td>
