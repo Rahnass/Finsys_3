@@ -28616,7 +28616,87 @@ def gostock_adjust(request):
 def stock_adjustpage(request):
     try:
         cmp1 = company.objects.get(id=request.session['uid'])
-        context = {'cmp1':cmp1}
+        acc = accounts1.objects.filter(cid=cmp1)
+        item = itemtable.objects.filter(cid=cmp1)
+        context = {'cmp1':cmp1,'acc':acc,'item':item}
         return render(request, 'app1/add_stock_adjust.html',context)  
     except:
-        return redirect('gostock_adjust')                
+        return redirect('gostock_adjust')             
+
+
+
+
+
+
+
+
+
+
+
+def stock_orderd(request):
+    if 'uid' in request.session:
+        if request.session.has_key('uid'):
+            uid = request.session['uid']
+        else:
+            return redirect('/')
+        cmp1 = company.objects.get(id=request.session['uid'])
+        if request.method == 'POST':
+            vname = request.POST['vendor_name']
+            baddress = request.POST['billing_address']
+            puchaseorder_no= '1000'
+            supply=request.POST['sourceofsupply']
+            destsupply=request.POST['destiofsupply']
+            branch=request.POST['branch']
+            reference=request.POST['reference']
+            contact_name=request.POST['contact_name']
+            deliverto=request.POST['deliverto']
+            date=request.POST['date']
+            deliver_dt=request.POST['deliver_date']
+            credit_period=request.POST['credit_period']
+            due_date=request.POST['due_date']
+            sub_total=request.POST['sub_total']
+            discount=request.POST['discount']
+            sgst=request.POST['sgst']
+            cgst=request.POST['cgst']
+            igst=request.POST['igst']
+            tax_amount=request.POST['tax_amount']
+            tcs=request.POST['tcs']
+            tcs_amount=request.POST['tcs']
+            round_off=request.POST['round_off']
+            grand_total=request.POST['grand_total']
+            note=request.POST['note']
+            file=request.POST['file']
+
+            porder = purchaseorder(vendor_name=vname,billing_address=baddress,
+                                    sourceofsupply=supply,
+                                    destiofsupply=destsupply,branch=branch,reference=reference,
+                                    contact_name=contact_name,deliverto=deliverto,
+                                    date=date,deliver_date=deliver_dt,
+                                    credit_period=credit_period,due_date=due_date,sub_total=sub_total,discount=discount,sgst=sgst,
+                                    cgst=cgst,igst=igst,tax_amount=tax_amount,tcs=tcs,tcs_amount=tcs_amount,round_off=round_off,
+                                    grand_total=grand_total,note=note,file=file)
+            porder.save()
+            porder.puchaseorder_no = int(porder.puchaseorder_no) + porder.porderid
+            porder.save()
+
+
+            items = request.POST.getlist("items[]")
+            quantity = request.POST.getlist("quantity[]")
+            rate = request.POST.getlist("rate[]")
+            tax = request.POST.getlist("tax[]")
+            amount = request.POST.getlist("amount[]")
+
+            
+
+            prid=purchaseorder.objects.get(porderid=porder.porderid)
+
+            if len(items)==len(quantity)==len(rate)==len(tax)==len(amount) and items and quantity and rate and tax and amount:
+                mapped=zip(items,quantity,rate,tax,amount)
+                mapped=list(mapped)
+                for ele in mapped:
+                    porderAdd,created = porder_item.objects.get_or_create(items = ele[0],quantity=ele[1],rate=ele[2],
+                    tax=ele[3],amount=ele[4],pid=prid)
+        
+            return redirect('gopurchaseorder')
+        return render(request,'app1/purchaseorder.html',{'cmp1': cmp1})
+    return redirect('/') 

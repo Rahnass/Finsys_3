@@ -606,6 +606,7 @@ urlpatterns = [
     re_path(r'^item_trans/(?P<id>\d+)$',views.item_trans,name='item_trans'),
     re_path(r'^gostock_adjust$', views.gostock_adjust, name='gostock_adjust'),
     re_path(r'^stock_adjustpage$', views.stock_adjustpage, name='stock_adjustpage'),
+    re_path(r'^stock_orderd$', views.stock_orderd, name='stock_orderd'),
 
 
 
