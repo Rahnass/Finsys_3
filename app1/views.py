@@ -6,7 +6,7 @@ from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect,HttpResponse
 from datetime import datetime, date, timedelta
-from .models import advancepayment, paydowncreditcard, salesrecpts, timeact, timeactsale, Cheqs, suplrcredit, addac, \
+from .models import stockreason , advancepayment, paydowncreditcard, salesrecpts, timeact, timeactsale, Cheqs, suplrcredit, addac, \
     bills, invoice, expences, payment, credit, delayedcharge, estimate, service, noninventory, bundle, employee, \
     payslip, inventory, customer, supplier, company, accounts, ProductModel, ItemModel, accountype, \
     expenseaccount, incomeaccount, accounts1, recon1, recordpay, addtax1, bankstatement, customize,\
@@ -28606,7 +28606,8 @@ def item_trans(request,id):
 def gostock_adjust(request):
     try:
         cmp1 = company.objects.get(id=request.session['uid'])
-        context = {'cmp1':cmp1}
+        stock = stockadjust.objects.filter(cid=cmp1)
+        context = {'cmp1':cmp1,'stock':stock}
         return render(request, 'app1/gostock_adjust.html',context)  
     except:
         return redirect('gostock_adjust')        
@@ -28618,85 +28619,85 @@ def stock_adjustpage(request):
         cmp1 = company.objects.get(id=request.session['uid'])
         acc = accounts1.objects.filter(cid=cmp1)
         item = itemtable.objects.filter(cid=cmp1)
-        context = {'cmp1':cmp1,'acc':acc,'item':item}
+        reason = stockreason.objects.filter(cid=cmp1)
+        context = {'cmp1':cmp1,'acc':acc,'item':item,'reason':reason}
         return render(request, 'app1/add_stock_adjust.html',context)  
     except:
         return redirect('gostock_adjust')             
 
 
+def getit(request):
+    cmp1 = company.objects.get(id=request.session['uid'])
+    id = request.GET.get('id')
+    list = []
+    itemobject = itemtable.objects.get(name=id, cid=cmp1)
+    dict = {'name': itemobject.name,
+            'item_type': itemobject.item_type,
+            'unit': itemobject.unit,
+            'hsn': itemobject.hsn,
+            'tax_reference': itemobject.tax_reference,
+            'purchase_cost': itemobject.purchase_cost,
+            'sales_cost': itemobject.sales_cost,
+            'tax_rate': itemobject.tax_rate,
+            'acount_pur': itemobject.acount_pur,
+            'account_sal': itemobject.account_sal,
+            'pur_desc': itemobject.pur_desc,
+            'sale_desc': itemobject.sale_desc,
+            'intra_st': itemobject.intra_st,
+            'inter_st': itemobject.inter_st,
+            'inventry': itemobject.inventry,
+             'stock': itemobject.stock,
+             'status': itemobject.status}
+    list.append(dict)
+    return JsonResponse(json.dumps(list), content_type="application/json", safe=False)
 
 
-
-
-
-
-
-
-
-def stock_orderd(request):
-    if 'uid' in request.session:
-        if request.session.has_key('uid'):
-            uid = request.session['uid']
-        else:
-            return redirect('/')
-        cmp1 = company.objects.get(id=request.session['uid'])
+@login_required(login_url='regcomp')
+def create_reason(request):
+    try:
         if request.method == 'POST':
-            vname = request.POST['vendor_name']
-            baddress = request.POST['billing_address']
-            puchaseorder_no= '1000'
-            supply=request.POST['sourceofsupply']
-            destsupply=request.POST['destiofsupply']
-            branch=request.POST['branch']
-            reference=request.POST['reference']
-            contact_name=request.POST['contact_name']
-            deliverto=request.POST['deliverto']
-            date=request.POST['date']
-            deliver_dt=request.POST['deliver_date']
-            credit_period=request.POST['credit_period']
-            due_date=request.POST['due_date']
-            sub_total=request.POST['sub_total']
-            discount=request.POST['discount']
-            sgst=request.POST['sgst']
-            cgst=request.POST['cgst']
-            igst=request.POST['igst']
-            tax_amount=request.POST['tax_amount']
-            tcs=request.POST['tcs']
-            tcs_amount=request.POST['tcs']
-            round_off=request.POST['round_off']
-            grand_total=request.POST['grand_total']
-            note=request.POST['note']
-            file=request.POST['file']
-
-            porder = purchaseorder(vendor_name=vname,billing_address=baddress,
-                                    sourceofsupply=supply,
-                                    destiofsupply=destsupply,branch=branch,reference=reference,
-                                    contact_name=contact_name,deliverto=deliverto,
-                                    date=date,deliver_date=deliver_dt,
-                                    credit_period=credit_period,due_date=due_date,sub_total=sub_total,discount=discount,sgst=sgst,
-                                    cgst=cgst,igst=igst,tax_amount=tax_amount,tcs=tcs,tcs_amount=tcs_amount,round_off=round_off,
-                                    grand_total=grand_total,note=note,file=file)
-            porder.save()
-            porder.puchaseorder_no = int(porder.puchaseorder_no) + porder.porderid
-            porder.save()
-
-
-            items = request.POST.getlist("items[]")
-            quantity = request.POST.getlist("quantity[]")
-            rate = request.POST.getlist("rate[]")
-            tax = request.POST.getlist("tax[]")
-            amount = request.POST.getlist("amount[]")
-
+            cmp1 = company.objects.get(id=request.session['uid'])
+            ireason = request.POST['reason1']
             
+            item = stockreason(reason=ireason,
+                                cid=cmp1)
+            item.save()
+            return redirect('stock_adjustpage')
+        return render(request,'app1/add_stock_adjust.html')
+    except:
+        return redirect('stock_adjustpage')
 
-            prid=purchaseorder.objects.get(porderid=porder.porderid)
 
-            if len(items)==len(quantity)==len(rate)==len(tax)==len(amount) and items and quantity and rate and tax and amount:
-                mapped=zip(items,quantity,rate,tax,amount)
-                mapped=list(mapped)
-                for ele in mapped:
-                    porderAdd,created = porder_item.objects.get_or_create(items = ele[0],quantity=ele[1],rate=ele[2],
-                    tax=ele[3],amount=ele[4],pid=prid)
-        
-            return redirect('gopurchaseorder')
-        return render(request,'app1/purchaseorder.html',{'cmp1': cmp1})
-    return redirect('/') 
+
+@login_required(login_url='regcomp')
+def create_stock_adjustment(request):
+    try:
+        if request.method == 'POST':
+            cmp1 = company.objects.get(id=request.session['uid'])
+            smode = request.POST['mode']
+            sreference = request.POST['refno']
+            sadte = request.POST.get('date')
+            saccount = request.POST['account']
+            sreason = request.POST['reason']
+            sdescription = request.POST['desc']
+            sattach = request.FILES['file']
+            sitem1 = request.POST['item1']
+            sqty1 = request.POST['qty1']
+            sqtyh1 = request.POST['qty_hand1']
+            snqty1 = request.POST['new_qty1']
+            
+            stock = stockadjust(mode=smode,ref_no=sreference,date=sadte,
+                                account=saccount,reason=sreason,
+                                description=sdescription,
+                                attach=sattach,
+                                item1=sitem1,
+                                qty1=sqty1,
+                                qty_hand1=sqtyh1,
+                                new_qty1=snqty1,
+                                cid=cmp1)
+            stock.save()
+            messages.success(request, 'Stock adjusted successfully')
+            return redirect('stock_adjustpage')
+        return render(request,'app1/add_stock_adjust.html')
+    except:
+        return redirect('stock_adjustpage')

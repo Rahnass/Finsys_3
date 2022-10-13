@@ -12,6 +12,7 @@
             </div>
         </div>
     </div>
+
    
    
 <div class="card radius-15">
@@ -96,7 +97,6 @@
                         <th>Date</th>
                         <th>Reason</th>
                         <th>Description</th>
-                        <th>Status</th>
                         <th>Reference No</th>
                         <th>Type</th>
                         <th>Created By</th>
@@ -104,16 +104,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for a in items %}
+                    {% for a in stock %}
                 <tr class='clickable-row' data-href="view_item/{{ a.id }}" >
-                                <td>{{ a.name }}</td>
-                                <td>{{ a.item_type }}</td>
-                                <td>{{ a.unit }}</td>
-                                <td>{{ a.hsn }}</td>
-                                <td>{{ a.purchase_cost }}</td>
-                                <td>{{ a.sales_cost }}</td>
+                                <td>{{ a.date }}</td>
+                                <td>{{ a.reason }}</td>
+                                <td>{{ a.description }}</td>
+                                <td>{{ a.ref_no }}</td>
+                                <td>{{ a.mode }}</td>
+                                <td>{{ user.first_name }}</td>
                                 <td>{{ a.tax_rate }}</td>
-                                <td>{{ a.stock }}
+                                
                                         
                                     <!--<div class="dropdown">
                                         <button type="button" class="btn btn-outline-info dropdown-toggle text-grey"

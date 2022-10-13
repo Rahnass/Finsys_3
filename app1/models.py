@@ -1318,6 +1318,33 @@ class currencies(models.Model):
     decimal_places = models.CharField(max_length=255, default='', blank=True)
     format = models.CharField(max_length=255, default='', blank=True)
 
+
+class stockreason(models.Model):
+    reasonid = models.AutoField(("REASONID"), primary_key=True)
+    cid = models.ForeignKey(company, on_delete=models.CASCADE)
+    reason = models.CharField(max_length=255, default='', blank=True)
+
+
+class stockadjust(models.Model):
+    cid = models.ForeignKey(company, on_delete=models.CASCADE)
+    mode = models.CharField(max_length=100, default='')
+    ref_no = models.CharField(max_length=100, default='')
+    date = models.CharField(max_length=100, default='')
+    account = models.CharField(max_length=100,null=True,blank=True)
+    reason = models.CharField(max_length=100, default='')
+    description = models.CharField(max_length=100, default='',null=True,blank=True)
+    attach = models.FileField(upload_to="", default='') 
+
+    item1 = models.CharField(max_length=100,null=True)
+    qty1 = models.CharField(max_length=100,null=True)
+    qty_hand1 = models.CharField(max_length=100, default='')
+    new_qty1 = models.CharField(max_length=100, default='')
+        
+
+
+
+       
+
 #Jisha
 
 class vendor(models.Model):
