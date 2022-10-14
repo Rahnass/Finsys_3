@@ -609,6 +609,7 @@ urlpatterns = [
     re_path(r'^getit$', views.getit, name='getit'),
     re_path(r'^create_reason$', views.create_reason, name='create_reason'),
     re_path(r'^create_stock_adjustment$', views.create_stock_adjustment, name='create_stock_adjustment'),
+    re_path(r'^view_stockadjust/(?P<id>\d+)$',views.view_stockadjust,name='view_stockadjust'),
 
 
     

@@ -1334,11 +1334,33 @@ class stockadjust(models.Model):
     reason = models.CharField(max_length=100, default='')
     description = models.CharField(max_length=100, default='',null=True,blank=True)
     attach = models.FileField(upload_to="", default='') 
+    status = models.CharField(max_length=100, default='DRAFT') 
+
 
     item1 = models.CharField(max_length=100,null=True)
     qty1 = models.CharField(max_length=100,null=True)
     qty_hand1 = models.CharField(max_length=100, default='')
     new_qty1 = models.CharField(max_length=100, default='')
+
+    item2 = models.CharField(max_length=100,null=True)
+    qty2 = models.CharField(max_length=100,null=True)
+    qty_hand2 = models.CharField(max_length=100, default='')
+    new_qty2 = models.CharField(max_length=100, default='')
+
+    item3 = models.CharField(max_length=100,null=True)
+    qty3 = models.CharField(max_length=100,null=True)
+    qty_hand3 = models.CharField(max_length=100, default='')
+    new_qty3 = models.CharField(max_length=100, default='')
+    
+    item4 = models.CharField(max_length=100,null=True)
+    qty4 = models.CharField(max_length=100,null=True)
+    qty_hand4 = models.CharField(max_length=100, default='')
+    new_qty4 = models.CharField(max_length=100, default='')
+
+    item5 = models.CharField(max_length=100,null=True)
+    qty5 = models.CharField(max_length=100,null=True)
+    qty_hand5 = models.CharField(max_length=100, default='')
+    new_qty5 = models.CharField(max_length=100, default='')
         
 
 

@@ -28671,7 +28671,6 @@ def create_reason(request):
 
 @login_required(login_url='regcomp')
 def create_stock_adjustment(request):
-    try:
         if request.method == 'POST':
             cmp1 = company.objects.get(id=request.session['uid'])
             smode = request.POST['mode']
@@ -28680,11 +28679,32 @@ def create_stock_adjustment(request):
             saccount = request.POST['account']
             sreason = request.POST['reason']
             sdescription = request.POST['desc']
-            sattach = request.FILES['file']
+            sattach = request.FILES.get('file')
+
             sitem1 = request.POST['item1']
             sqty1 = request.POST['qty1']
             sqtyh1 = request.POST['qty_hand1']
             snqty1 = request.POST['new_qty1']
+
+            sitem2 = request.POST.get('item2')
+            sqty2 = request.POST['qty2']
+            sqtyh2 = request.POST['qty_hand2']
+            snqty2 = request.POST['new_qty2']
+
+            sitem3 = request.POST.get('item3')
+            sqty3 = request.POST['qty3']
+            sqtyh3 = request.POST['qty_hand3']
+            snqty3 = request.POST['new_qty3']
+
+            sitem4 = request.POST.get('item4')
+            sqty4 = request.POST['qty4']
+            sqtyh4 = request.POST['qty_hand4']
+            snqty4 = request.POST['new_qty4']
+
+            sitem5 = request.POST.get('item5')
+            sqty5 = request.POST['qty5']
+            sqtyh5 = request.POST['qty_hand5']
+            snqty5 = request.POST['new_qty5']
             
             stock = stockadjust(mode=smode,ref_no=sreference,date=sadte,
                                 account=saccount,reason=sreason,
@@ -28694,10 +28714,64 @@ def create_stock_adjustment(request):
                                 qty1=sqty1,
                                 qty_hand1=sqtyh1,
                                 new_qty1=snqty1,
+                                item2=sitem2,
+                                qty2=sqty2,
+                                qty_hand2=sqtyh2,
+                                new_qty2=snqty2,
+                                item3=sitem3,
+                                qty3=sqty3,
+                                qty_hand3=sqtyh3,
+                                new_qty3=snqty3,
+                                item4=sitem4,
+                                qty4=sqty4,
+                                qty_hand4=sqtyh4,
+                                new_qty4=snqty4,
+                                item5=sitem5,
+                                qty5=sqty5,
+                                qty_hand5=sqtyh5,
+                                new_qty5=snqty5,
                                 cid=cmp1)
+            item = itemtable.objects.get(name=sitem1)
+            item.stock = stock.qty_hand1
+            item.save()  
+            try:
+                item1 = itemtable.objects.get(name=sitem2)
+                item1.stock = stock.qty_hand2
+                item1.save() 
+            except itemtable.DoesNotExist:
+                item1 = None
+            try:
+                item2 = itemtable.objects.get(name=sitem3)
+                item2.stock = stock.qty_hand3
+                item2.save() 
+            except itemtable.DoesNotExist:
+                item1 = None
+            try:        
+                item3 = itemtable.objects.get(name=sitem4)
+                item3.stock = stock.qty_hand4
+                item3.save() 
+            except itemtable.DoesNotExist:
+                item1 = None  
+            try:      
+                item4 = itemtable.objects.get(name=sitem5)
+                item4.stock = stock.qty_hand5
+                item4.save()  
+            except itemtable.DoesNotExist:
+                item1 = None                     
             stock.save()
+            
             messages.success(request, 'Stock adjusted successfully')
+            
             return redirect('stock_adjustpage')
         return render(request,'app1/add_stock_adjust.html')
+
+
+@login_required(login_url='regcomp')
+def view_stockadjust(request,id):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        stock = stockadjust.objects.filter(id=id)
+        context = {'cmp1':cmp1,'stock':stock}
+        return render(request, 'app1/view_stock_adjust.html',context)  
     except:
-        return redirect('stock_adjustpage')
+        return redirect('gostock_adjust') 

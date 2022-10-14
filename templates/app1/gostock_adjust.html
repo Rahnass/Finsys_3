@@ -81,7 +81,7 @@
                 <div class="col">
                             <div class="dropdown">
                                 <a href="{% url 'stock_adjustpage' %}">     <button type="button" class="btn btn-outline-info  text-grey"
-                                        >Add Stock Adjustment
+                                        >Add Adjustment
                                 </button></a>
                                
                             </div>
@@ -105,7 +105,7 @@
                     </thead>
                     <tbody>
                     {% for a in stock %}
-                <tr class='clickable-row' data-href="view_item/{{ a.id }}" >
+                <tr class='clickable-row' data-href="view_stockadjust/{{ a.id }}" >
                                 <td>{{ a.date }}</td>
                                 <td>{{ a.reason }}</td>
                                 <td>{{ a.description }}</td>
