@@ -25,6 +25,8 @@ import requests
 from num2words import num2words
 import random
 
+from django.db.models import F
+
 
 
 from . models import *
@@ -14964,7 +14966,7 @@ def accpayables(request):
             cid=cmp1, payornot='').all().aggregate(t2=Sum('grandtotal'))
         tot4 = bills.objects.filter(
             cid=cmp1, payornot='openbalance').all().aggregate(t2=Sum('grandtotal'))
-        context = {'expence': ex, 'cmp1': cmp1, 'tot': tot, 'tot1': tot1, 'cre': cre, 'op': op, 'bi': bi, 'bi1': bi1,
+        context = {'expence': ex, 'cmp1':cmp1,'tot': tot, 'tot1': tot1, 'cre': cre, 'op': op, 'bi': bi, 'bi1': bi1,
                    'tot2': tot2, 'tot3': tot3, 'tot4': tot4}
         return render(request, 'app1/accpayables.html', context)
     except:
@@ -28775,3 +28777,114 @@ def view_stockadjust(request,id):
         return render(request, 'app1/view_stock_adjust.html',context)  
     except:
         return redirect('gostock_adjust') 
+
+@login_required(login_url='regcomp')
+def edit_stockadjust(request,id):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        stock = stockadjust.objects.filter(id=id)
+        acc = accounts1.objects.filter(cid=cmp1)
+        item = itemtable.objects.filter(cid=cmp1)
+        reason = stockreason.objects.filter(cid=cmp1)
+        context = {'cmp1':cmp1,'acc':acc,'item':item,'reason':reason,'stock':stock}
+        return render(request, 'app1/edit_stockadjust.html',context)  
+    except:
+        return redirect('gostock_adjust') 
+
+@login_required(login_url='regcomp')
+def update_stock_adjustment(request,id):
+        if request.method == 'POST':
+            cmp1 = company.objects.get(id=request.session['uid'])
+            stock = stockadjust.objects.get(id=id)
+            stock.mode = request.POST.get('mode')
+            stock.ref_no = request.POST.get('refno')
+            stock.date = request.POST.get('date')
+            stock.account = request.POST.get('account')
+            stock.reason = request.POST.get('reason')
+            stock.description = request.POST.get('desc')
+            stock.attach = request.FILES.get('file')
+
+            stock.item1 = request.POST.get('item1')
+            stock.qty1 = request.POST.get('qty1')
+            stock.qty_hand1 = request.POST.get('qty_hand1')
+            stock.new_qty1 = request.POST.get('new_qty1')
+
+            stock.item2 = request.POST.get('item2')
+            stock.qty2 = request.POST.get('qty2')
+            stock.qty_hand2 = request.POST.get('qty_hand2')
+            stock.new_qty2 = request.POST.get('new_qty2')
+
+            stock.item3 = request.POST.get('item3')
+            stock.qty3 = request.POST.get('qty3')
+            stock.qty_hand3 = request.POST.get('qty_hand3')
+            stock.new_qty3 = request.POST.get('new_qty3')
+
+            stock.item4 = request.POST.get('item4')
+            stock.qty4 = request.POST.get('qty4')
+            stock.qty_hand4 = request.POST.get('qty_hand4')
+            stock.new_qty4 = request.POST.get('new_qty4')
+
+            stock.item5 = request.POST.get('item5')
+            stock.qty5 = request.POST.get('qty5')
+            stock.qty_hand5 = request.POST.get('qty_hand5')
+            stock.new_qty5 = request.POST.get('new_qty5')
+            
+            item = itemtable.objects.get(name=stock.item1)
+            item.stock = stock.qty_hand1
+            item.save()  
+            try:
+                item1 = itemtable.objects.get(name=stock.item2)
+                item1.stock = stock.qty_hand2
+                item1.save() 
+            except itemtable.DoesNotExist:
+                item1 = None
+            try:
+                item2 = itemtable.objects.get(name=stock.item3)
+                item2.stock = stock.qty_hand3
+                item2.save() 
+            except itemtable.DoesNotExist:
+                item1 = None
+            try:        
+                item3 = itemtable.objects.get(name=stock.item4)
+                item3.stock = stock.qty_hand4
+                item3.save() 
+            except itemtable.DoesNotExist:
+                item1 = None  
+            try:      
+                item4 = itemtable.objects.get(name=stock.item5)
+                item4.stock = stock.qty_hand5
+                item4.save()  
+            except itemtable.DoesNotExist:
+                item1 = None                     
+            stock.save()
+            
+            messages.success(request, 'Stock Updated successfully')
+            
+            return redirect('gostock_adjust')
+        return render(request,'app1/edit_stockadjust.html')        
+
+       
+
+@login_required(login_url='regcomp')
+def stocksummary(request):
+    try:
+        cmp1 = company.objects.get(id=request.session["uid"])
+        item = itemtable.objects.filter(cid=cmp1).exclude(inventry="")
+        stock = stockadjust.objects.filter(cid=cmp1)
+        
+        context = {'item': item,'stock':stock,'cmp1':cmp1}
+        return render(request, 'app1/stocksummary.html', context)
+    except:
+        return redirect('godash')       
+
+
+
+@login_required(login_url='regcomp')
+def stockvaluation(request):
+        cmp1 = company.objects.get(id=request.session["uid"])
+        item = itemtable.objects.filter(cid=cmp1).exclude(inventry="").annotate(total=F('stock')*F('purchase_cost'))
+        stock = stockadjust.objects.filter(cid=cmp1)
+        
+        context = {'item': item,'stock':stock,'cmp1':cmp1}
+        return render(request, 'app1/stockvaluation.html', context)
+     

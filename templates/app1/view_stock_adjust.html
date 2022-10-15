@@ -48,7 +48,7 @@
                                 
                                 <div class="col-sm-2 mt-4 mb-4">
                                 <div class="btn-group" role="group" aria-label="Basic example">
-                                    <a href="{% url 'mj_edit_page' a.id %}" title="edit" class="dropdown-item"
+                                    <a href="{% url 'edit_stockadjust' a.id %}" title="edit" class="dropdown-item"
                                        style="color: white; font-size: 25px;">
                                        <i class='bx bx-edit'></i>
                                     </a>
@@ -79,12 +79,12 @@
                                     <div class="col-md-12">
                                        
                                            
-                                         <div id="GFG" >
+                                         <div id="GFG" ><center>
                                         <div class="rectangle"
-                                             style="color:black; overflow: scroll; background-color: white;width: 100%;height:800px;border: 3px white;padding: 50px;">
+                                             style="color:black;  background-color: white;width: 850px;height:900px;border: 3px white;padding: 50px;">
                                           
                     
-                                             <div class="pcs-template-body">
+                                             <div class="pcs-template-body" style="text-align:left;">
                                                
                                                 {% if a.status == 'DRAFT' %}
                                                 <p class="btn btn-outline-success" >DRAFT</p>
@@ -119,7 +119,7 @@
                                                                             <span class="pcs-label">Date</span>
                                                                         </td>
                                                                         <td class="text-align-right">
-                                                                            <span >{{ a.mj_no }}</span>
+                                                                            <span >{{ a.date }}</span>
                                                                         </td>
                                                                     </tr>
                                                                         <tr>
@@ -127,7 +127,7 @@
                                                                                 <span class="pcs-label">Reason</span>
                                                                             </td>
                                                                             <td class="text-align-right">
-                                                                                <span >{{ a.date }}</span>
+                                                                                <span >{{ a.reason }}</span>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -135,7 +135,7 @@
                                                                                 <span class="pcs-label">Account</span>
                                                                             </td>
                                                                             <td class="text-align-right">
-                                                                                <span >₹{{ a.debit1 }}.00</span>
+                                                                                <span >₹{{ a.account }}.00</span>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -143,7 +143,7 @@
                                                                                 <span class="pcs-label">Adjustment Type</span>
                                                                             </td>
                                                                             <td class="text-align-right">
-                                                                                <span id="tmp_ref_number">{{ a.ref_no }}</span>
+                                                                                <span id="tmp_ref_number">{{ a.mode }}</span>
                                                                             </td>
                                                                         </tr>
                                                                         <tr>
@@ -151,7 +151,7 @@
                                                                                 <span class="pcs-label">Created By</span>
                                                                             </td>
                                                                             <td class="text-align-right">
-                                                                                <span id="tmp_ref_number">{{ a.ref_no }}</span>
+                                                                                <span id="tmp_ref_number">{{ user.first_name }}</span>
                                                                             </td>
                                                                         </tr>
                                                                 </tbody>
@@ -160,7 +160,7 @@
                                                     </tr>
                                                 </tbody></table><br>
                                             
-                                                <table style="width:100%;margin-top:20px;table-layout:fixed;" border="0" cellspacing="0" cellpadding="0" class="pcs-itemtable">
+                                                <table style="width:100%;margin-top:20px;table-layout:fixed;" cellspacing="0" cellpadding="0" class="pcs-itemtable">
                                                     <thead style="background-color:rgba(0,0,0,.4)">
                                                         <tr style="height:40px;">
                                                             <td style="padding:5px 10px 5px 10px;word-wrap: break-word;" class="table-head">
@@ -179,48 +179,77 @@
                                             
                                                     </thead>
                                                     <tbody>
-                                                            <tr style="border-bottom:1px solid #ededed" class="breakrow-inside breakrow-after">
+                                                            <tr class="breakrow-inside breakrow-after">
                                                             <td  style="padding: 10px 0px 10px 10px; font-size:16px;" class="pcs-item-row">
                                                                        {{ a.item1 }} </td>
                                                             <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
                                                                     </td>
-                                                            <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" class="table-head">
+                                                            <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
                                                                     {{ a.new_qty1 }}
                                                                 </td>
-                                                                <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" class="table-head">
-                                                                    ₹{{ a.credit1 }}.00
+                                                                <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
                                                                 </td>
                                                             </tr>
-                                                            <tr style="border-bottom:1px solid #ededed" class="breakrow-inside breakrow-after">
-                                            
-                                                                    <td valign="top" style="padding: 10px 0px 10px 10px;font-size:16px;" class="pcs-item-row">
-                                                                       {{ a.account2 }}
-                                                                        <p style="color: grey;"> </p>
-                                                                        <p style="margin-bottom: 0px;color: grey; word-wrap: break-word;"></p>
+                                                            <tr class="breakrow-inside breakrow-after">
+                                                                <td  style="padding: 10px 0px 10px 10px; font-size:16px;" class="pcs-item-row">
+                                                                    {% if a.new_qty2 == none %}
+                                                                    <p style="display:none">{{ a.new_qty2 }}</p>
+                                                                    {% else %}
+                                                                    {{ a.new_qty2 }}
+                                                                    {% endif %}</td>
+                                                                <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
+                                                                        </td>
+                                                                <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
+                                                                  
                                                                     </td>
-                                            
-                                                                    <td valign="top" style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
-                                                                        {{ a.contact2 }}
+                                                                    <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;">
                                                                     </td>
-                                            
-                                                                <td valign="top" style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" class="table-head">
-                                                                    ₹{{ a.debit2 }}.00
-                                                                </td>
-                                                                <td valign="top" style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" class="table-head">
-                                                                   ₹{{ a.credit2 }}.00
-                                                                </td>
-                                                            </tr>
-                                                            <tr></tr>
-                                                            <tr style="width: 100%;margin-top: 1px;"  >
-                                                                <td colspan="2" class="table-head" style="font-size:13px;">Sub Total</td>
-                                                                <td class="pcs-total-section-value text-align-center" >₹{{ a.s_totaldeb }}.00</td>
-                                                                <td class="pcs-total-section-value text-align-right">₹{{ a.s_totalcre }}.00</td>
-                                                            </tr>
-                                                                <tr  style="height:40px;" class="pcs-balance">
-                                                                    <td colspan="2"  style="padding:5px 10px 5px 0;font-size:16px;"><b>Total</b></td>
-                                                                    <td style="font-size:16px;"><b>₹{{ a.total_deb }}.00</b></td>
-                                                                    <td style="font-size:16px;"><b>₹{{ a.total_cre }}.00</b></td>
                                                                 </tr>
+                                                                <tr  class="breakrow-inside breakrow-after">
+                                                                    <td  style="padding: 10px 0px 10px 10px; font-size:16px;" class="pcs-item-row">
+                                                                        {% if a.new_qty3 == none %}
+                                                                        <p style="display:none">{{ a.new_qty3 }}</p>
+                                                                        {% else %}
+                                                                        {{ a.new_qty3 }}
+                                                                        {% endif %} </td>
+                                                                    <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
+                                                                            </td>
+                                                                    <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:15px;">
+                                                                            {{ a.new_qty3 }}
+                                                                        </td>
+                                                                        <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
+                                                                        </td>
+                                                                    </tr>
+                                                                    <tr class="breakrow-inside breakrow-after">
+                                                                        <td  style="padding: 10px 0px 10px 10px; font-size:16px;" class="pcs-item-row">
+                                                                            {% if a.new_qty4 == none %}
+                                                                            <p style="display:none">{{ a.new_qty4 }}</p>
+                                                                            {% else %}
+                                                                            {{ a.new_qty4 }}
+                                                                            {% endif %} </td>
+                                                                        <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
+                                                                                </td>
+                                                                        <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
+                                                                                {{ a.new_qty4 }}
+                                                                            </td>
+                                                                            <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;">
+                                                                            </td>
+                                                                        </tr>
+                                                                        <tr class="breakrow-inside breakrow-after">
+                                                                            <td  style="padding: 10px 0px 10px 10px; font-size:16px;" class="pcs-item-row">
+                                                                                {% if a.new_qty5 == none %}
+                                                                                <p style="display:none">{{ a.new_qty5 }}</p>
+                                                                                {% else %}
+                                                                                {{ a.new_qty5 }}
+                                                                                {% endif %} </td>
+                                                                            <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
+                                                                                    </td>
+                                                                            <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
+                                                                                    {{ a.new_qty3 }}
+                                                                                </td>
+                                                                                <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;">
+                                                                                </td>
+                                                                            </tr>
                                                     </tbody>
                                                 </table>
                                             
@@ -229,7 +258,7 @@
                                                     
                                                 </div>
                                             </div>
-                    </div>
+                    </div></center>
                     <br>
                     
   

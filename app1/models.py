@@ -1,4 +1,5 @@
 from distutils.command.upload import upload
+from email.policy import default
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -1264,7 +1265,7 @@ class itemtable(models.Model):
     unit = models.CharField(max_length=100)
     hsn = models.CharField(max_length=100)
     tax_reference = models.CharField(max_length=100)
-    purchase_cost = models.CharField(max_length=100)
+    purchase_cost = models.IntegerField(default="0")
     sales_cost = models.CharField(max_length=100)
     tax_rate = models.CharField(max_length=100)
     acount_pur = models.CharField(max_length=100)
@@ -1274,7 +1275,7 @@ class itemtable(models.Model):
     intra_st = models.CharField(max_length=100)
     inter_st = models.CharField(max_length=100)
     inventry = models.CharField(max_length=100)
-    stock = models.CharField(max_length=100)
+    stock = models.IntegerField(default="0")
     status = models.CharField(max_length=100)
 
 class unittable(models.Model):
