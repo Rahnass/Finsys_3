@@ -27129,7 +27129,7 @@ def create_item(request):
             isaledesc = request.POST['sale_desc']
             iintra = request.POST['intra_st']
             iinter = request.POST['inter_st']
-            iinv = request.POST['invacc']
+            iinv = request.POST.get('invacc')
             istock = request.POST['stock']
             istatus = request.POST['status']
             item = itemtable(name=iname,item_type=itype,unit=iunit,
@@ -27151,7 +27151,8 @@ def create_item(request):
             return redirect('goitem')
         return render(request,'app1/additem.html')
     except:
-        return redirect('goitem')
+        return redirect('goitem')    
+
 
 @login_required(login_url='regcomp')
 def create_unit(request):
@@ -28770,13 +28771,12 @@ def create_stock_adjustment(request):
 
 @login_required(login_url='regcomp')
 def view_stockadjust(request,id):
-    try:
         cmp1 = company.objects.get(id=request.session['uid'])
         stock = stockadjust.objects.filter(id=id)
-        context = {'cmp1':cmp1,'stock':stock}
+        item = itemtable.objects.filter(cid=cmp1)
+        context = {'cmp1':cmp1,'stock':stock,'item':item}
         return render(request, 'app1/view_stock_adjust.html',context)  
-    except:
-        return redirect('gostock_adjust') 
+
 
 @login_required(login_url='regcomp')
 def edit_stockadjust(request,id):
@@ -28888,3 +28888,26 @@ def stockvaluation(request):
         context = {'item': item,'stock':stock,'cmp1':cmp1}
         return render(request, 'app1/stockvaluation.html', context)
      
+@login_required(login_url='regcomp')
+def deletestockadjust(request, id):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        try:
+            sl = stockadjust.objects.get(id=id)
+            sl.delete()
+            return redirect('gostock_adjust',{'cmp1': cmp1})
+        except:
+            return redirect('gostock_adjust')
+    except:
+        return redirect('gostock_adjust')
+
+
+@login_required(login_url='regcomp')
+def gstr1(request):
+    try:
+        cmp1 = company.objects.get(id=request.session["uid"])
+        
+        context = {'cmp1':cmp1}
+        return render(request, 'app1/gstr1.html', context)
+    except:
+        return redirect('godash')               

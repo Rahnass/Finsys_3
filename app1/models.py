@@ -1265,7 +1265,7 @@ class itemtable(models.Model):
     unit = models.CharField(max_length=100)
     hsn = models.CharField(max_length=100)
     tax_reference = models.CharField(max_length=100)
-    purchase_cost = models.IntegerField(default="0")
+    purchase_cost = models.IntegerField(default="")
     sales_cost = models.CharField(max_length=100)
     tax_rate = models.CharField(max_length=100)
     acount_pur = models.CharField(max_length=100)
@@ -1274,8 +1274,8 @@ class itemtable(models.Model):
     sale_desc = models.CharField(max_length=100)
     intra_st = models.CharField(max_length=100)
     inter_st = models.CharField(max_length=100)
-    inventry = models.CharField(max_length=100)
-    stock = models.IntegerField(default="0")
+    inventry = models.CharField(max_length=100, default='',null=True,blank=True)
+    stock = models.IntegerField(default='')
     status = models.CharField(max_length=100)
 
 class unittable(models.Model):

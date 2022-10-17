@@ -614,6 +614,10 @@ urlpatterns = [
     re_path(r'^update_stock_adjustment/(?P<id>\d+)$',views.update_stock_adjustment,name='update_stock_adjustment'),
     re_path(r'^stocksummary$', views.stocksummary, name='stocksummary'),
     re_path(r'^stockvaluation$', views.stockvaluation, name='stockvaluation'),
+    re_path(r'^deletestockadjust/(?P<id>\d+)$', views.deletestockadjust, name='deletestockadjust'),
+
+    
+    re_path(r'^gstr1$', views.gstr1, name='gstr1'),
 
 
     

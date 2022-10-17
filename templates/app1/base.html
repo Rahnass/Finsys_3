@@ -151,6 +151,7 @@
                   <li><a href="{% url 'C_profile' %}" style="display: block; padding: 8px 16px; text-decoration: none">Company Profile</a></li>
                   <li><a href="{% url 'view_users' %}" style="display: block; padding: 8px 16px; text-decoration: none">Users</a></li>
                   <li><a href="{% url 'godash' %}" style="display: block; padding: 8px 16px; text-decoration: none">Branches</a></li>
+                  <li><a href="{% url 'gotax' %}" style="display: block; padding: 8px 16px; text-decoration: none">Tax</a></li>
                   <li><a href="{% url 'Currencies' %}" style="display: block; padding: 8px 16px; text-decoration: none">Currencies</a></li>
                   <li><a href="{% url 'gotemplates' %}" style="display: block; padding: 8px 16px; text-decoration: none">Templates</a></li>
                   <li><a href="editaccounts/{{ user.id }}" style="display: block; padding: 8px 16px; text-decoration: none">Accounts and Settings</a></li>
@@ -419,6 +420,8 @@
               </a>
               <ul>
                 <li><a href="{% url 'gogst' %}"><i class="bx bx-right-arrow-alt"></i>GST</a>
+                </li>
+                <li><a href="{% url 'gstr1' %}"><i class="bx bx-right-arrow-alt"></i>GSTR-1</a>
                 </li>
 
                 <li><a href="{% url 'gotax' %}"><i class="bx bx-right-arrow-alt"></i>New...</a>

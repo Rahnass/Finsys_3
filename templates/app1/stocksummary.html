@@ -112,12 +112,10 @@
 
                                             <td class="center text-dark">{{ a.name }}</td>
                                             <td class="center text-dark">{{ a.stock }}.00</td>
-                                            {% for b in stock %}
-                                            {% if b.item1 == a.name %}
-                                            <td class="center text-dark">{{ b.new_qty1 }}.00</td>
                                             
-                                            {% endif %}
-                                            {% endfor %}
+                                            <td class="center text-dark">0.00</td>
+                                            
+                                            
                                             
                                             <td class="center text-dark">{{ a.stock }}.00</td>
                                             
@@ -130,107 +128,16 @@
 
 
 
-                                    {% for expences in expence %}
+                                 
 
 
-
-                                        <tr>
-
-                                            <td class="center text-dark">{{ expences.payee }}</td>
-                                            <td class="center text-dark">Expense Balance Due</td>
-
-                                            <td class="center text-dark">{{ expences.t1 }}</td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-
-
-                                            <td class="center text-dark">{{ expences.t1 }}
-
-
-                                        </tr>
-
-
-                                    {% endfor %}
-
-                                    {% for cres in cre %}
-
-
-
-                                        <tr>
-
-                                            <td class="center text-dark">{{ cres.supplier }}</td>
-                                            <td class="center text-dark">Debit Note</td>
-                                            <td class="center text-dark">{{ cres.t1 }}</td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-
-
-                                            <td class="center text-dark">{{ cres.t1 }}
-
-
-                                        </tr>
-
-                                    {% endfor %}
-
-                                    {% for bis in bi %}
-
-
-
-                                        <tr>
-
-                                            <td class="center text-dark">{{ bis.payee }}</td>
-                                            <td class="center text-dark">Payment</td>
-                                            <td class="center text-dark">{{ bis.t1 }}</td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-
-
-                                            <td class="center text-dark">{{ bis.t1 }}
-
-
-                                        </tr>
-
-                                    {% endfor %}
-                                    {% for bis in bi1 %}
-
-
-
-                                        <tr>
-
-                                            <td class="center text-dark">{{ bis.payee }}</td>
-                                            <td class="center text-dark">Payment</td>
-                                            <td class="center text-dark">{{ bis.t1 }}</td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-                                            <td class="center text-dark"></td>
-
-
-                                            <td class="center text-dark">{{ bis.t1 }}
-
-
-                                        </tr>
-
-                                    {% endfor %}
 
 
                                     <thead>
                                     <tr>
                                         <th class="center font-weight-dark border-dark" style="color: black;">TOTAL</th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">
-
-                                        </th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;"
-                                            id="t2"></th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;"></th>
-                                        <th class="center font-weight-dark border-dark" style="color: black;">
-                                        </th>
+                                      
+                                      
                                         <th class="center font-weight-dark border-dark" style="color: black;">
                                         </th>
                                         <th class="center font-weight-dark border-dark" style="color: black;">
@@ -242,49 +149,7 @@
                                     </tr>
                                     </thead>
 
-                                    <script>
-                                        $(document).ready(function () {
-
-
-                                            var t1 = parseFloat('{{ tot.t2 }}');
-
-
-                                            var t2 = parseFloat('{{ tot1.t2 }}');
-
-                                            var t3 = parseFloat('{{ tot2.t2 }}');
-
-                                            var t4 = parseFloat('{{ tot3.t2 }}');
-
-                                            var t5 = parseFloat('{{ tot4.t2 }}');
-
-
-                                            if (Number.isNaN(t1)) {
-                                                t1 = 0;
-                                            }
-
-                                            if (Number.isNaN(t2)) {
-                                                t2 = 0;
-                                            }
-                                            if (Number.isNaN(t3)) {
-                                                t3 = 0;
-                                            }
-                                            if (Number.isNaN(t4)) {
-                                                t4 = 0;
-                                            }
-                                            if (Number.isNaN(t5)) {
-                                                t5 = 0;
-                                            }
-
-
-                                            var t = (t1 - t2 - t3 - t4 + t5);
-
-
-                                            document.getElementById('t1').innerHTML = "&#8377;" + t
-                                            document.getElementById('t2').innerHTML = "&#8377;" + t
-
-
-                                        });
-                                    </script>
+                                   
 
 
                                     </tbody>
@@ -302,7 +167,18 @@
         <path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"/>
     </svg>
 
-
+    <script>
+        $(document).ready(function(){
+            var empsalary;
+            var total = 0;
+            $('td:nth-child(4)').each(function()
+            {
+                salary = $(this).html();
+                total +=parseInt(salary);
+                $('#t1').text(total)
+            });
+        });
+    </script>
 
 
     <script>
