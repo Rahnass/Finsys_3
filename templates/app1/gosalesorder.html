@@ -100,7 +100,7 @@ body{
                             <select class="form-control btn btn-outline-info dropdown-toggle text-grey" aria-label=".form-select-lg example" style="width: 40%; margin-top: 8px;" name="type">
                                 
                                 <option value="1" selected>All</option>
-                                <option value="2" >Coustomer Name</option>
+                                <option value="2" >Customer Name</option>
                                 <option value="3" >Sales Order No</option>
                                 
                                 
@@ -167,29 +167,7 @@ body{
                                         <td style="text-align: center;">{{ sale.salename }}</td>
                                         <td style="text-align: center;"> {{ sale.status }}</td>
                                         <td style="text-align: center;">{{ sale.salestotal }}</td>
-                                        <!-- <td style="text-align: center;">
-                                            <div class="dropdown">
-                                                <button type="button" class="btn btn-outline-info dropdown-toggle text-grey"
-                                                        data-toggle="dropdown">Actions
-                                                </button>
-                                                <div class="dropdown-menu" style="background-color: white;">
-                                                    <a href="editestimate/{{ estimate.estimateid }}" class="dropdown-item"
-                                                       style="color:black; font-size: 15px;"><i
-                                                            class="bx bx-edit"><b>EDIT</b></i></a>
-                                                    <form  action=" deleteestimate/{{ estimate.estimateid }}"   >  
-                                                        <input name="_method" type="hidden" value="DELETE">
-                                                    <a  class="dropdown-item delete"
-                                                       style="color:black; font-size: 15px;cursor: pointer;" >
-                                                       
-                                                       <i class="bx bx-trash"><b>
-                                                                DELETE
-                                                            </b></i>
-                                                            
-                                                            <input name="_method" type="hidden" value="DELETE"></a>
-                                                        </form> 
-                                                </div>
-                                            </div>
-                                        </td> -->
+                                        
                                     </tr>
                                 {% endif %}
                             {% endfor %}

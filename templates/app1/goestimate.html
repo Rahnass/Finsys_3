@@ -153,10 +153,10 @@ body{
                                 <th style="text-align: center;">Date</th>
                                 <th style="text-align: center;">Estimate No</th>
                                 <th style="text-align: center;">Reference Number</th>
-                                <th style="text-align: center;">Customer Name</th>
+                                <th style="text-align: center;">Coustomer Name</th>
                                 <th style="text-align: center;">Status</th>
                                 <th style="text-align: center;">Amount</th>
-                                <!-- <th style="text-align: center;">ACTION</th> -->
+                               
                             </tr>
                             </thead>
                             <tbody>
@@ -169,29 +169,7 @@ body{
                                         <td style="text-align: center;">{{ estimate.customer }}</td>
                                         <td style="text-align: center;"> {{ estimate.status }}</td>
                                         <td style="text-align: center;">{{ estimate.estimatetotal }}</td>
-                                        <!-- <td style="text-align: center;">
-                                            <div class="dropdown">
-                                                <button type="button" class="btn btn-outline-info dropdown-toggle text-grey"
-                                                        data-toggle="dropdown">Actions
-                                                </button>
-                                                <div class="dropdown-menu" style="background-color: white;">
-                                                    <a href="editestimate/{{ estimate.estimateid }}" class="dropdown-item"
-                                                       style="color:black; font-size: 15px;"><i
-                                                            class="bx bx-edit"><b>EDIT</b></i></a>
-                                                    <form  action=" deleteestimate/{{ estimate.estimateid }}"   >  
-                                                        <input name="_method" type="hidden" value="DELETE">
-                                                    <a  class="dropdown-item delete"
-                                                       style="color:black; font-size: 15px;cursor: pointer;" >
-                                                       
-                                                       <i class="bx bx-trash"><b>
-                                                                DELETE
-                                                            </b></i>
-                                                            
-                                                            <input name="_method" type="hidden" value="DELETE"></a>
-                                                        </form> 
-                                                </div>
-                                            </div>
-                                        </td> -->
+                                        
                                     </tr>
                                 {% endif %}
                             {% endfor %}

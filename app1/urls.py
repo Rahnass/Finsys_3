@@ -1,5 +1,6 @@
 from django.urls import re_path,path
 from . import views
+from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     re_path(r'^$', views.index, name='index'),
@@ -471,9 +472,27 @@ urlpatterns = [
     
 
     # receipt
+
+    
+    path('gopayment_received',views.gopayment_received,name='gopayment_received'),
     path('payment_received',views.payment_received,name='payment_received'),
 
     path('getdatainv',views.getdatainv,name='getdatainv'),
+
+    path('paymentcreate2',views.paymentcreate2,name='paymentcreate2'),
+
+    path('search_payment_received',csrf_exempt(views.search_payment_received),name='search_payment_received'),
+
+    path('payment_view/<int:id>',views.payment_view,name='payment_view'),
+
+    path('delete_payment/<int:id>',views.delete_payment,name='delete_payment'),
+
+    path('search_resept/<int:id>',views.search_resept,name='search_resept'),
+
+
+    
+
+
     
     
 
@@ -615,11 +634,11 @@ urlpatterns = [
     re_path(r'^stocksummary$', views.stocksummary, name='stocksummary'),
     re_path(r'^stockvaluation$', views.stockvaluation, name='stockvaluation'),
     re_path(r'^deletestockadjust/(?P<id>\d+)$', views.deletestockadjust, name='deletestockadjust'),
+    re_path(r'^saf_quandity$', views.saf_quandity, name='saf_quandity'),
+    re_path(r'^saf_value$', views.saf_value, name='saf_value'),
 
     
     re_path(r'^gstr1$', views.gstr1, name='gstr1'),
-
-
     
 
     

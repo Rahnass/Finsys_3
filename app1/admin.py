@@ -8,5 +8,7 @@ admin.site.register(sign)
 
 admin.site.register(estimate)
 
+admin.site.register(salesorder)
 
 
+admin.site.register(payment)

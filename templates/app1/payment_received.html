@@ -5,12 +5,12 @@
         <div class="card radius-15">
             <div class="card-body">
                 <div class="card-title">
-                    <center><h2 class="mb-0">RECIEVE PAYMENT</h2></center>
+                    <center><h2 class="mb-0" style="text-transform: uppercase;;">received payment</h2></center>
                 </div>
                 <hr/>
             </div>
         </div>
-        <form action="paymentcreate" method="post" class="post-form">
+        <form action="paymentcreate2" method="post" class="post-form">
             {% csrf_token %}
             <div class="card radius-15">
                 <div class="card-body">
@@ -36,9 +36,9 @@
                                             {% endif %}
                                         {% endfor %}
                                     </select>
-                                    <a href="{% url 'goaddcustpayment' %}">
+                                    <!-- <a href="{% url 'goaddcustpayment' %}">
                                         <button type="button" class="btn btn-outline-secondary ml-1">+</button>
-                                    </a>
+                                    </a> -->
                                 </div>
                             </div>
                             <div class=" col-md-4">
@@ -85,8 +85,8 @@
                                         {% for acc in accoun %}
                                             <option value="{{ acc.name }}">{{ acc.name }}</option>
                                         {% endfor %}
-                                        <option value="Deferred CGST">Deferred CGST</option>
-                                        <option value="Deferred GST Input Credit">Deferred GST Input Credit</option>
+                                        <option value="BANK">BANK</option>
+                                        <!-- <option value="Deferred GST Input Credit">Deferred GST Input Credit</option>
                                         <option value="Deferred IGST">Deferred IGST</option>
                                         <option value="Deferred Krishi Kalyan Cess Input Credit">Deferred Krishi
                                             Kalyan
@@ -104,7 +104,7 @@
                                         <option value="Service Tax Refund">Service Tax Refund</option>
                                         <option value="TDS Receivable">TDS Receivable</option>
                                         <option value="Uncategorised Asset">Uncategorised Asset</option>
-                                        <option value="Undeposited Fund">Undeposited Fund</option>
+                                        <option value="Undeposited Fund">Undeposited Fund</option> -->
                                     </select>
                                     <a href="{% url 'paymentcoacreate' %}"><button type="button" class="btn btn-outline-secondary ml-1">+</button></a>
                                 </div>
@@ -140,34 +140,16 @@
                                     <thead>
                                     <tr>
                                         <th class="text-center"> #</th>
-                                        <th class="text-center"> DESCRIPTION</th>
-                                        <th class="text-center"> DUE DATE</th>
-                                        <th class="text-center"> ORIGINAL AMOUNT</th>
-                                        <th class="text-center"> OPEN BALANCE</th>
+                                        <th class="text-center"> Date</th>
+                                        <th class="text-center"> Invoice Number</th>
+                                        <th class="text-center"> Invoice Amount</th>
+                                        <th class="text-center"> Amount Due	</th>
                                         <th class="text-center"> PAYMENT</th>
 
                                     </tr>
                                     </thead>
                                     <tbody id='invoicedata'>
-                                        {% for i in invitem %}
-                                    <tr id='addr1' style="display: none;">
-                                        <td>{{ forloop.counter }}</td>
-                                        <td><input type="text" name="descrip" id="descrip"
-                                                   placeholder='Enter description' class="form-control"/>
-                                        </td>
-                                        <td><input type="text" name='duedate' id="duedate" placeholder='Enter duedate' 
-                                                   class="form-control"/></td>
-                                        <td><input type="text" name='orgamt'
-                                                   placeholder='Enter original amount' id="orgamt"
-                                                   class="form-control qty" step="0" min="0"/></td>
-                                        <td><input type="number" name='openbal' id="openbal"
-                                                   placeholder='Enter open balance'
-                                                   class="form-control price" step="0.00" min="0"/></td>
-                                        <td><input type="number" name='payment' onchange="addagain()" id="payment"
-                                                   placeholder='0.00'
-                                                   class="form-control total" value="0"/></td>
-                                    </tr>
-                                    {% endfor %}
+                                       
                                     </tbody>
                                 </table>
                             </div>
@@ -230,18 +212,107 @@
             }
         }
 
+        
+
+        function addtemopt(element) {
+            var opt = document.getElementById('newmth');
+            if (element.value) {
+                opt.value = element.value;
+                opt.innerHTML = element.value;
+            } else {
+                pass
+            }
+        }
+
+
+        
+    </script>
+    <script>
+        $("#select").change(function () {
+            const select = $(this).val();  
+            $.ajax({                      
+                type: "POST",
+                url: "{% url 'getdatainv' %}",
+                data: {
+                    'select': select,     
+                    'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
+                },
+                success:function(response){
+                    console.log(response)
+                    data = response.invitem
+                    xt= response.ct
+                    for (i=0;i<data.length;i++){
+                        j=i;
+                        $('#tab_logic tbody').append(
+
+                                `
+                             <tr id='addr1' >
+                                        <td>${i+1}</td>
+                                        <td><input type="text" name="invdate${i}" id=""
+                                                   value="${data[i].invoicedate}" class="form-control"/><br>
+                                            <input type="text" name="duedate[]" 
+                                                   value="${data[i].duedate}"hidden> <span >duedate : ${data[i].duedate} </span>
+                                        </td>
+                                        <td><input type="text" name='invno[]' id="" value="${data[i].invoiceno}" 
+                                                   class="form-control"/></td>
+                                        <td><input type="text" name='inv_amount[]'
+                                            value="${data[i].grandtotal}" id=""
+                                                   class="form-control qty" step="0" min="0"/></td>
+                                        <td><input type="number" name='openbal[]' id="openbal${i}"
+                                                value="${data[i].baldue}"
+                                                   class="form-control price" step="0.00" min="0"/></td>
+                                        <td><input type="number" name='payment[]' onchange="addagain()" id="payment${i}"
+                                                   placeholder='0.00'
+                                                   class="form-control total" value="0"/></td>
+                                    </tr>
+                                    `
+                                
+                            )
+                            
+                            
+
+
+                    }
+                    document.getElementById('email').value = xt[0].email
+                }
+              
+            });
+        });
+
         function showinnum(divId, element) {
             if (element.value) {
-                var opnbal = parseFloat(document.getElementById('openbal').value)
                 document.getElementById(divId).innerHTML = element.value;
+
+                if(j==0){
+                
+                var opnbal = parseFloat(document.getElementById('openbal0').value)
+               
                 if (opnbal >= parseFloat(element.value)) {
-                    document.getElementById('payment').value = parseFloat(element.value)
-                } else if (openbal == '0.0') {
-                    document.getElementById('payment').value = '0'
-                } else {
-                    document.getElementById('payment').value = opnbal
+                    document.getElementById('payment0').value = parseFloat(element.value)
+                } 
+                // else if (openbal == 0) {
+                //     document.getElementById('payment0').value = '0'
+                // } 
+                else {
+                    document.getElementById('payment0').value = opnbal
                 }
-                var bal = parseFloat(element.value) - parseFloat(document.getElementById('payment').value);
+                var bal = parseFloat(element.value) - parseFloat(document.getElementById('payment0').value);
+                var payment = parseFloat(document.getElementById('payment0').value)
+            }else if(j==1){
+
+                var opnbal = parseFloat(document.getElementById('openbal0').value)
+               
+                if (opnbal >= parseFloat(element.value)) {
+                    document.getElementById('payment0').value = parseFloat(element.value)
+                } 
+                // else if (openbal == 0) {
+                //     document.getElementById('payment0').value = '0'
+                // } 
+                else {
+                    document.getElementById('payment0').value = opnbal
+                }
+                var bal = parseFloat(element.value) - parseFloat(document.getElementById('payment0').value);
+
                 var opnbal1 = parseFloat(document.getElementById('openbal1').value)
                 if (opnbal1 >= bal) {
                     document.getElementById('payment1').value = bal
@@ -250,7 +321,431 @@
                 } else {
                     document.getElementById('payment1').value = opnbal1
                 }
-                var payment = parseFloat(document.getElementById('payment').value)
+                var payment = parseFloat(document.getElementById('payment0').value)
+                var payment1 = parseFloat(document.getElementById('payment1').value);
+                var bal1 = parseFloat(element.value) - (payment + payment1);
+            } else if(j==2){
+                var opnbal = parseFloat(document.getElementById('openbal0').value)
+               
+                if (opnbal >= parseFloat(element.value)) {
+                    document.getElementById('payment0').value = parseFloat(element.value)
+                } 
+                // else if (openbal == 0) {
+                //     document.getElementById('payment0').value = '0'
+                // } 
+                else {
+                    document.getElementById('payment0').value = opnbal
+                }
+                var bal = parseFloat(element.value) - parseFloat(document.getElementById('payment0').value);
+
+                var opnbal1 = parseFloat(document.getElementById('openbal1').value)
+                if (opnbal1 >= bal) {
+                    document.getElementById('payment1').value = bal
+                } else if (openbal1 == '0.0') {
+                    document.getElementById('payment1').value = '0'
+                } else {
+                    document.getElementById('payment1').value = opnbal1
+                }
+                var payment = parseFloat(document.getElementById('payment0').value)
+                var payment1 = parseFloat(document.getElementById('payment1').value);
+                var bal1 = parseFloat(element.value) - (payment + payment1);
+                var opnbal2 = parseFloat(document.getElementById('openbal2').value)
+                if (opnbal2 >= bal1) {
+                    document.getElementById('payment2').value = bal1
+                } else {
+                    document.getElementById('payment2').value = opnbal2
+                }
+                var payment2 = parseFloat(document.getElementById('payment2').value)
+                var bal2 = parseFloat(element.value) - (payment + payment1 + payment2)
+            }else if(j==3){
+                var opnbal = parseFloat(document.getElementById('openbal0').value)
+               
+                if (opnbal >= parseFloat(element.value)) {
+                    document.getElementById('payment0').value = parseFloat(element.value)
+                } 
+                // else if (openbal == 0) {
+                //     document.getElementById('payment0').value = '0'
+                // } 
+                else {
+                    document.getElementById('payment0').value = opnbal
+                }
+                var bal = parseFloat(element.value) - parseFloat(document.getElementById('payment0').value);
+
+                var opnbal1 = parseFloat(document.getElementById('openbal1').value)
+                if (opnbal1 >= bal) {
+                    document.getElementById('payment1').value = bal
+                } else if (openbal1 == '0.0') {
+                    document.getElementById('payment1').value = '0'
+                } else {
+                    document.getElementById('payment1').value = opnbal1
+                }
+                var payment = parseFloat(document.getElementById('payment0').value)
+                var payment1 = parseFloat(document.getElementById('payment1').value);
+                var bal1 = parseFloat(element.value) - (payment + payment1);
+                var opnbal2 = parseFloat(document.getElementById('openbal2').value)
+                if (opnbal2 >= bal1) {
+                    document.getElementById('payment2').value = bal1
+                } else {
+                    document.getElementById('payment2').value = opnbal2
+                }
+                var payment2 = parseFloat(document.getElementById('payment2').value)
+                var bal2 = parseFloat(element.value) - (payment + payment1 + payment2)
+                var opnbal3 = parseFloat(document.getElementById('openbal3').value)
+                if (opnbal3 >= bal2) {
+                    document.getElementById('payment3').value = bal2
+                } else {
+                    document.getElementById('payment3').value = opnbal3
+                }
+                var payment3 = parseFloat(document.getElementById('payment3').value)
+                var bal3 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3)
+            }else if(j==4){
+                var opnbal = parseFloat(document.getElementById('openbal0').value)
+               
+                if (opnbal >= parseFloat(element.value)) {
+                    document.getElementById('payment0').value = parseFloat(element.value)
+                } 
+                // else if (openbal == 0) {
+                //     document.getElementById('payment0').value = '0'
+                // } 
+                else {
+                    document.getElementById('payment0').value = opnbal
+                }
+                var bal = parseFloat(element.value) - parseFloat(document.getElementById('payment0').value);
+
+                var opnbal1 = parseFloat(document.getElementById('openbal1').value)
+                if (opnbal1 >= bal) {
+                    document.getElementById('payment1').value = bal
+                } else if (openbal1 == '0.0') {
+                    document.getElementById('payment1').value = '0'
+                } else {
+                    document.getElementById('payment1').value = opnbal1
+                }
+                var payment = parseFloat(document.getElementById('payment0').value)
+                var payment1 = parseFloat(document.getElementById('payment1').value);
+                var bal1 = parseFloat(element.value) - (payment + payment1);
+                var opnbal2 = parseFloat(document.getElementById('openbal2').value)
+                if (opnbal2 >= bal1) {
+                    document.getElementById('payment2').value = bal1
+                } else {
+                    document.getElementById('payment2').value = opnbal2
+                }
+                var payment2 = parseFloat(document.getElementById('payment2').value)
+                var bal2 = parseFloat(element.value) - (payment + payment1 + payment2)
+                var opnbal3 = parseFloat(document.getElementById('openbal3').value)
+                if (opnbal3 >= bal2) {
+                    document.getElementById('payment3').value = bal2
+                } else {
+                    document.getElementById('payment3').value = opnbal3
+                }
+                var payment3 = parseFloat(document.getElementById('payment3').value)
+                var bal3 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3)
+                var opnbal4 = parseFloat(document.getElementById('openbal4').value)
+                if (opnbal4 >= bal3) {
+                    document.getElementById('payment4').value = bal3
+                } else {
+                    document.getElementById('payment4').value = opnbal4
+                }
+                var payment4 = parseFloat(document.getElementById('payment4').value)
+                var bal4 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4)
+            }else if(j==5){
+                var opnbal = parseFloat(document.getElementById('openbal0').value)
+               
+                if (opnbal >= parseFloat(element.value)) {
+                    document.getElementById('payment0').value = parseFloat(element.value)
+                } 
+                // else if (openbal == 0) {
+                //     document.getElementById('payment0').value = '0'
+                // } 
+                else {
+                    document.getElementById('payment0').value = opnbal
+                }
+                var bal = parseFloat(element.value) - parseFloat(document.getElementById('payment0').value);
+
+                var opnbal1 = parseFloat(document.getElementById('openbal1').value)
+                if (opnbal1 >= bal) {
+                    document.getElementById('payment1').value = bal
+                } else if (openbal1 == '0.0') {
+                    document.getElementById('payment1').value = '0'
+                } else {
+                    document.getElementById('payment1').value = opnbal1
+                }
+                var payment = parseFloat(document.getElementById('payment0').value)
+                var payment1 = parseFloat(document.getElementById('payment1').value);
+                var bal1 = parseFloat(element.value) - (payment + payment1);
+                var opnbal2 = parseFloat(document.getElementById('openbal2').value)
+                if (opnbal2 >= bal1) {
+                    document.getElementById('payment2').value = bal1
+                } else {
+                    document.getElementById('payment2').value = opnbal2
+                }
+                var payment2 = parseFloat(document.getElementById('payment2').value)
+                var bal2 = parseFloat(element.value) - (payment + payment1 + payment2)
+                var opnbal3 = parseFloat(document.getElementById('openbal3').value)
+                if (opnbal3 >= bal2) {
+                    document.getElementById('payment3').value = bal2
+                } else {
+                    document.getElementById('payment3').value = opnbal3
+                }
+                var payment3 = parseFloat(document.getElementById('payment3').value)
+                var bal3 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3)
+                var opnbal4 = parseFloat(document.getElementById('openbal4').value)
+                if (opnbal4 >= bal3) {
+                    document.getElementById('payment4').value = bal3
+                } else {
+                    document.getElementById('payment4').value = opnbal4
+                }
+                var payment4 = parseFloat(document.getElementById('payment4').value)
+                var bal4 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4)
+                var opnbal5 = parseFloat(document.getElementById('openbal5').value)
+                if (opnbal5 >= bal4) {
+                    document.getElementById('payment5').value = bal4
+                } else {
+                    document.getElementById('payment5').value = opnbal5
+                }
+                var payment5 = parseFloat(document.getElementById('payment5').value)
+                var bal5 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4 + payment5)
+            }else if(j==6){
+                var opnbal = parseFloat(document.getElementById('openbal0').value)
+               
+                if (opnbal >= parseFloat(element.value)) {
+                    document.getElementById('payment0').value = parseFloat(element.value)
+                } 
+                // else if (openbal == 0) {
+                //     document.getElementById('payment0').value = '0'
+                // } 
+                else {
+                    document.getElementById('payment0').value = opnbal
+                }
+                var bal = parseFloat(element.value) - parseFloat(document.getElementById('payment0').value);
+
+                var opnbal1 = parseFloat(document.getElementById('openbal1').value)
+                if (opnbal1 >= bal) {
+                    document.getElementById('payment1').value = bal
+                } else if (openbal1 == '0.0') {
+                    document.getElementById('payment1').value = '0'
+                } else {
+                    document.getElementById('payment1').value = opnbal1
+                }
+                var payment = parseFloat(document.getElementById('payment0').value)
+                var payment1 = parseFloat(document.getElementById('payment1').value);
+                var bal1 = parseFloat(element.value) - (payment + payment1);
+                var opnbal2 = parseFloat(document.getElementById('openbal2').value)
+                if (opnbal2 >= bal1) {
+                    document.getElementById('payment2').value = bal1
+                } else {
+                    document.getElementById('payment2').value = opnbal2
+                }
+                var payment2 = parseFloat(document.getElementById('payment2').value)
+                var bal2 = parseFloat(element.value) - (payment + payment1 + payment2)
+                var opnbal3 = parseFloat(document.getElementById('openbal3').value)
+                if (opnbal3 >= bal2) {
+                    document.getElementById('payment3').value = bal2
+                } else {
+                    document.getElementById('payment3').value = opnbal3
+                }
+                var payment3 = parseFloat(document.getElementById('payment3').value)
+                var bal3 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3)
+                var opnbal4 = parseFloat(document.getElementById('openbal4').value)
+                if (opnbal4 >= bal3) {
+                    document.getElementById('payment4').value = bal3
+                } else {
+                    document.getElementById('payment4').value = opnbal4
+                }
+                var payment4 = parseFloat(document.getElementById('payment4').value)
+                var bal4 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4)
+                var opnbal5 = parseFloat(document.getElementById('openbal5').value)
+                if (opnbal5 >= bal4) {
+                    document.getElementById('payment5').value = bal4
+                } else {
+                    document.getElementById('payment5').value = opnbal5
+                }
+                var payment5 = parseFloat(document.getElementById('payment5').value)
+                var bal5 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4 + payment5)
+                var opnbal6 = parseFloat(document.getElementById('openbal6').value)
+                if (opnbal6 >= bal5) {
+                    document.getElementById('payment6').value = bal5
+                } else {
+                    document.getElementById('payment6').value = opnbal6
+                }
+                var payment6 = parseFloat(document.getElementById('payment6').value)
+                var bal6 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4 + payment5 + payment6)
+            }else if(j==7){
+                var opnbal = parseFloat(document.getElementById('openbal0').value)
+               
+                if (opnbal >= parseFloat(element.value)) {
+                    document.getElementById('payment0').value = parseFloat(element.value)
+                } 
+                // else if (openbal == 0) {
+                //     document.getElementById('payment0').value = '0'
+                // } 
+                else {
+                    document.getElementById('payment0').value = opnbal
+                }
+                var bal = parseFloat(element.value) - parseFloat(document.getElementById('payment0').value);
+
+                var opnbal1 = parseFloat(document.getElementById('openbal1').value)
+                if (opnbal1 >= bal) {
+                    document.getElementById('payment1').value = bal
+                } else if (openbal1 == '0.0') {
+                    document.getElementById('payment1').value = '0'
+                } else {
+                    document.getElementById('payment1').value = opnbal1
+                }
+                var payment = parseFloat(document.getElementById('payment0').value)
+                var payment1 = parseFloat(document.getElementById('payment1').value);
+                var bal1 = parseFloat(element.value) - (payment + payment1);
+                var opnbal2 = parseFloat(document.getElementById('openbal2').value)
+                if (opnbal2 >= bal1) {
+                    document.getElementById('payment2').value = bal1
+                } else {
+                    document.getElementById('payment2').value = opnbal2
+                }
+                var payment2 = parseFloat(document.getElementById('payment2').value)
+                var bal2 = parseFloat(element.value) - (payment + payment1 + payment2)
+                var opnbal3 = parseFloat(document.getElementById('openbal3').value)
+                if (opnbal3 >= bal2) {
+                    document.getElementById('payment3').value = bal2
+                } else {
+                    document.getElementById('payment3').value = opnbal3
+                }
+                var payment3 = parseFloat(document.getElementById('payment3').value)
+                var bal3 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3)
+                var opnbal4 = parseFloat(document.getElementById('openbal4').value)
+                if (opnbal4 >= bal3) {
+                    document.getElementById('payment4').value = bal3
+                } else {
+                    document.getElementById('payment4').value = opnbal4
+                }
+                var payment4 = parseFloat(document.getElementById('payment4').value)
+                var bal4 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4)
+                var opnbal5 = parseFloat(document.getElementById('openbal5').value)
+                if (opnbal5 >= bal4) {
+                    document.getElementById('payment5').value = bal4
+                } else {
+                    document.getElementById('payment5').value = opnbal5
+                }
+                var payment5 = parseFloat(document.getElementById('payment5').value)
+                var bal5 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4 + payment5)
+                var opnbal6 = parseFloat(document.getElementById('openbal6').value)
+                if (opnbal6 >= bal5) {
+                    document.getElementById('payment6').value = bal5
+                } else {
+                    document.getElementById('payment6').value = opnbal6
+                }
+                var payment6 = parseFloat(document.getElementById('payment6').value)
+                var bal6 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4 + payment5 + payment6)
+                var opnbal7 = parseFloat(document.getElementById('openbal7').value)
+                if (opnbal7 >= bal6) {
+                    document.getElementById('payment7').value = bal6
+                } else {
+                    document.getElementById('payment7').value = opnbal7
+                }
+                var payment7 = parseFloat(document.getElementById('payment7').value)
+                var bal7 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4 + payment5 + payment6 + payment7)
+            }else if(j==8){
+                var opnbal = parseFloat(document.getElementById('openbal0').value)
+               
+                if (opnbal >= parseFloat(element.value)) {
+                    document.getElementById('payment0').value = parseFloat(element.value)
+                } 
+                // else if (openbal == 0) {
+                //     document.getElementById('payment0').value = '0'
+                // } 
+                else {
+                    document.getElementById('payment0').value = opnbal
+                }
+                var bal = parseFloat(element.value) - parseFloat(document.getElementById('payment0').value);
+
+                var opnbal1 = parseFloat(document.getElementById('openbal1').value)
+                if (opnbal1 >= bal) {
+                    document.getElementById('payment1').value = bal
+                } else if (openbal1 == '0.0') {
+                    document.getElementById('payment1').value = '0'
+                } else {
+                    document.getElementById('payment1').value = opnbal1
+                }
+                var payment = parseFloat(document.getElementById('payment0').value)
+                var payment1 = parseFloat(document.getElementById('payment1').value);
+                var bal1 = parseFloat(element.value) - (payment + payment1);
+                var opnbal2 = parseFloat(document.getElementById('openbal2').value)
+                if (opnbal2 >= bal1) {
+                    document.getElementById('payment2').value = bal1
+                } else {
+                    document.getElementById('payment2').value = opnbal2
+                }
+                var payment2 = parseFloat(document.getElementById('payment2').value)
+                var bal2 = parseFloat(element.value) - (payment + payment1 + payment2)
+                var opnbal3 = parseFloat(document.getElementById('openbal3').value)
+                if (opnbal3 >= bal2) {
+                    document.getElementById('payment3').value = bal2
+                } else {
+                    document.getElementById('payment3').value = opnbal3
+                }
+                var payment3 = parseFloat(document.getElementById('payment3').value)
+                var bal3 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3)
+                var opnbal4 = parseFloat(document.getElementById('openbal4').value)
+                if (opnbal4 >= bal3) {
+                    document.getElementById('payment4').value = bal3
+                } else {
+                    document.getElementById('payment4').value = opnbal4
+                }
+                var payment4 = parseFloat(document.getElementById('payment4').value)
+                var bal4 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4)
+                var opnbal5 = parseFloat(document.getElementById('openbal5').value)
+                if (opnbal5 >= bal4) {
+                    document.getElementById('payment5').value = bal4
+                } else {
+                    document.getElementById('payment5').value = opnbal5
+                }
+                var payment5 = parseFloat(document.getElementById('payment5').value)
+                var bal5 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4 + payment5)
+                var opnbal6 = parseFloat(document.getElementById('openbal6').value)
+                if (opnbal6 >= bal5) {
+                    document.getElementById('payment6').value = bal5
+                } else {
+                    document.getElementById('payment6').value = opnbal6
+                }
+                var payment6 = parseFloat(document.getElementById('payment6').value)
+                var bal6 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4 + payment5 + payment6)
+                var opnbal7 = parseFloat(document.getElementById('openbal7').value)
+                if (opnbal7 >= bal6) {
+                    document.getElementById('payment7').value = bal6
+                } else {
+                    document.getElementById('payment7').value = opnbal7
+                }
+                var payment7 = parseFloat(document.getElementById('payment7').value)
+                var bal7 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4 + payment5 + payment6 + payment7)
+                var opnbal8 = parseFloat(document.getElementById('openbal8').value)
+                if (opnbal8 >= bal7) {
+                    document.getElementById('payment8').value = bal7
+                } else {
+                    document.getElementById('payment8').value = opnbal8
+                }
+                var payment8 = parseFloat(document.getElementById('payment8').value)
+                var bal8 = parseFloat(element.value) - (payment + payment1 + payment2 + payment3 + payment4 + payment5 + payment6 + payment7 + payment8)
+            }else if(j==9){
+                var opnbal = parseFloat(document.getElementById('openbal0').value)
+               
+                if (opnbal >= parseFloat(element.value)) {
+                    document.getElementById('payment0').value = parseFloat(element.value)
+                } 
+                // else if (openbal == 0) {
+                //     document.getElementById('payment0').value = '0'
+                // } 
+                else {
+                    document.getElementById('payment0').value = opnbal
+                }
+                var bal = parseFloat(element.value) - parseFloat(document.getElementById('payment0').value);
+
+                var opnbal1 = parseFloat(document.getElementById('openbal1').value)
+                if (opnbal1 >= bal) {
+                    document.getElementById('payment1').value = bal
+                } else if (openbal1 == '0.0') {
+                    document.getElementById('payment1').value = '0'
+                } else {
+                    document.getElementById('payment1').value = opnbal1
+                }
+                var payment = parseFloat(document.getElementById('payment0').value)
                 var payment1 = parseFloat(document.getElementById('payment1').value);
                 var bal1 = parseFloat(element.value) - (payment + payment1);
                 var opnbal2 = parseFloat(document.getElementById('openbal2').value)
@@ -316,13 +811,17 @@
                     document.getElementById('payment9').value = opnbal9
                 }
                 var payment9 = parseFloat(document.getElementById('payment9').value)
+          
+            }
                 var paymentlistunsorted = [payment, payment1, payment2, payment3, payment4, payment5, payment6, payment7, payment8, payment9]
+            
                 var paymentlist = []
                 for (i in paymentlistunsorted) {
                     if (isNaN(paymentlistunsorted[i]) == false) {
                         paymentlist.push(paymentlistunsorted[i])
                     }
                 }
+                
                 var sumpaym = 0
                 for (i in paymentlist) {
                     sumpaym += paymentlist[i]
@@ -335,43 +834,112 @@
             }
         }
 
-        function addtemopt(element) {
-            var opt = document.getElementById('newmth');
-            if (element.value) {
-                opt.value = element.value;
-                opt.innerHTML = element.value;
-            } else {
-                pass
-            }
+        function addagain() {
+
+        if(j==0){
+            var payment = parseFloat(document.getElementById('payment0').value)
+        }else if(j==1){
+            var payment = parseFloat(document.getElementById('payment0').value)
+        
+            var payment1 = parseFloat(document.getElementById('payment1').value)
+        }else if(j==2){
+            var payment = parseFloat(document.getElementById('payment0').value)
+        
+            var payment1 = parseFloat(document.getElementById('payment1').value)
+            var payment2 = parseFloat(document.getElementById('payment2').value)
+        }else if(j==3){
+            var payment = parseFloat(document.getElementById('payment0').value)
+        
+            var payment1 = parseFloat(document.getElementById('payment1').value)
+            var payment2 = parseFloat(document.getElementById('payment2').value) 
+            var payment3 = parseFloat(document.getElementById('payment3').value)
+        }else if(j==4){
+            var payment = parseFloat(document.getElementById('payment0').value)
+        
+            var payment1 = parseFloat(document.getElementById('payment1').value)
+            var payment2 = parseFloat(document.getElementById('payment2').value) 
+            var payment3 = parseFloat(document.getElementById('payment3').value)  
+            var payment4 = parseFloat(document.getElementById('payment4').value)
+        }else if(j==5){
+            var payment = parseFloat(document.getElementById('payment0').value)
+        
+            var payment1 = parseFloat(document.getElementById('payment1').value)
+            var payment2 = parseFloat(document.getElementById('payment2').value) 
+            var payment3 = parseFloat(document.getElementById('payment3').value)  
+            var payment4 = parseFloat(document.getElementById('payment4').value) 
+            var payment5 = parseFloat(document.getElementById('payment5').value)
+        }else if(j==6){
+            var payment = parseFloat(document.getElementById('payment0').value)
+        
+            var payment1 = parseFloat(document.getElementById('payment1').value)
+            var payment2 = parseFloat(document.getElementById('payment2').value) 
+            var payment3 = parseFloat(document.getElementById('payment3').value)  
+            var payment4 = parseFloat(document.getElementById('payment4').value) 
+            var payment5 = parseFloat(document.getElementById('payment5').value)  
+            var payment6 = parseFloat(document.getElementById('payment6').value)
+        }else if(j==7){
+            var payment = parseFloat(document.getElementById('payment0').value)
+        
+            var payment1 = parseFloat(document.getElementById('payment1').value)
+            var payment2 = parseFloat(document.getElementById('payment2').value) 
+            var payment3 = parseFloat(document.getElementById('payment3').value)  
+            var payment4 = parseFloat(document.getElementById('payment4').value) 
+            var payment5 = parseFloat(document.getElementById('payment5').value)  
+            var payment6 = parseFloat(document.getElementById('payment6').value)   
+            var payment7 = parseFloat(document.getElementById('payment7').value)
+        }else if(j==8){
+            var payment = parseFloat(document.getElementById('payment0').value)
+        
+            var payment1 = parseFloat(document.getElementById('payment1').value)
+            var payment2 = parseFloat(document.getElementById('payment2').value) 
+            var payment3 = parseFloat(document.getElementById('payment3').value)  
+            var payment4 = parseFloat(document.getElementById('payment4').value) 
+            var payment5 = parseFloat(document.getElementById('payment5').value)  
+            var payment6 = parseFloat(document.getElementById('payment6').value)   
+            var payment7 = parseFloat(document.getElementById('payment7').value)
+            var payment8 = parseFloat(document.getElementById('payment8').value)
+        }else if(j==9){
+            var payment = parseFloat(document.getElementById('payment0').value)
+        
+            var payment1 = parseFloat(document.getElementById('payment1').value)
+            var payment2 = parseFloat(document.getElementById('payment2').value) 
+            var payment3 = parseFloat(document.getElementById('payment3').value)  
+            var payment4 = parseFloat(document.getElementById('payment4').value) 
+            var payment5 = parseFloat(document.getElementById('payment5').value)  
+            var payment6 = parseFloat(document.getElementById('payment6').value)   
+            var payment7 = parseFloat(document.getElementById('payment7').value)
+            var payment8 = parseFloat(document.getElementById('payment8').value)  
+            var payment9 = parseFloat(document.getElementById('payment9').value)
         }
-    </script>
-    <script>
-        $("#select").change(function () {
-            const select = $(this).val();  
-            $.ajax({                      
-                type: "POST",
-                url: "{% url 'getdatainv' %}",
-                data: {
-                    'select': select,     
-                    'csrfmiddlewaretoken':$('input[name=csrfmiddlewaretoken]').val(),
-                },
-                success:function(response){
-                    console.log(response)
-                    data = response.invitem
-                    for (i=0;i<data.length;i++){
-                        $('#tab_logic tbody').append(
-
-                           
-
-
-                        )
-
-
-                    }
+            var paymentlistunsorted = [payment, payment1, payment2, payment3, payment4, payment5, payment6, payment7, payment8, payment9]
+            var paymentlist = []
+            for (i in paymentlistunsorted) {
+                if (isNaN(paymentlistunsorted[i]) == false) {
+                    paymentlist.push(paymentlistunsorted[i])
                 }
-              
-            });
-        });
+            }
+            var sumpaym = 0
+            for (i in paymentlist) {
+                sumpaym += paymentlist[i]
+            }
+            var amtrcd = parseFloat(document.getElementById('amtrcvd').value)
+            if (sumpaym > amtrcd) {
+
+            
+                document.getElementById('amtoapply').value = sumpaym;
+                
+                temp = amtrcd - sumpaym
+               
+                document.getElementById('amtcredit').value = temp ;
+            } else {
+                
+                document.getElementById('amtoapply').value = sumpaym;
+               
+                temp = amtrcd - sumpaym
+                document.getElementById('amtcredit').value = temp ;
+            }
+
+        }
     </script>
     <!-- <script>
         $(document).ready(function () {

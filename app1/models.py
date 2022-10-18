@@ -62,6 +62,7 @@ class customer(models.Model):
     shipstate = models.CharField(max_length=100, null=True)
     shippincode = models.CharField(max_length=100, null=True)
     shipcountry = models.CharField(max_length=100, null=True)
+    opening_balance = models.CharField(max_length=100, null=True)
 
     customer_status = (
         ('Active','Active'),
@@ -285,7 +286,7 @@ class invoice(models.Model):
     email = models.CharField(max_length=100, default='')
     invoiceno = models.IntegerField(default=1000)
     terms = models.CharField(max_length=100, default='')
-    invoicedate = models.CharField(max_length=100)
+    invoicedate = models.DateField()
     duedate = models.CharField(max_length=100)
     bname = models.CharField(max_length=255, default='')
     placosupply = models.CharField(max_length=100, default='')
@@ -325,7 +326,7 @@ class invoice(models.Model):
 
     amtrecvd = models.IntegerField(default=0, null=True)
     # taxamount = models.IntegerField(default=0, null=True)
-    baldue = models.CharField(max_length=100, default='')
+    baldue = models.FloatField()
     subtotal = models.IntegerField(default=0, null=True)
     grandtotal = models.IntegerField(default=0, null=True)
     invoice_orderno = models.CharField(max_length=255, default='', null=True)
@@ -541,72 +542,6 @@ class credit(models.Model):
         db_table = "credit"
 
 
-class payment(models.Model):
-    paymentid = models.AutoField(('PAYMENTID'), primary_key=True)
-    cid = models.ForeignKey(company, on_delete=models.CASCADE)
-    customer = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    findinvoice = models.CharField(max_length=100, null=True)
-    paymdate = models.CharField(max_length=100)
-    pmethod = models.CharField(max_length=100)
-    refno = models.CharField(max_length=100)
-    depto = models.CharField(max_length=100)
-    amtreceived = models.CharField(max_length=100)
-    descrip = models.CharField(max_length=100, default='')
-    duedate = models.CharField(max_length=10, default='')
-    orgamt = models.CharField(max_length=100, default='0')
-    openbal = models.CharField(max_length=100, default='0')
-    payment = models.CharField(max_length=100, default='0')
-    amtapply = models.CharField(max_length=100, default='0')
-    amtcredit = models.CharField(max_length=100, default='0')
-    descrip1 = models.CharField(max_length=100, default='')
-    duedate1 = models.CharField(max_length=10, default='')
-    orgamt1 = models.CharField(max_length=100, default='')
-    openbal1 = models.CharField(max_length=100, default='')
-    payment1 = models.CharField(max_length=100, default='0')
-    descrip2 = models.CharField(max_length=100, default='')
-    duedate2 = models.CharField(max_length=10, default='')
-    orgamt2 = models.CharField(max_length=100, default='')
-    openbal2 = models.CharField(max_length=100, default='')
-    payment2 = models.CharField(max_length=100, default='0')
-    descrip3 = models.CharField(max_length=100, default='')
-    duedate3 = models.CharField(max_length=10, default='')
-    orgamt3 = models.CharField(max_length=100, default='')
-    openbal3 = models.CharField(max_length=100, default='')
-    payment3 = models.CharField(max_length=100, default='0')
-    descrip4 = models.CharField(max_length=100, default='')
-    duedate4 = models.CharField(max_length=10, default='')
-    orgamt4 = models.CharField(max_length=100, default='0')
-    openbal4 = models.CharField(max_length=100, default='0')
-    payment4 = models.CharField(max_length=100, default='0')
-    descrip5 = models.CharField(max_length=100, default='')
-    duedate5 = models.CharField(max_length=10, default='')
-    orgamt5 = models.CharField(max_length=100, default='0')
-    openbal5 = models.CharField(max_length=100, default='0')
-    payment5 = models.CharField(max_length=100, default='0')
-    descrip6 = models.CharField(max_length=100, default='')
-    duedate6 = models.CharField(max_length=10, default='')
-    orgamt6 = models.CharField(max_length=100, default='0')
-    openbal6 = models.CharField(max_length=100, default='0')
-    payment6 = models.CharField(max_length=100, default='0')
-    descrip7 = models.CharField(max_length=100, default='')
-    duedate7 = models.CharField(max_length=10, default='')
-    orgamt7 = models.CharField(max_length=100, default='0')
-    openbal7 = models.CharField(max_length=100, default='0')
-    payment7 = models.CharField(max_length=100, default='0')
-    descrip8 = models.CharField(max_length=100, default='')
-    duedate8 = models.CharField(max_length=10, default='')
-    orgamt8 = models.CharField(max_length=100, default='0')
-    openbal8 = models.CharField(max_length=100, default='0')
-    payment8 = models.CharField(max_length=100, default='0')
-    descrip9 = models.CharField(max_length=100, default='')
-    duedate9 = models.CharField(max_length=10, default='')
-    orgamt9 = models.CharField(max_length=100, default='0')
-    openbal9 = models.CharField(max_length=100, default='0')
-    payment9 = models.CharField(max_length=100, default='0')
-
-    class meta:
-        db_table = "payment"
 
 
 class expences(models.Model):
@@ -1253,10 +1188,103 @@ class sales_item(models.Model):
     tax = models.CharField(max_length=100)
 
 
+class payment(models.Model):
+    paymentid = models.AutoField(('PAYMENTID'), primary_key=True)
+    cid = models.ForeignKey(company, on_delete=models.CASCADE)
+    customer = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    paymdate = models.DateField()
+    pmethod = models.CharField(max_length=100)
+    refno = models.CharField(max_length=100)
+    depto = models.CharField(max_length=100)
+    amtreceived = models.FloatField()
+    amtapply = models.FloatField()
+    amtcredit = models.FloatField()
+    referno = models.CharField(max_length=255, )
+    balance= models.FloatField(default='0')
+    
+    # descrip = models.CharField(max_length=100, default='')
+    # duedate = models.CharField(max_length=10, default='')
+    # orgamt = models.CharField(max_length=100, default='0')
+    # openbal = models.CharField(max_length=100, default='0')
+    # payment = models.CharField(max_length=100, default='0')
+   
+
+    # descrip1 = models.CharField(max_length=100, default='')
+    # duedate1 = models.CharField(max_length=10, default='')
+    # orgamt1 = models.CharField(max_length=100, default='')
+    # openbal1 = models.CharField(max_length=100, default='')
+    # payment1 = models.CharField(max_length=100, default='0')
+
+    # descrip2 = models.CharField(max_length=100, default='')
+    # duedate2 = models.CharField(max_length=10, default='')
+    # orgamt2 = models.CharField(max_length=100, default='')
+    # openbal2 = models.CharField(max_length=100, default='')
+    # payment2 = models.CharField(max_length=100, default='0')
+    # descrip3 = models.CharField(max_length=100, default='')
+    # duedate3 = models.CharField(max_length=10, default='')
+    # orgamt3 = models.CharField(max_length=100, default='')
+    # openbal3 = models.CharField(max_length=100, default='')
+    # payment3 = models.CharField(max_length=100, default='0')
+    # descrip4 = models.CharField(max_length=100, default='')
+    # duedate4 = models.CharField(max_length=10, default='')
+    # orgamt4 = models.CharField(max_length=100, default='0')
+    # openbal4 = models.CharField(max_length=100, default='0')
+    # payment4 = models.CharField(max_length=100, default='0')
+    # descrip5 = models.CharField(max_length=100, default='')
+    # duedate5 = models.CharField(max_length=10, default='')
+    # orgamt5 = models.CharField(max_length=100, default='0')
+    # openbal5 = models.CharField(max_length=100, default='0')
+    # payment5 = models.CharField(max_length=100, default='0')
+    # descrip6 = models.CharField(max_length=100, default='')
+    # duedate6 = models.CharField(max_length=10, default='')
+    # orgamt6 = models.CharField(max_length=100, default='0')
+    # openbal6 = models.CharField(max_length=100, default='0')
+    # payment6 = models.CharField(max_length=100, default='0')
+    # descrip7 = models.CharField(max_length=100, default='')
+    # duedate7 = models.CharField(max_length=10, default='')
+    # orgamt7 = models.CharField(max_length=100, default='0')
+    # openbal7 = models.CharField(max_length=100, default='0')
+    # payment7 = models.CharField(max_length=100, default='0')
+    # descrip8 = models.CharField(max_length=100, default='')
+    # duedate8 = models.CharField(max_length=10, default='')
+    # orgamt8 = models.CharField(max_length=100, default='0')
+    # openbal8 = models.CharField(max_length=100, default='0')
+    # payment8 = models.CharField(max_length=100, default='0')
+    # descrip9 = models.CharField(max_length=100, default='')
+    # duedate9 = models.CharField(max_length=10, default='')
+    # orgamt9 = models.CharField(max_length=100, default='0')
+    # openbal9 = models.CharField(max_length=100, default='0')
+    # payment9 = models.CharField(max_length=100, default='0')
+
+    class meta:
+        db_table = "payment"
+
+class paymentitems(models.Model):
+    payment = models.ForeignKey(payment,on_delete=models.CASCADE)
+    invno = models.CharField(max_length=100, default='')
+    duedate = models.CharField(max_length=100, default='')
+    invamount = models.CharField(max_length=100, default='')
+    balamount = models.FloatField()
+    paymentamount = models.CharField(max_length=100, default='0')
+    
+
+class cust_statment(models.Model):
+    customer = models.CharField(max_length=255, default='')
+    inv = models.ForeignKey(invoice,on_delete=models.CASCADE,blank=True,null=True)
+    pay=models.ForeignKey(payment,on_delete=models.CASCADE,blank=True,null=True)
+    Date = models.DateField()
+    Transactions = models.CharField(max_length=255,blank=True,null=True)
+    Details	= models.CharField(max_length=255,blank=True,null=True)
+    Amount	= models.FloatField(blank=True,null=True)
+    Payments=models.FloatField(blank=True,null=True)	
+    Balance=models.FloatField(blank=True,null=True)
 
 
 
 # Rahanas -------------
+
+
 
 class itemtable(models.Model):
     cid = models.ForeignKey(company, on_delete=models.CASCADE)
@@ -1366,7 +1394,6 @@ class stockadjust(models.Model):
 
 
 
-       
 
 #Jisha
 
