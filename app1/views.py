@@ -26,7 +26,7 @@ from num2words import num2words
 import random
 
 from django.db.models import F
-
+from django.db.models import Count
 from . models import *
 
 def index(request):
@@ -27447,7 +27447,6 @@ def iod_export(request):
 
 @login_required(login_url='regcomp')
 def create_item(request):
-    try:
         if request.method == 'POST':
             cmp1 = company.objects.get(id=request.session['uid'])
             iname = request.POST['name']
@@ -27464,8 +27463,8 @@ def create_item(request):
             isaledesc = request.POST['sale_desc']
             iintra = request.POST['intra_st']
             iinter = request.POST['inter_st']
-            iinv = request.POST['invacc']
-            istock = request.POST['stock']
+            iinv = request.POST.get('invacc')
+            istock = request.POST.get('stock')
             istatus = request.POST['status']
             item = itemtable(name=iname,item_type=itype,unit=iunit,
                                 hsn=ihsn,tax_reference=itax,
@@ -27485,8 +27484,7 @@ def create_item(request):
             item.save()
             return redirect('goitem')
         return render(request,'app1/additem.html')
-    except:
-        return redirect('goitem')
+
 
 @login_required(login_url='regcomp')
 def create_unit(request):
@@ -29260,11 +29258,60 @@ def deletestockadjust(request, id):
 def gstr1(request):
     try:
         cmp1 = company.objects.get(id=request.session["uid"])
-        invoices = invoice.objects.filter(cid=cmp1)
-        customers = customer.objects.filter(cid=cmp1)
+        invoices = invoice.objects.filter(cid=cmp1).count()
+        cgst = invoice.objects.filter(cid=cmp1).aggregate(total_cgst=Sum('CGST'),
+                                                           total_igst=Sum('IGST'),
+                                                           total_sgst=Sum('SGST'),
+                                                           total_amt=Sum('subtotal'),
+                                                           total_tcs=Sum('TCS'),
+                                                           total_invamt=Sum('grandtotal'))
+        
+        
 
-
-        context = {'cmp1':cmp1,'invoices':invoices}
+        context = {'cmp1':cmp1,'invoices':invoices,'cgst':cgst}
         return render(request, 'app1/gstr1.html', context)
     except:
         return redirect('godash')  
+
+
+@login_required(login_url='regcomp')
+def gstr3b(request):
+    try:
+        cmp1 = company.objects.get(id=request.session["uid"])
+        invoices = invoice.objects.filter(cid=cmp1).count()
+        cgst = invoice.objects.filter(cid=cmp1).annotate(total=Sum('SGST'))
+        
+
+
+        context = {'cmp1':cmp1,'invoices':invoices,'cgst':cgst}
+        return render(request, 'app1/gstr3b.html', context)
+    except:
+        return redirect('godash')        
+
+@login_required(login_url='regcomp')
+def goewaybill(request):
+    try:
+        cmp1 = company.objects.get(id=request.session["uid"])
+        invoices = invoice.objects.filter(cid=cmp1,grandtotal__gte=50000)
+        context = {'cmp1':cmp1,'invoices':invoices}
+        return render(request, 'app1/eway_bill.html', context)
+    except:
+        return redirect('godash')         
+
+@login_required(login_url='regcomp')
+def addewaybill(request, id):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        invo3 = invoice.objects.get(invoiceid=id, cid=cmp1)
+        inv = inventory.objects.filter(cid=cmp1).all()
+        bun = bundle.objects.filter(cid=cmp1).all()
+        noninv = noninventory.objects.filter(cid=cmp1).all()
+        ser = service.objects.filter(cid=cmp1).all()
+        item = itemtable.objects.filter(cid=cmp1).all()
+
+        invitem = invoice_item.objects.filter(invoice =id )
+        context = {'invoice': invo3, 'cmp1': cmp1, 'inv': inv, 'item':item,'invitem':invitem,
+                   'noninv': noninv, 'bun': bun, 'ser': ser}
+        return render(request, 'app1/addeway_bill.html', context)
+    except:
+        return redirect('goinvoices')        

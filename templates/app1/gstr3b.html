@@ -12,7 +12,7 @@
         <div class="card-body">
             <div class="row">
                 <div class="col-md-4"></div>
-                    <div class="col-md-5"><h2 style="padding-left: 80px;">GSTR-1</h2>
+                    <div class="col-md-5"><h2 style="padding-left: 80px;">GSTR-3B</h2>
                     </div>
                 </div> <hr>
             </div>
@@ -56,17 +56,14 @@
                                         </tbody>
                                         <tbody>
                                         <tr>
-                                            <td >B2B</td>
-                                            <td >{{ invoices }}</td>
+                                            <td id="fd"></td>
+                                            <td id="ld"></td>
                                        
-                                            <td >{{ cgst.total_amt }}</td>
-                                            <td id="igst">{{ cgst.total_igst }} </td>
-                                            <td id="cgst">{{ cgst.total_cgst }}</td>
-                                            <td id="sgst">{{ cgst.total_sgst }}</td>
-                                            
-                                            <td  id="tcs">{{ cgst.total_tcs }}</td>
-                                            <td id="tax"></td>
-                                            <td>{{ cgst.total_invamt }}</td>
+                                            <td></td>
+                                            <td id="ad" class="ad"> </td>
+                                            <td>{{ cgst.total }}</td>
+                                            <td id="bal"></td>
+                                            <td></td>
                                         </tr>
                                         </tbody>
                                     </table>
@@ -89,18 +86,5 @@
     {% endif %}
 
 
-    <script>
-        $(document).ready(function(){
-          $("#igst,#cgst,#sgst,#tcs").ready(function(){
 
-            var total = 0;
-            var x = Number($("#igst").val());
-            var y = Number($("#cgst").val());
-            var z = Number($("#sgst").val());
-            var w = Number($("#tcs").val());
-            var total = x + y + z + w ;
-            $("#tax").val(total);
-          });
-        });
-      </script>
 {% endblock %}

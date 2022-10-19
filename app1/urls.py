@@ -639,6 +639,10 @@ urlpatterns = [
 
     
     re_path(r'^gstr1$', views.gstr1, name='gstr1'),
+    re_path(r'^gstr3b$', views.gstr3b, name='gstr3b'),
+
+    re_path(r'^goewaybill$', views.goewaybill, name='goewaybill'),
+    re_path(r'^addewaybill/(?P<id>\d+)$', views.addewaybill, name='addewaybill'),
     
 
     
