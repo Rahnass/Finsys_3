@@ -29303,15 +29303,69 @@ def addewaybill(request, id):
     try:
         cmp1 = company.objects.get(id=request.session['uid'])
         invo3 = invoice.objects.get(invoiceid=id, cid=cmp1)
-        inv = inventory.objects.filter(cid=cmp1).all()
-        bun = bundle.objects.filter(cid=cmp1).all()
-        noninv = noninventory.objects.filter(cid=cmp1).all()
-        ser = service.objects.filter(cid=cmp1).all()
         item = itemtable.objects.filter(cid=cmp1).all()
+        trans = etransporter.objects.filter(cid=cmp1).all()
 
         invitem = invoice_item.objects.filter(invoice =id )
-        context = {'invoice': invo3, 'cmp1': cmp1, 'inv': inv, 'item':item,'invitem':invitem,
-                   'noninv': noninv, 'bun': bun, 'ser': ser}
+        context = {'invoice': invo3, 'cmp1': cmp1, 'item':item, 'trans': trans,'invitem':invitem}
         return render(request, 'app1/addeway_bill.html', context)
     except:
-        return redirect('goinvoices')        
+        return redirect('goewaybill')        
+
+@login_required(login_url='regcomp')
+def create_transporter(request):
+    try:
+        if request.method == 'POST':
+            cmp1 = company.objects.get(id=request.session['uid'])
+            tname = request.POST['tname']
+            tid = request.POST['tid']
+            
+            item = etransporter(name=tname,
+                                tid=tid,
+                                cid=cmp1)
+            item.save()
+            return render(request,'app1/addeway_bill.html')
+        return render(request,'app1/addeway_bill.html')
+    except:
+        return redirect('goewaybill')      
+
+
+
+@login_required(login_url='regcomp')
+def create_eway_inv(request):
+    if request.method == 'POST':
+        cmp1 = company.objects.get(id=request.session['uid'])
+        ttype = request.POST['s_type']
+        trans = request.POST['transporter']
+        distance = request.POST['dist']
+        mode = request.POST['tmode']
+        vehicle = request.POST['vtype']
+        vehicleno = request.POST['vno']
+        docno = request.POST.get('tdoc_no')
+        date = request.POST['tdoc_date']
+        
+            
+        eway = ewayinv(transaction_stype=ttype,transporter=trans,distance=distance,
+                                transport_mode=mode,vehicle_type=vehicle,
+                                vehicle_no=vehicleno,
+                                transport_doc_no=docno,
+                                transport_doc_date=date,
+                                cid=cmp1)
+        eway.save()                      
+        return redirect('goewaybill')
+    return render(request,'app1/addeway_bill.html')          
+
+
+def view_eway_inv(request):
+    cmp1 = company.objects.get(id=request.session['uid'])
+    upd = salesorder.objects.get(cid=cmp1)
+
+
+    context ={
+        'sale':upd,
+        'cmp1':cmp1
+
+    }
+
+
+    return render(request,'app1/e_way_inv.html',context)    

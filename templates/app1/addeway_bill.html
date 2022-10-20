@@ -23,17 +23,25 @@
                     <h4 class="mb-0">PART A</h4>
                 </div>
                 <hr/>
-                <form action="vendordetails" method="post" class="needs-validation" novalidate autocomplete="off">
+                <form action="{% url 'create_eway_inv' %}" method="post" class="needs-validation" novalidate autocomplete="off">
                     {% csrf_token %}
                     {% if user.is_authenticated %}
                         <div class="row">
                             <div class="col-md-4 mt-3">
                                 <label for="validationCustom01">Transaction Sub Type </label>
-                                <select name="title" id="title" class="form-control">
-                                    <option value="Mr">Mr</option>
-                                    <option value="Mrs">Mrs</option>
-                                    <option value="Miss">Miss</option>
-                                    <option value="Ms">Ms</option>
+                                <select name="s_type" id="title" class="form-control">
+                                    <option value="Supply">Supply</option>
+                                    <option value="Import">Import</option>
+                                    <option value="Export">Export</option>
+                                    <option value="Job Work">Job Work</option>
+                                    <option value="For Own Use">For Own Use</option>
+                                    <option value="Job Work Returns">Job Work Returns</option>
+                                    <option value="Sales Returns">Sales Returns </option>
+                                    <option value="Others">Others</option>
+                                    <option value="SKD/CKD">SKD/CKD</option>
+                                    <option value="Line Sales">Line Sales</option>
+                                    <option value="Recipient Not Known">Recipient Not Known</option>
+                                    <option value="Exhibition or Faris">Exhibition or Faris</option>
                                 </select>
                             </div>
                            
@@ -42,9 +50,22 @@
                         <div class="row">
                             <div class="col-md-4 mt-3">
                                 <label for="validationCustom03">Transporter</label>
-                                <input type="email" class="form-control" id="validationCustom03" name="email"
-                                    >
+                                <div class="d-flex">
+                                <select name="transporter" id="title" class="form-control">
+                                   
+
+                                    <option selected disabled>select the transporter's name </option>
+                                    {% for i in trans %}
+                                    <option value="{{ i.name  }}">{{ i.name  }} </option>
+                                    {% endfor %}
+
+                                </select>
+                                <a href="#">
+                                    <button type="button" class="btn btn-outline-secondary ml-1" 
+                                    data-target="#newtransporter" data-toggle="modal">+</button>
+                                </a>
                             </div>
+                        </div>
                            
                         </div>
                         <div class="row">
@@ -52,7 +73,7 @@
                                 <label for="validationCustom03">Distance (in Km)
 
                                 </label>
-                                <input type="email" class="form-control" id="validationCustom03" name="email"
+                                <input type="text" class="form-control" id="validationCustom03" name="dist"
                                     >
                             </div>
                            
@@ -63,257 +84,70 @@
                         <div class="row">
                             <div class="col-md-4 mt-3">
                                 <label for="validationCustom01">Mode of Transportation</label>
-                                <select name="title" id="title" class="form-control">
-                                    <option value="Mr">Mr</option>
-                                    <option value="Mrs">Mrs</option>
-                                    <option value="Miss">Miss</option>
-                                    <option value="Ms">Ms</option>
+                                <select name="tmode" id="title" class="form-control">
+                                    <option value="Road">Road</option>
+                                    <option value="Rail">Rail</option>
+                                    <option value="Ship">Ship</option>
+                                    <option value="Air">Air</option>
                                 </select>
                             </div>
                            
                         </div>
-                                         <div class="row">
-                            <div class="col-md-3 mt-2">
-                               <label for="">Place of Supply</label>
-                                <input type="text" class="form-control" id="" name="sourceofsupply">
-                            </div>
-                            <!-- <div class="col-md-3 mt-2 hide" id="tax">
-                                <label for="">Tax Preference</label><br>
-                                <div class="form-check form-check-inline">
-                                    <input type="radio" class="form-check-input" value="Taxable" name="taxpref">
-                                    <label class="form-check-label">Taxable</label>
-                                </div>
-                                <div class="form-check form-check-inline">
-                                    <input type="radio" class="form-check-input" value="Tax Exempt" name="taxpref">
-                                    <label class="form-check-label">Tax Exempt</label>
-                                </div>
-                            </div> -->
-                            
-                            <div class="col-md-3 mt-2">
-                                <label for="">Currency</label>
-                                <div class="d-flex">
-                                    <input type="text" class="form-control" id="" name="currency" placeholder="INR - Indian Rupee"
-                                        id="">
-                                    <a href="#">
-                                        <button type="button" class="btn btn-outline-secondary ml-1">+</button>
-                                    </a> 
-                                </div>   
-                            </div>
-                            
-                            <div class="col-md-3 mt-2">
-                               <label for="">Opening Balance</label>
-                               <div class="d-flex">
-                                <p class="form-control" style="width: 60px;">INR</p>
-                                <input type="number" class="form-control" name="openingbalance" placeholder="INR">
-                               </div>
-                            </div>
-                            <div class="col-md-3 mt-2">
-                               <label for="">Payment Terms</label>
-                               <select class=" form-control" id="validationCustom02" name="paymentterms">
-                                    <option selected disabled value="">Choose..</option>
-                                    <option value="Due on Receipt">Due on Receipt</option>
-                                    <option value="Net 15">NET15</option>
-                                    <option value="Net 30">NET30</option>
-                                    <option value="Net 60">NET60</option>
-                                </select>
-                            </div>
-                        </div>
-                        <hr>
                         <div class="row">
-                            <div class="col-md-6 mt-5">
-                                <div class="row">
-                                    <div class="col-md-12 card-title">
-                                        <h5 class="mb-0">Billing Address</h5>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 mt-3">
-                                        <div class="form-row">
-                                            <label for="street">Street</label>
-                                            <textarea class="form-control street" id="street" name="street"></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mt-3">
-                                        <div class="form-row">
-                                            <label for="city">City</label>
-                                            <input type="text" class="form-control" id="city"
-                                                name="city"
-                                                placeholder="City">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mt-3">
-                                        <div class="form-row">
-                                            <label for="state">State</label>
-                                            <select type="text" class="form-control" id="state" name="state">
-                                                <option value="" disabled selected>Choose</option>
-                                                <option value="Andaman and Nicobar Islads">Andaman and Nicobar Islads
-                                                </option>
-                                                <option value="Andhra Predhesh">Andhra Predhesh</option>
-                                                <option value="Arunachal Predesh">Arunachal Predesh</option>
-                                                <option value="Assam">Assam</option>
-                                                <option value="Bihar">Bihar</option>
-                                                <option value="Chandigarh">Chandigarh</option>
-                                                <option value="Chhattisgarh">Chhattisgarh</option>
-                                                <option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
-                                                <option value="Damn anad Diu">Damn anad Diu</option>
-                                                <option value="Delhi">Delhi</option>
-                                                <option value="Goa">Goa</option>
-                                                <option value="Gujarat">Gujarat</option>
-                                                <option value="Haryana">Haryana</option>
-                                                <option value="Himachal Predesh">Himachal Predesh</option>
-                                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                                                <option value="Jharkhand">Jharkhand</option>
-                                                <option value="Karnataka">Karnataka</option>
-                                                <option value="Kerala">Kerala</option>
-                                                <option value="Ladakh">Ladakh</option>
-                                                <option value="Lakshadweep">Lakshadweep</option>
-                                                <option value="Madhya Predesh">Madhya Predesh</option>
-                                                <option value="Maharashtra">Maharashtra</option>
-                                                <option value="Manipur">Manipur</option>
-                                                <option value="Meghalaya">Meghalaya</option>
-                                                <option value="Mizoram">Mizoram</option>
-                                                <option value="Nagaland">Nagaland</option>
-                                                <option value="Odisha">Odisha</option>
-                                                <option value="Puducherry">Puducherry</option>
-                                                <option value="Punjab">Punjab</option>
-                                                <option value="Rajasthan">Rajasthan</option>
-                                                <option value="Sikkim">Sikkim</option>
-                                                <option value="Tamil Nadu">Tamil Nadu</option>
-                                                <option value="Telangana">Telangana</option>
-                                                <option value="Tripura">Tripura</option>
-                                                <option value="Uttar Predesh">Uttar Predesh</option>
-                                                <option value="Uttarakhand">Uttarakhand</option>
-                                                <option value="West Bengal">West Bengal</option>
-                                                <option value="Other Territory">Other Territory</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mt-3">
-                                        <div class="form-row">
-                                            <label for="pinco">Pin Code</label>
-                                            <input type="text" class="form-control" id="pinco"
-                                                name="pincode" maxlength="6"
-                                                placeholder="PIN Code">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mt-3">
-                                        <div class="form-row">
-                                            <label for="country">Country</label>
-                                            <input type="text" class="form-control" id="country"
-                                                name="country"
-                                                placeholder="Country">
-                                        </div>
-                                    </div>
-                                </div>
+                            <div class="col-md-6 mt-3">
+                               
                             </div>
-                            <div class="col-md-6 mt-5">
-                                <div class="row">
-                                    <div class="col-md-12 d-flex">
-                                        <h5>Shipping Address</h5>
-                                        <input class="ml-4 mt-2 ml-2" type="checkbox" onclick="poppins()" id="okay"
-                                               name="okay">
-                                        <label class="ml-2 mt-1 ml-2" for="okay">Same As Billing Address</label>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-12 mt-3">
-                                        <div class="form-row">
-                                            <label for="shipstreet">Street</label>
-                                            <textarea class="form-control" id="shipstreet"
-                                                name="shipstreet"
-                                                ></textarea>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mt-3">
-                                        <div class="form-row">
-                                            <label for="shipcity">City</label>
-                                            <input type="text" class="form-control" id="shipcity"
-                                                name="shipcity" placeholder="City">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mt-3">
-                                        <div class="form-row">
-                                            <label for="shipstate">State</label>
-                                            <select type="text" class="form-control" id="plosu" name="shipstate">
-                                                <option id="shipst" selected>Choose</option>
-                                                <option value="Andaman and Nicobar Islads">Andaman and Nicobar Islads
-                                                </option>
-                                                <option value="Andhra Predhesh">Andhra Predhesh</option>
-                                                <option value="Arunachal Predesh">Arunachal Predesh</option>
-                                                <option value="Assam">Assam</option>
-                                                <option value="Bihar">Bihar</option>
-                                                <option value="Chandigarh">Chandigarh</option>
-                                                <option value="Chhattisgarh">Chhattisgarh</option>
-                                                <option value="Dadra and Nagar Haveli">Dadra and Nagar Haveli</option>
-                                                <option value="Damn anad Diu">Damn anad Diu</option>
-                                                <option value="Delhi">Delhi</option>
-                                                <option value="Goa">Goa</option>
-                                                <option value="Gujarat">Gujarat</option>
-                                                <option value="Haryana">Haryana</option>
-                                                <option value="Himachal Predesh">Himachal Predesh</option>
-                                                <option value="Jammu and Kashmir">Jammu and Kashmir</option>
-                                                <option value="Jharkhand">Jharkhand</option>
-                                                <option value="Karnataka">Karnataka</option>
-                                                <option value="Kerala">Kerala</option>
-                                                <option value="Ladakh">Ladakh</option>
-                                                <option value="Lakshadweep">Lakshadweep</option>
-                                                <option value="Madhya Predesh">Madhya Predesh</option>
-                                                <option value="Maharashtra">Maharashtra</option>
-                                                <option value="Manipur">Manipur</option>
-                                                <option value="Meghalaya">Meghalaya</option>
-                                                <option value="Mizoram">Mizoram</option>
-                                                <option value="Nagaland">Nagaland</option>
-                                                <option value="Odisha">Odisha</option>
-                                                <option value="Puducherry">Puducherry</option>
-                                                <option value="Punjab">Punjab</option>
-                                                <option value="Rajasthan">Rajasthan</option>
-                                                <option value="Sikkim">Sikkim</option>
-                                                <option value="Tamil Nadu">Tamil Nadu</option>
-                                                <option value="Telangana">Telangana</option>
-                                                <option value="Tripura">Tripura</option>
-                                                <option value="Uttar Predesh">Uttar Predesh</option>
-                                                <option value="Uttarakhand">Uttarakhand</option>
-                                                <option value="West Bengal">West Bengal</option>
-                                                <option value="Other Territory">Other Territory</option>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-md-6 mt-3">
-                                        <div class="form-row">
-                                            <label for="shippinco">Pin Code</label>
-                                            <input type="text" class="form-control" id="shippinco"
-                                                name="shippincode"
-                                                placeholder="PIN Code">
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6 mt-3">
-                                        <div class="form-row">
-                                            <label for="shipcountry">Country</label>
-                                            <input type="text" class="form-control" id="shipcountry"
-                                                name="shipcountry"
-                                                placeholder="Country">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                           
                         </div>
-                        <div class="row mt-3">
-                            <div class="col">
+                        <div class="row">
+                            <div class="col-md-3 mt-3">
+                                <label for="validationCustom05" name style="color: white;">Vehicle Type
+                                    </label>
+                             
+                            </div>
+                            <div class="col-md-3">
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" value="" id="invalidCheck" required>
-                                    <label>Agree to terms and conditions</label>
-                                    <div class="invalid-feedback">You must agree before submitting.</div>
-                                </div>
+                                    <input class="form-check-input" value="Regular" type="radio" name="vtype" id="flexRadioDefault1">
+                                    <label class="form-check-label" for="flexRadioDefault1">
+                                      Regular
+                                    </label>
+                                  </div>
+                                 
                             </div>
+                            <div class="form-check">
+                                <input class="form-check-input" value="Cargo" type="radio" name="vtype" id="flexRadioDefault2" >
+                                <label class="form-check-label" for="flexRadioDefault2">
+                                  Over Dimentional Cargo
+                                </label>
+                              </div>
                         </div>
+                  
+                    <div class="row">
+                        <div class="col-md-4 mt-3">
+                            <label for="validationCustom03">Vehicle No</label>
+                            <input type="text" class="form-control" id="validationCustom03" name="vno"
+                                >
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mt-3">
+                            <label for="validationCustom03">Transporter's Doc No</label>
+                            <input type="text" class="form-control" id="validationCustom03" name="tdoc_no"
+                                >
+                        </div>
+                       
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mt-3">
+                            <label for="validationCustom03">Transporter's Doc Date</label>
+                            <input type="date" class="form-control" id="validationCustom03" name="tdoc_date"
+                                >
+                        </div>
+                       
+                    </div>
+                </div>
+                       
                         <div class="row">
                             <div class="col-md-4"></div>
                             <div class="col-md-4">
@@ -329,6 +163,54 @@
             </div>
         </div>
     </div>
+
+
+    
+<!---------------------------------------------ADD Transporter MODAL ----------------------------------------------->
+
+<div class="modal fade" id="newtransporter">
+    <div class="modal-dialog">
+   
+        <div class="modal-content" style="background-color: #213b52;">
+            <form action="{% url 'create_transporter' %}" method="post" class="needs-validation"  validate>
+                {% csrf_token %}
+            <div class="modal-header">
+                <h3 class="m-3">Add Transporter</h3>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              
+              
+                <div>
+                    <div class="form-check">
+                        <label class="form-check-label">Name *</label> 
+                        <input type="text" class="form-control" name="tname">
+                       
+                    </div>
+
+                    <div class="form-check">
+                        <label class="form-check-label">Transporter's ID *</label> 
+                        <input type="text" class="form-control" name="tid">
+                       
+                    </div>
+
+    
+                </div>
+           
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-outline-info" >Save</button>
+                <button type="button" class="btn btn-outline-info" data-dismiss="modal">Close</button>
+            </div>
+        </form>
+        </div>
+ 
+    </div>
+</div>            
+
+
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>

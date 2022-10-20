@@ -643,6 +643,9 @@ urlpatterns = [
 
     re_path(r'^goewaybill$', views.goewaybill, name='goewaybill'),
     re_path(r'^addewaybill/(?P<id>\d+)$', views.addewaybill, name='addewaybill'),
+    re_path(r'^create_transporter$', views.create_transporter, name='create_transporter'),
+    re_path(r'^create_eway_inv$', views.create_eway_inv, name='create_eway_inv'),
+    re_path(r'^view_eway_inv$', views.view_eway_inv, name='view_eway_inv'),
     
 
     

@@ -1390,6 +1390,27 @@ class stockadjust(models.Model):
     qty5 = models.CharField(max_length=100,null=True)
     qty_hand5 = models.CharField(max_length=100, default='')
     new_qty5 = models.CharField(max_length=100, default='')
+
+
+
+class etransporter(models.Model):
+    etransporterid = models.AutoField(("ETRANSPORTERID"), primary_key=True)
+    cid = models.ForeignKey(company, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, default='', blank=True)   
+    tid = models.CharField(max_length=255, default='', blank=True) 
+
+
+class ewayinv(models.Model):
+    ewayinvid = models.AutoField(("EWAYINV"), primary_key=True)
+    cid = models.ForeignKey(company, on_delete=models.CASCADE)
+    transaction_stype = models.CharField(max_length=255, default='', blank=True)   
+    transporter = models.CharField(max_length=255, default='', blank=True)     
+    distance = models.CharField(max_length=255, default='', blank=True)   
+    transport_mode = models.CharField(max_length=255, default='', blank=True)  
+    vehicle_type = models.CharField(max_length=255, default='', blank=True)   
+    vehicle_no = models.CharField(max_length=255, default='', blank=True)  
+    transport_doc_no = models.CharField(max_length=255, default='', blank=True)   
+    transport_doc_date = models.CharField(max_length=255, default='', blank=True)  
         
 
 
