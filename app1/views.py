@@ -28683,6 +28683,7 @@ def addewaybill(request, id):
         invo3 = invoice.objects.get(invoiceid=id, cid=cmp1)
         item = itemtable.objects.filter(cid=cmp1).all()
         trans = etransporter.objects.filter(cid=cmp1).all()
+        
 
         invitem = invoice_item.objects.filter(invoice =id )
         context = {'invoice': invo3, 'cmp1': cmp1, 'item':item, 'trans': trans,'invitem':invitem}

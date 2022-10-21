@@ -6,6 +6,18 @@
         .hide{
 			display: none;
     	}
+
+        .split {
+            float: left;
+            width: 50%;
+          }
+          
+          /* Clear floats after the columns */
+          .splitrow:after {
+            content: "";
+            display: table;
+            clear: both;
+          }
     </style>
 
     <div class="page-content">
@@ -26,8 +38,9 @@
                 <form action="{% url 'create_eway_inv' %}" method="post" class="needs-validation" novalidate autocomplete="off">
                     {% csrf_token %}
                     {% if user.is_authenticated %}
-                        <div class="row">
-                            <div class="col-md-4 mt-3">
+                    <div class="row splitrow" style="width:100%;">
+                     <div class="split">
+                            <div class="col mt-3 ">
                                 <label for="validationCustom01">Transaction Sub Type </label>
                                 <select name="s_type" id="title" class="form-control">
                                     <option value="Supply">Supply</option>
@@ -45,10 +58,8 @@
                                 </select>
                             </div>
                            
-                        </div>
                         
-                        <div class="row">
-                            <div class="col-md-4 mt-3">
+                            <div class="col mt-3">
                                 <label for="validationCustom03">Transporter</label>
                                 <div class="d-flex">
                                 <select name="transporter" id="title" class="form-control">
@@ -65,11 +76,9 @@
                                     data-target="#newtransporter" data-toggle="modal">+</button>
                                 </a>
                             </div>
-                        </div>
                            
                         </div>
-                        <div class="row">
-                            <div class="col-md-4 mt-3">
+                            <div class="col mt-3">
                                 <label for="validationCustom03">Distance (in Km)
 
                                 </label>
@@ -77,75 +86,360 @@
                                     >
                             </div>
                            
+                     </div>
+                     <div class="split">
+                        <div class="col mt-3">
+                            <label for="validationCustom03">Document Type
+
+                            </label>
+                            <input type="text" class="form-control" id="validationCustom03" name="d_type"
+                                 value="Invoice" >
                         </div>
+                        <div class="col mt-3">
+                            <label for="validationCustom03">Document No.
+
+                            </label>
+                            <input type="text" class="form-control" id="validationCustom03" name="d_no"
+                                 value="{{ invoice.invoiceno }}" >
+                        </div>
+                        <div class="col mt-3">
+                            <label for="validationCustom03">Document Date
+
+                            </label>
+                            <input type="text" class="form-control" id="validationCustom03" name="d_date"
+                                 value="{{ invoice.invoicedate }}" >
+                        </div>
+                        
+                     </div>
+
+                    </div>
+                    <hr>
+                    <h4>FROM</h4>
+                    <hr>
+                    <div class="row splitrow" style="width:100%;">
+                        <div class="split">
+                               <div class="col mt-3 ">
+                                   <label for="validationCustom01">Name</label>
+                                   <input type="text" class="form-control" id="validationCustom03" name="fname"
+                                 value="{{ cmp1.cname }}" >
+                               </div>
+                              
+                           
+                               <div class="col mt-3">
+                                   <label for="validationCustom03">GSTIN</label>
+                                   <div class="d-flex">
+                                    <input type="text" class="form-control" id="validationCustom03" name="fgst"
+                                    value="" >
+                                
+                               </div>
+                              
+                           </div>
+                               
+                        </div>
+                        <div class="split">
+                           <div class="col mt-3">
+                               <label for="validationCustom03">Address
+   
+                               </label>
+                               <input type="text" class="form-control" id="validationCustom03" name="faddress"
+                                    value="{{ cmp1.caddress }}" >
+                           </div>
+                           <div class="col mt-3">
+                               <label for="validationCustom03">Place
+   
+                               </label>
+                               <input type="text" class="form-control" id="validationCustom03" name="fplace"
+                                    value="{{ cmp1.city }},{{ cmp1.state }}" >
+                           </div>
+                           <div class="col mt-3">
+                               <label for="validationCustom03">Pincode
+   
+                               </label>
+                               <input type="text" class="form-control" id="validationCustom03" name="fpin"
+                                    value="{{ cmp1.pincode }}" >
+                           </div>
+                           
+                        </div>
+   
+                       </div>
+                       <hr>
+                    <h4>TO</h4>
+                    <hr>
+                    <div class="row splitrow" style="width:100%;">
+                        <div class="split">
+                               <div class="col mt-3 ">
+                                   <label for="validationCustom01">Name</label>
+                                   <input type="text" class="form-control" id="validationCustom03" name="tname"
+                                 value="{{ invoice.customername }} " >
+                               </div>
+                              
+                           
+                               <div class="col mt-3">
+                                   <label for="validationCustom03">GSTIN</label>
+                                   <div class="d-flex">
+                                    <input type="text" class="form-control" id="validationCustom03" name="tgst"
+                                    value="" >
+                                
+                               </div>
+                              
+                           </div>
+                               
+                        </div>
+                        <div class="split">
+                           <div class="col mt-3">
+                               <label for="validationCustom03">Address
+   
+                               </label>
+                               <input type="text" class="form-control" id="validationCustom03" name="faddress"
+                                    value="" >
+                           </div>
+                           <div class="col mt-3">
+                               <label for="validationCustom03">Place
+   
+                               </label>
+                               <input type="text" class="form-control" id="validationCustom03" name="tplace"
+                                    value="" >
+                           </div>
+                           <div class="col mt-3">
+                               <label for="validationCustom03">Pincode
+   
+                               </label>
+                               <input type="text" class="form-control" id="validationCustom03" name="tpin"
+                                    value="" >
+                           </div>
+                           
+                        </div>
+   
+                       </div>
+                       <hr>
+                       <h4>ITEM DETAILS</h4>
+                       <hr>
+                       <div class="row clearfix mt-4">
+                        <div class="col-md-12 table-responsive-md mt-3">
+                          <table class="table table-bordered table-hover" id="tab_logic">
+                            <thead>
+                              <tr>
+                                <th class="text-center">#</th>
+                                <th class="text-center">Product Name</th>
+                                <th class="text-center">HSN</th>
+                                <th class="text-center">Description</th>
+                                <th class="text-center">QTY</th>
+                                <th class="text-center">PRICE</th>
+                                <th class="text-center">TOTAL</th>
+                                <th class="text-center">TAX (%)</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                                {% for a in invitem %}
+                              <tr id='addr0'>
+                                <td>1</td>
+                                <td><select name="product" id="product" class="form-control" style="background-color: #2f516f; color: white;">
+                                    <option value="{{ a.product }}" selected>{{ a.product }}</option>
+                                  
+                                  </select></td>
+                                <td><input type="text" name='hsn' id="hsn" value="{{ a.hsn }}" placeholder='Enter HSN Code' class="form-control" /></td>
+                                <td><input type="text" name='description' id="description" value="{{ a.description }}" placeholder='Description' class="form-control" /></td>
+                                <td><input type="number" name='qty' id="qty1" value="{{ a.qty }}" placeholder='Enter Qty' onchange="qtychange1(this)" class="form-control qty" step=0 min=0 />
+                                  <span id="qtyspan" class="text-muted"></span>
+                                </td>
+                                <td><input type="number" name='price' id="unit1" value="{{ a.price }}" placeholder='Enter Unit Price' class="form-control price" step="0.00" min="0" /></td>
+                                <td><input type="number" name='total' id="total1" value="{{ a.total }}" placeholder=0 class="form-control total" readonly /></td>
+                                <td>
+                                  <select name="tax" id="tax1" class="form-control tax" style="background-color: #2f516f; color: white;">
+                                    <option id="ta1" value={{ a.tax }} text={{ cmp1.state }}>{{ a.tax }}
+                                      % GST
+                                    </option>
+                                   
+                                    <option id="ta5" text=" " value={{ a.tax }}>{{ a.tax }} %
+                                      IGST
+                                    </option>
+                                   
+                                  </select>
+                                </td>
+                                <td style="display: none;"><input type="number" step="any" name='taxamount0' id="taxamount" value=0 class="form-control taxamount" readonly />
+                                </td>
+                              </tr>
+                              {% if a.product2 == None %}
+                              <tr></tr>
+                              {% else %}
+                              
+                              <tr id='addr0'>
+                                <td>2</td>
+                                <td><select name="product2" id="product2" class="form-control" style="background-color: #2f516f; color: white;">
+                                    <option value="{{ a.product2 }}" selected>{{ a.product2 }}</option>
+                                  
+                                  </select></td>
+                                <td><input type="text" name="hsn2" id="hsn2" value="{{ a.hsn2 }}" placeholder='Enter HSN Code' class="form-control" /></td>
+                                <td><input type="text" name='description2' value="{{ a.description2 }}" placeholder='Description' id="description2" class="form-control" />
+                                </td>
+                                <td><input type="number" name="qty2" id="qty2" value="{{ a.qty2 }}" placeholder='Enter Qty' onchange="qtychange2(this)" class="form-control qty" step=0 min=0 />
+                                  <span id="qtyspan1" class="text-muted"></span>
+                                </td>
+                                <td><input type="number" name="price2" id="unit2" value="{{ a.price2 }}" placeholder='Enter Unit Price' class="form-control price" step="0.00" min="0" /></td>
+                                <td><input type="number" name="total2" id="total2" value="{{ a.total2 }}" placeholder=0 class="form-control total" readonly /></td>
+                                <td>
+                                  <select name="tax2" id="tax2" class="form-control tax" style="background-color: #2f516f; color: white;">
+                                    <option id="ta2" value={{ a.tax2 }} text={{ cmp1.state }}>{{ a.tax2 }}
+                                      % GST
+                                    </option>
+                                    <option id="ta6" text=" " value={{ a.tax2 }}>{{ a.tax2 }} %
+                                      IGST
+                                    </option>
+                                  </select>
+                                </td>
+                                <td style="display: none"><input type="number" step="any" name='taxamount1' id="taxamount1" value=0 class="form-control taxamount" readonly />
+                                </td>
+                              </tr>
+                              {% endif %}
+                              {% if a.product3 == None %}
+                              <tr></tr>
+                              {% else %}
+                            
+                              <tr id='addr0'>
+                                <td>3</td>
+                                <td><select name="product3" id="product3" class="form-control" style="background-color: #2f516f; color: white;">
+                                    <option value="{{ a.product3 }}" selected>{{ a.product3 }}</option>
+                                  
+                                  </select></td>
+                                <td><input type="text" name="hsn3" id="hsn3" value="{{ a.hsn3 }}" placeholder='Enter HSN Code' class="form-control" /></td>
+                                <td><input type="text" name="description3" id="description3" value="{{ a.description3 }}" placeholder='Description' class="form-control" /></td>
+                                <td><input type="number" name="qty3" id="qty3" value="{{ a.qty3 }}" placeholder='Enter Qty' onchange="qtychange3(this)" class="form-control qty" step=0 min=0 />
+                                  <span id="qtyspan2" class="text-muted"></span>
+                                </td>
+                                <td><input type="number" name="price3" id="unit3" value="{{ a.price3 }}" placeholder='Enter Unit Price' class="form-control price" step="0.00" min="0" /></td>
+                                <td><input type="number" name="total3" id="total3" value="{{ a.total3 }}" placeholder=0 class="form-control total" readonly /></td>
+                                <td>
+                                  <select name="tax3" id="tax3" class="form-control tax" style="background-color: #2f516f; color: white;">
+                                    <option id="ta3" value={{ a.tax3 }} text={{ cmp1.state }}>{{ a.tax3 }}
+                                      % GST
+                                    </option>
+                                    <option id="ta7" text=" " value={{ a.tax3 }}>{{ a.tax3 }} %
+                                      IGST
+                                    </option>
+                                  </select>
+                                </td>
+                                <td style="display: none;"><input type="number" step="any" name='taxamount2' id="taxamount2" value=0 class="form-control taxamount" readonly />
+                                </td>
+                              </tr>
+                              
+                            {% endif %}
+                            {% if a.product4 == None %}
+                              <tr></tr>
+                              {% else %}
+                              <tr id='addr0'>
+                                <td>4</td>
+                                <td><select name="product4" id="product4" class="form-control" style="background-color: #2f516f; color: white;">
+                                    <option value="{{ a.product4 }}" selected>{{ a.product4 }}</option>
+                                  
+                                  </select></td>
+                                <td><input type="text" name="hsn4" id="hsn4" value="{{ a.hsn4 }}" placeholder='Enter HSN Code' class="form-control" /></td>
+                                <td><input type="text" name="description4" id="description4" value="{{ a.description4 }}" placeholder='Description' class="form-control" /></td>
+            
+                                <td><input type="number" name="qty4" id="qty4" value="{{ a.qty4 }}" placeholder='Enter Qty' onchange="qtychange4(this)" class="form-control qty" step=0 min=0 />
+                                  <span id="qtyspan3" class="text-muted"></span>
+                                </td>
+                                <td><input type="number" name="price4" id="unit4" value="{{ a.price4 }}" placeholder='Enter Unit Price' class="form-control price" step="0.00" min="0" /></td>
+                                <td><input type="number" name="total4" id="total4" value="{{ a.total4 }}" placeholder='0.00' class="form-control total" readonly /></td>
+                                <td>
+                                  <select name="tax4" id="tax4" class="form-control tax" style="background-color: #2f516f; color: white;">
+                                    <option id="ta4" value={{ a.tax4 }} text={{ cmp1.state }}>{{ a.tax4 }}
+                                      % GST
+                                    </option>
+                                    <option id="ta8" text=" " value={{ a.tax4 }}>{{ a.tax4 }} %
+                                      IGST
+                                    </option>
+                                  </select>
+                                </td>
+                                <td style="display: none;"><input type="number" step="any" name='taxamount3' id="taxamount3" value='' class="form-control taxamount" readonly />
+                                </td>
+                              </tr>
+                              {% endif %}
+                            </tbody>
+                            {% endfor %}
+                          </table>
+                        </div>
+                      </div>
+            
+            
+                      <div class="row clearfix mt-4">
+                        <div class="col-md-7 mt-3"></div>
+                        <div class="col-md-5 mt-3 table-responsive-md">
+                          <table class="table table-bordered table-hover" id="tab_logic_total">
+                            <tbody>
+                           
+                              <tr>
+                                <th class="text-center">Grand Total</th>
+                                <td class="text-center"><input type="number" name='grandtotal' id="grandtotal" step="any" value="{{ invoice.grandtotal }}" placeholder=0 class="form-control" readonly /></td>
+                              </tr>
+                           
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
                         <hr>
                         <h4>PART B</h4>
                         <hr>
-                        <div class="row">
-                            <div class="col-md-4 mt-3">
-                                <label for="validationCustom01">Mode of Transportation</label>
-                                <select name="tmode" id="title" class="form-control">
-                                    <option value="Road">Road</option>
-                                    <option value="Rail">Rail</option>
-                                    <option value="Ship">Ship</option>
-                                    <option value="Air">Air</option>
-                                </select>
-                            </div>
-                           
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6 mt-3">
-                               
-                            </div>
-                           
-                        </div>
-                        <div class="row">
-                            <div class="col-md-3 mt-3">
-                                <label for="validationCustom05" name style="color: white;">Vehicle Type
-                                    </label>
-                             
-                            </div>
-                            <div class="col-md-3">
-                                <div class="form-check">
-                                    <input class="form-check-input" value="Regular" type="radio" name="vtype" id="flexRadioDefault1">
-                                    <label class="form-check-label" for="flexRadioDefault1">
-                                      Regular
+                        <div class="row splitrow" style="width:100%;">
+                            <div class="split">
+                                <div class="col mt-3">
+                                    <label for="validationCustom05" name style="color: white;">Vehicle Type
+                                        </label>
+                                 
+                                </div>
+                                <br>
+                                <div class="col mt-10">
+                                    <div class="form-check">
+                                        <input class="form-check-input" value="Regular" type="radio" name="vtype" id="flexRadioDefault1">
+                                        <label class="form-check-label" for="flexRadioDefault1">
+                                          Regular
+                                        </label>
+                                      </div>
+                                     
+                                </div>
+                                <br>
+                                <div class="col">
+                                    
+                                    <div class="form-check">
+                                    <input class="form-check-input" value="Cargo" type="radio" name="vtype" id="flexRadioDefault2" >
+                                    <label class="form-check-label" for="flexRadioDefault2">
+                                      Over Dimentional Cargo
                                     </label>
                                   </div>
-                                 
+                                </div>
+                               
+                                  
+                                  
                             </div>
-                            <div class="form-check">
-                                <input class="form-check-input" value="Cargo" type="radio" name="vtype" id="flexRadioDefault2" >
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                  Over Dimentional Cargo
-                                </label>
-                              </div>
-                        </div>
+                            <div class="split">
+                                <div class="col mt-3">
+                                    <label for="validationCustom01">Mode of Transportation</label>
+                                    <select name="tmode" id="title" class="form-control">
+                                        <option value="Road">Road</option>
+                                        <option value="Rail">Rail</option>
+                                        <option value="Ship">Ship</option>
+                                        <option value="Air">Air</option>
+                                    </select>
+                                   </div>
+                                  
+                                   <div class="col mt-3">
+                                    <label for="validationCustom03">Vehicle No</label>
+                                    <input type="text" class="form-control" id="validationCustom03" name="vno"
+                                        >
+                                   </div>
+                               <div class="col mt-3">
+                                <label for="validationCustom03">Transporter's ID</label>
+                                <input type="text" class="form-control" id="validationCustom03" name="vno"
+                                    >
+                               </div>
+                        
+                               
+                            </div>
+       
+                           </div>
+                       
+                    
                   
-                    <div class="row">
-                        <div class="col-md-4 mt-3">
-                            <label for="validationCustom03">Vehicle No</label>
-                            <input type="text" class="form-control" id="validationCustom03" name="vno"
-                                >
-                        </div>
-                       
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 mt-3">
-                            <label for="validationCustom03">Transporter's Doc No</label>
-                            <input type="text" class="form-control" id="validationCustom03" name="tdoc_no"
-                                >
-                        </div>
-                       
-                    </div>
-                    <div class="row">
-                        <div class="col-md-4 mt-3">
-                            <label for="validationCustom03">Transporter's Doc Date</label>
-                            <input type="date" class="form-control" id="validationCustom03" name="tdoc_date"
-                                >
-                        </div>
-                       
-                    </div>
+                 
                 </div>
                        
                         <div class="row">
@@ -213,160 +507,12 @@
 
     
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script>
-        function poppins() {
-            var chkbtn = document.getElementById('okay');
-            if (chkbtn.checked == true) {
-                document.getElementById('shipstreet').value = document.getElementById('street').value;
-                document.getElementById('shipcity').value = document.getElementById('city').value;
-                document.getElementById('shippinco').value = document.getElementById('pinco').value;
-                document.getElementById('shipcountry').value = document.getElementById('country').value;
-                document.getElementById('shipst').value = document.getElementById('state').value;
-                document.getElementById('shipst').innerHTML = document.getElementById('state').value;
-            } else {
-                document.getElementById('shipstreet').value = '';
-                document.getElementById('shipcity').value = '';
-                document.getElementById('shipstate').value = '';
-                document.getElementById('shippinco').value = '';
-                document.getElementById('shipcountry').value = '';
-            }
-        }
-    </script>
 
-    <script>
-        function showgsttyp(){
-            var status = document.getElementById("gsttyp");
-            var a = status.value
-            console.log(a);
-            if( a == "Registered Business - Regular" ){
-                console.log(a);
 
-                document.getElementById('regular').style.display = "flex";
-                // document.getElementById('trade').style.display = "block";
-                // document.getElementById('legal').style.display = "block";
-                // document.getElementById('tax').style.display = "block";
-                document.getElementById('comp').style.display = "none";
-                document.getElementById('unreg').style.display = "none";
-                document.getElementById('overseas').style.display = "none";
-                document.getElementById('sez').style.display = "none";
-                document.getElementById('demed').style.display = "none";
-                document.getElementById('taxdud').style.display = "none";
-                document.getElementById('sezdev').style.display = "none";
-            }
-            else if( a == "Registered Business - Composition" ){
-                document.getElementById('comp').style.display = "flex";
-                document.getElementById('tax').style.display = "none";
-                document.getElementById('trade').style.display = "none";
-                document.getElementById('legal').style.display = "none";
-                document.getElementById('regular').style.display = "none";
-                document.getElementById('unreg').style.display = "none";
-                document.getElementById('overseas').style.display = "none";
-                document.getElementById('sez').style.display = "none";
-                document.getElementById('demed').style.display = "none";
-                document.getElementById('taxdud').style.display = "none";
-                document.getElementById('sezdev').style.display = "none";
-            }
-            else if( a == "unregistered Business" ){
-                document.getElementById('unreg').style.display = "flex";
-                // document.getElementById('tax').style.display = "block";
-                document.getElementById('trade').style.display = "none";
-                document.getElementById('legal').style.display = "none";
-                document.getElementById('comp').style.display = "none";
-                document.getElementById('regular').style.display = "none";
-                document.getElementById('overseas').style.display = "none";
-                document.getElementById('sez').style.display = "none";
-                document.getElementById('demed').style.display = "none";
-                document.getElementById('taxdud').style.display = "none";
-                document.getElementById('sezdev').style.display = "none";
-            }
-            else if( a == "Overseas" ){
-                document.getElementById('overseas').style.display = "flex";
-                document.getElementById('tax').style.display = "none";
-                document.getElementById('trade').style.display = "none";
-                document.getElementById('legal').style.display = "none";
-                document.getElementById('unreg').style.display = "none";
-                document.getElementById('comp').style.display = "none";
-                document.getElementById('regular').style.display = "none";
-                document.getElementById('sez').style.display = "none";
-                document.getElementById('demed').style.display = "none";
-                document.getElementById('taxdud').style.display = "none";
-                document.getElementById('sezdev').style.display = "none";
-            }
-            else if( a == "Special Economic Zone (SEZ)" ){
-                document.getElementById('sez').style.display = "flex";
-                document.getElementById('tax').style.display = "none";
-                document.getElementById('trade').style.display = "none";
-                document.getElementById('legal').style.display = "none";
-                document.getElementById('unreg').style.display = "none";
-                document.getElementById('comp').style.display = "none";
-                document.getElementById('regular').style.display = "none";
-                document.getElementById('overseas').style.display = "none";
-                document.getElementById('demed').style.display = "none";
-                document.getElementById('taxdud').style.display = "none";
-                document.getElementById('sezdev').style.display = "none";
-            }
-            else if( a == "Demed Exports" ){
-                document.getElementById('demed').style.display = "flex";
-                document.getElementById('tax').style.display = "none";
-                document.getElementById('trade').style.display = "none";
-                document.getElementById('legal').style.display = "none";
-                document.getElementById('sez').style.display = "none";
-                document.getElementById('unreg').style.display = "none";
-                document.getElementById('comp').style.display = "none";
-                document.getElementById('regular').style.display = "none";
-                document.getElementById('overseas').style.display = "none";
-                document.getElementById('taxdud').style.display = "none";
-                document.getElementById('sezdev').style.display = "none";
-            }
-            else if( a == "Tax Deductor" ){
-                document.getElementById('taxdud').style.display = "flex";
-                document.getElementById('tax').style.display = "none";
-                document.getElementById('trade').style.display = "none";
-                document.getElementById('legal').style.display = "none";
-                document.getElementById('demed').style.display = "none";
-                document.getElementById('sez').style.display = "none";
-                document.getElementById('unreg').style.display = "none";
-                document.getElementById('comp').style.display = "none";
-                document.getElementById('regular').style.display = "none";
-                document.getElementById('overseas').style.display = "none";
-                document.getElementById('sezdev').style.display = "none";
-            }
-            else if( a == "SEZ Developer" ){
-                document.getElementById('sezdev').style.display = "flex";
-                document.getElementById('tax').style.display = "none";
-                document.getElementById('trade').style.display = "none";
-                document.getElementById('legal').style.display = "none";
-                document.getElementById('demed').style.display = "none";
-                document.getElementById('sez').style.display = "none";
-                document.getElementById('unreg').style.display = "none";
-                document.getElementById('comp').style.display = "none";
-                document.getElementById('regular').style.display = "none";
-                document.getElementById('overseas').style.display = "none";
-                document.getElementById('taxdud').style.display = "none";
-            }
-        }
 
-    </script>
+ 
 
-    <script>
-        function hidinput(divId, element) {
-            if (element.value == 'unregistered Business' || element.value == 'Consumer' || element.value == 'Overseas') {
-                document.getElementById(divId).style.display = 'none';
-            } else {
-                document.getElementById(divId).style.display = 'block';
-            }
-        }
 
-        function checkgst(element) {
-            var gstinput = element.value;
-            var gstregexp = "[0-9]{2}[a-zA-Z]{5}[0-9]{4}[a-zA-Z]{1}[1-9A-Za-z]{1}[Z]{1}[0-9a-zA-Z]{1}";
-            if (gstinput.match(gstregexp)) {
-                document.getElementById('warngst').innerHTML = '';
-            } else {
-                document.getElementById('warngst').innerHTML = 'Please provide a valid GSTIN';
-                alert('Please provide a valid GSTIN');
-            }
-        }
-    </script>
+    
 
 {% endblock %}
