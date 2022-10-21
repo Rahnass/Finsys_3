@@ -1,5 +1,7 @@
+import datetime
 from distutils.command.upload import upload
 from email.policy import default
+from xml.parsers.expat import model
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -62,7 +64,9 @@ class customer(models.Model):
     shipstate = models.CharField(max_length=100, null=True)
     shippincode = models.CharField(max_length=100, null=True)
     shipcountry = models.CharField(max_length=100, null=True)
-    opening_balance = models.CharField(max_length=100, null=True)
+    opening_balance = models.FloatField(null=True)
+    date = models.DateField(null=True)
+    
 
     customer_status = (
         ('Active','Active'),
@@ -348,6 +352,8 @@ class invoice(models.Model):
     CGST = models.CharField(max_length=100,default=0, null=True)
     SGST = models.CharField(max_length=100,default=0, null=True)
     TCS = models.CharField(max_length=100,default=0, null=True)
+
+    # add_open_invoice = models.FloatField()
 
 class invoice_item(models.Model):
     invoice = models.ForeignKey(invoice,on_delete=models.CASCADE)
@@ -1271,11 +1277,13 @@ class paymentitems(models.Model):
 
 class cust_statment(models.Model):
     customer = models.CharField(max_length=255, default='')
+    cid = models.ForeignKey(company, on_delete=models.CASCADE)
     inv = models.ForeignKey(invoice,on_delete=models.CASCADE,blank=True,null=True)
     pay=models.ForeignKey(payment,on_delete=models.CASCADE,blank=True,null=True)
     Date = models.DateField()
     Transactions = models.CharField(max_length=255,blank=True,null=True)
     Details	= models.CharField(max_length=255,blank=True,null=True)
+    Details2= models.CharField(max_length=255,blank=True,null=True)
     Amount	= models.FloatField(blank=True,null=True)
     Payments=models.FloatField(blank=True,null=True)	
     Balance=models.FloatField(blank=True,null=True)
@@ -1283,8 +1291,6 @@ class cust_statment(models.Model):
 
 
 # Rahanas -------------
-
-
 
 class itemtable(models.Model):
     cid = models.ForeignKey(company, on_delete=models.CASCADE)

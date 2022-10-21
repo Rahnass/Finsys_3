@@ -160,7 +160,7 @@ body{
                             <tbody>
                                 {% for sale in sel1 %}
                                 {% if sale.cid_id == cmp1.cid %}
-                                    <tr tr class="table-row " data-href="{% url 'sales_order_view' sale.id %}" >
+                                    <tr  class="table-row " data-href="{% url 'sales_order_view' sale.id %}" >
                                         <th style="text-align: center;">{{ sale.saledate | date:'d-m-Y' }}</th>
                                         <td style="text-align: center;">{{ sale.shipmentdate }}</td>
                                         <td style="text-align: center;"> {{ sale.reference_number }}</td>

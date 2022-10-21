@@ -151,8 +151,8 @@
                   <li><a href="{% url 'C_profile' %}" style="display: block; padding: 8px 16px; text-decoration: none">Company Profile</a></li>
                   <li><a href="{% url 'view_users' %}" style="display: block; padding: 8px 16px; text-decoration: none">Users</a></li>
                   <li><a href="{% url 'godash' %}" style="display: block; padding: 8px 16px; text-decoration: none">Branches</a></li>
-                  <li><a href="{% url 'gotax' %}" style="display: block; padding: 8px 16px; text-decoration: none">Tax</a></li>
                   <li><a href="{% url 'Currencies' %}" style="display: block; padding: 8px 16px; text-decoration: none">Currencies</a></li>
+                  <li><a href="{% url 'gotax' %}" style="display: block; padding: 8px 16px; text-decoration: none">Tax</a></li>
                   <li><a href="{% url 'gotemplates' %}" style="display: block; padding: 8px 16px; text-decoration: none">Templates</a></li>
                   <li><a href="editaccounts/{{ user.id }}" style="display: block; padding: 8px 16px; text-decoration: none">Accounts and Settings</a></li>
                   <li><a href="{% url 'customstyle' %}" style="display: block; padding: 8px 16px; text-decoration: none">Customize Form Style</a></li>
@@ -358,10 +358,20 @@
               </ul>
             </li>
             <li>
-              <a href="{% url 'goewaybill' %}">
-                <div class="menu-title">e-Way Bills</div>
+              <a href="javascript:;" class="has-arrow">
+                <div class="parent-icon"><i class='bx bx-briefcase-alt'></i>
+                </div>
+                <div class="menu-title">E-Way Bill</div>
               </a>
+              <ul>
+                <li><a href="{% url 'goewaybill' %}"><i class="bx bx-right-arrow-alt"></i>e-way bills</a>
+                </li>
+                <li><a href="{% url 'view_eway_inv' %}"><i class="bx bx-right-arrow-alt"></i>Bill Format</a>
+                </li>
+              
+              </ul>
             </li>
+           
             <!-- <li>
               <a href="javascript:;" class="has-arrow">
 
@@ -408,6 +418,12 @@
                 <li><a href="{% url 'accpayables' %}"><i class="bx bx-right-arrow-alt"></i>Accounts
                     payables</a>
                 </li>
+                <li><a href="{% url 'stocksummary' %}"><i class="bx bx-right-arrow-alt"></i>Stock
+                  Summary </a>
+              </li>
+              <li><a href="{% url 'stockvaluation' %}"><i class="bx bx-right-arrow-alt"></i>Stock
+                  Valuation</a>
+              </li>
               </ul>
             </li>
             <li>
@@ -419,7 +435,6 @@
               <ul>
                 <li><a href="{% url 'gogst' %}"><i class="bx bx-right-arrow-alt"></i>GST</a>
                 </li>
-
                 <li><a href="{% url 'gstr1' %}"><i class="bx bx-right-arrow-alt"></i>GSTR-1</a>
                 </li>
                 

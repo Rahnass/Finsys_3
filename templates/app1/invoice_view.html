@@ -316,7 +316,6 @@
       }
 
 
-
       .column {
         float: left;
         width: 50%;
@@ -379,7 +378,7 @@
                 </div>
                 <div class="btn-group" style="float: right; ">
 
-                <a   data-target="#newreason" data-toggle="modal" class="fa"  style="padding: 10px; cursor: pointer;"> Add e-Way Bill</a>
+                  <a   data-target="#newreason" data-toggle="modal" class="fa"  style="padding: 10px; cursor: pointer;"> Add e-Way Bill</a>
 
 
                    
@@ -722,48 +721,48 @@
 
             </div>
             
-        
-            </div>
-
-
-            <!------------------------------------------------E-Way Bill---------------------------------------->
-            <div class="modal fade" id="newreason">
-              <div class="modal-dialog">
-             
-                  <div class="modal-content" style="background-color: #213b52;">
-                     
-                      <div class="modal-header">
-                          <h3 class="m-3">Add e-Way Bill Details</h3>
-                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                              <span aria-hidden="true">&times;</span>
-                          </button>
-                      </div>
-                      <div class="modal-body">
-                        <div class="row">
-                          <div class="column"
-                          style="text-transform:uppercase;text-align:center;">
-                          <a href="{% url 'addewaybill' invoice.invoiceid %}">
-                          <i style="font-size:90px;" class='bx bxs-file-plus ' ></i>
-                            <h6>Create New e-Way Bill</h6>
-                          </a>
-                          </div>
-                          
-                          <div class="column"
-                          style="text-transform:uppercase;text-align:center;">
-                          <a>
-                          <i style="font-size:90px;" class='bx bxs-pointer ' ></i>
-                            <h6>Associate e-Way Bill Number<h6>
-                            </a>
-
-                            </div>
-                        </div>
+    
+              <!------------------------------------------------E-Way Bill---------------------------------------->
+              <div class="modal fade" id="newreason">
+                <div class="modal-dialog">
+               
+                    <div class="modal-content" style="background-color: #213b52;">
                        
-                      </div>
-                    
-                  </div>
-           
-              </div>
-          </div>    
+                        <div class="modal-header">
+                            <h3 class="m-3">Add e-Way Bill Details</h3>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                          <div class="row">
+                            <div class="column"
+                            style="text-transform:uppercase;text-align:center;">
+                            <a href="{% url 'addewaybill' invoice.invoiceid %}">
+                            <i style="font-size:90px;" class='bx bxs-file-plus ' ></i>
+                              <h6>Create New e-Way Bill</h6>
+                            </a>
+                            </div>
+                            
+                            <div class="column"
+                            style="text-transform:uppercase;text-align:center;">
+                            <a>
+                            <i style="font-size:90px;" class='bx bxs-pointer ' ></i>
+                              <h6>Associate e-Way Bill Number<h6>
+                              </a>
+  
+                              </div>
+                          </div>
+                         
+                        </div>
+                      
+                    </div>
+             
+                </div>
+            </div>    
+       
+  
+
 
             <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 

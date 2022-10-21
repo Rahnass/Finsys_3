@@ -197,66 +197,118 @@
                                                                     {% endfor %}
                                                                 </td>
                                                             </tr>
+                                                            {% if a.item2 == None %}
+                                                                <tr>
+                                                                    <td></td>
+                                                                    
+                                                                    <td></td>
+                                                                    
+                                                                    <td></td>
+                                                                </tr>
+                                                                {% else %}
                                                             <tr class="breakrow-inside breakrow-after">
                                                                 <td  style="padding: 10px 0px 10px 10px; font-size:16px;" class="pcs-item-row">
-                                                                    {% if a.new_qty2 == none %}
-                                                                    <p style="display:none">{{ a.new_qty2 }}</p>
-                                                                    {% else %}
+                                                                    {{ a.item2 }} </td>
+                                                                    <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
+                                                                    </td>
+                                                            <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
                                                                     {{ a.new_qty2 }}
-                                                                    {% endif %}</td>
-                                                                <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
+                                                                </td>
+                                                                <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
+                                                                    {% for b in item %}
+                                                                    {% if a.item2 == b.name %}
+                                                                   {{ b.purchase_cost }}.00
+                                                                   {% else %}
+                                                                    {% endif %}
+                                                                    {% endfor %}
+                                                                </td>
+                                                              
+                                                                </tr>
+                                                                {% endif %}
+                                                                {% if a.item3 == None %}
+                                                                <tr>
+                                                                    <td></td>
+                                                                    
+                                                                    <td></td>
+                                                                    
+                                                                    <td></td>
+                                                                </tr>
+                                                                {% else %}
+                                                                <tr class="breakrow-inside breakrow-after">
+                                                                    <td  style="padding: 10px 0px 10px 10px; font-size:16px;" class="pcs-item-row">
+                                                                        {{ a.item3 }} </td>
+                                                                        <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
                                                                         </td>
                                                                 <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
-                                                                  
-                                                                    </td>
-                                                                    <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;">
-                                                                    </td>
-                                                                </tr>
-                                                                <tr  class="breakrow-inside breakrow-after">
-                                                                    <td  style="padding: 10px 0px 10px 10px; font-size:16px;" class="pcs-item-row">
-                                                                        {% if a.new_qty3 == none %}
-                                                                        <p style="display:none">{{ a.new_qty3 }}</p>
-                                                                        {% else %}
                                                                         {{ a.new_qty3 }}
-                                                                        {% endif %} </td>
-                                                                    <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
-                                                                            </td>
-                                                                    <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:15px;">
-                                                                            {{ a.new_qty3 }}
-                                                                        </td>
-                                                                        <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
-                                                                        </td>
+                                                                    </td>
+                                                                    <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
+                                                                        {% for b in item %}
+                                                                        {% if a.item3 == b.name %}
+                                                                       {{ b.purchase_cost }}.00
+                                                                       {% else %}
+                                                                        {% endif %}
+                                                                        {% endfor %}
+                                                                    </td>
+                                                                  
                                                                     </tr>
+                                                                    {% endif %}
+                                                                    {% if a.item4 == None %}
+                                                                    <tr>
+                                                                        <td></td>
+                                                                        
+                                                                        <td></td>
+                                                                        
+                                                                        <td></td>
+                                                                    </tr>
+                                                                    {% else %}
                                                                     <tr class="breakrow-inside breakrow-after">
                                                                         <td  style="padding: 10px 0px 10px 10px; font-size:16px;" class="pcs-item-row">
-                                                                            {% if a.new_qty4 == none %}
-                                                                            <p style="display:none">{{ a.new_qty4 }}</p>
-                                                                            {% else %}
+                                                                            {{ a.item4 }} </td>
+                                                                            <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
+                                                                            </td>
+                                                                    <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
                                                                             {{ a.new_qty4 }}
-                                                                            {% endif %} </td>
-                                                                        <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
-                                                                                </td>
-                                                                        <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
-                                                                                {{ a.new_qty4 }}
-                                                                            </td>
-                                                                            <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;">
-                                                                            </td>
+                                                                        </td>
+                                                                        <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
+                                                                            {% for b in item %}
+                                                                            {% if a.item4 == b.name %}
+                                                                           {{ b.purchase_cost }}.00
+                                                                           {% else %}
+                                                                            {% endif %}
+                                                                            {% endfor %}
+                                                                        </td>
+                                                                      
                                                                         </tr>
+                                                                        {% endif %}
+                                                                        {% if a.item5 == None %}
+                                                                        <tr>
+                                                                            <td></td>
+                                                                            
+                                                                            <td></td>
+                                                                            
+                                                                            <td></td>
+                                                                        </tr>
+                                                                        {% else %}
                                                                         <tr class="breakrow-inside breakrow-after">
                                                                             <td  style="padding: 10px 0px 10px 10px; font-size:16px;" class="pcs-item-row">
-                                                                                {% if a.new_qty5 == none %}
-                                                                                <p style="display:none">{{ a.new_qty5 }}</p>
-                                                                                {% else %}
+                                                                                {{ a.item5 }} </td>
+                                                                                <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
+                                                                                </td>
+                                                                        <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
                                                                                 {{ a.new_qty5 }}
-                                                                                {% endif %} </td>
-                                                                            <td  style="padding: 10px 10px 5px 5px;word-wrap: break-word;font-size:16px;" class="pcs-item-row">
-                                                                                    </td>
-                                                                            <td style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
-                                                                                    {{ a.new_qty3 }}
-                                                                                </td>
-                                                                                <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;">
-                                                                                </td>
+                                                                            </td>
+                                                                            <td  style="padding: 10px 10px 10px 5px;word-wrap: break-word;font-size:18px;" >
+                                                                                {% for b in item %}
+                                                                                {% if a.item5 == b.name %}
+                                                                               {{ b.purchase_cost }}.00
+                                                                               {% else %}
+                                                                                {% endif %}
+                                                                                {% endfor %}
+                                                                            </td>
+                                                                          
                                                                             </tr>
+                                                                            {% endif %}
                                                     </tbody>
                                                 </table>
                                             

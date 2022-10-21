@@ -489,6 +489,16 @@ urlpatterns = [
 
     path('search_resept/<int:id>',views.search_resept,name='search_resept'),
 
+    path('account_transactions/<str:id>',views.account_transactions,name='account_transactions'),
+
+    path('account_transactions1',views.account_transactions1,name='account_transactions1'),
+
+
+    
+
+
+    
+
 
     
 
@@ -551,6 +561,49 @@ urlpatterns = [
     re_path(r'^update_currency/(?P<id>\d+)$', views.update_currency, name='update_currency'),
     re_path(r'^delete_currency/(?P<id>\d+)$', views.delete_currency, name='delete_currency'),
     re_path(r'^temp_est$', views.temp_est, name='temp_est'),
+
+
+
+    re_path(r'^gotemplates$', views.gotemplates, name='gotemplates'),
+    re_path(r'^temp_inv$', views.temp_inv, name='temp_inv'),
+    re_path(r'^temp_est$', views.temp_est, name='temp_est'),
+    re_path(r'^temp_payrec$',views.temp_payrec,name='temp_payrec'),
+    re_path(r'^temp_vendpay$',views.temp_vendpay,name='temp_vendpay'),
+    re_path(r'^temp_custst$',views.temp_custst,name='temp_custst'),
+    re_path(r'^temp_vendst$',views.temp_vendst,name='temp_vendst'),
+    re_path(r'^temp_deliveryc$',views.temp_deliveryc,name='temp_deliveryc'),
+    re_path(r'^temp_creditnote$',views.temp_creditnote,name='temp_creditnote'),
+    re_path(r'^temp_salesorder$',views.temp_salesorder,name='temp_salesorder'),
+    re_path(r'^temp_purchaseorder$',views.temp_purchaseorder,name='temp_purchaseorder'),
+    re_path(r'^temp_vendorcredit$',views.temp_vendorcredit,name='temp_vendorcredit'),
+    re_path(r'^temp_journal$',views.temp_journal,name='temp_journal'),
+    re_path(r'^temp_bill$',views.temp_bill,name='temp_bill'),
+
+
+    re_path(r'^item_trans/(?P<id>\d+)$',views.item_trans,name='item_trans'),
+    re_path(r'^gostock_adjust$', views.gostock_adjust, name='gostock_adjust'),
+    re_path(r'^stock_adjustpage$', views.stock_adjustpage, name='stock_adjustpage'),
+    re_path(r'^getit$', views.getit, name='getit'),
+    re_path(r'^create_reason$', views.create_reason, name='create_reason'),
+    re_path(r'^create_stock_adjustment$', views.create_stock_adjustment, name='create_stock_adjustment'),
+    re_path(r'^view_stockadjust/(?P<id>\d+)$',views.view_stockadjust,name='view_stockadjust'),
+    re_path(r'^edit_stockadjust/(?P<id>\d+)$',views.edit_stockadjust,name='edit_stockadjust'),
+    re_path(r'^update_stock_adjustment/(?P<id>\d+)$',views.update_stock_adjustment,name='update_stock_adjustment'),
+    re_path(r'^stocksummary$', views.stocksummary, name='stocksummary'),
+    re_path(r'^stockvaluation$', views.stockvaluation, name='stockvaluation'),
+    re_path(r'^deletestockadjust/(?P<id>\d+)$', views.deletestockadjust, name='deletestockadjust'),
+    re_path(r'^saf_quandity$', views.saf_quandity, name='saf_quandity'),
+    re_path(r'^saf_value$', views.saf_value, name='saf_value'),
+
+    
+    re_path(r'^gstr1$', views.gstr1, name='gstr1'),
+    re_path(r'^gstr3b$', views.gstr3b, name='gstr3b'),
+
+    re_path(r'^goewaybill$', views.goewaybill, name='goewaybill'),
+    re_path(r'^addewaybill/(?P<id>\d+)$', views.addewaybill, name='addewaybill'),
+    re_path(r'^create_transporter$', views.create_transporter, name='create_transporter'),
+    re_path(r'^create_eway_inv$', views.create_eway_inv, name='create_eway_inv'),
+    re_path(r'^view_eway_inv$', views.view_eway_inv, name='view_eway_inv'),
     
 
     #Jisha
@@ -603,49 +656,7 @@ urlpatterns = [
 
 
         
-    #rahnas---------
-
-    
-    re_path(r'^gotemplates$', views.gotemplates, name='gotemplates'),
-    re_path(r'^temp_inv$', views.temp_inv, name='temp_inv'),
-    re_path(r'^temp_est$', views.temp_est, name='temp_est'),
-    re_path(r'^temp_payrec$',views.temp_payrec,name='temp_payrec'),
-    re_path(r'^temp_vendpay$',views.temp_vendpay,name='temp_vendpay'),
-    re_path(r'^temp_custst$',views.temp_custst,name='temp_custst'),
-    re_path(r'^temp_vendst$',views.temp_vendst,name='temp_vendst'),
-    re_path(r'^temp_deliveryc$',views.temp_deliveryc,name='temp_deliveryc'),
-    re_path(r'^temp_creditnote$',views.temp_creditnote,name='temp_creditnote'),
-    re_path(r'^temp_salesorder$',views.temp_salesorder,name='temp_salesorder'),
-    re_path(r'^temp_purchaseorder$',views.temp_purchaseorder,name='temp_purchaseorder'),
-    re_path(r'^temp_vendorcredit$',views.temp_vendorcredit,name='temp_vendorcredit'),
-    re_path(r'^temp_journal$',views.temp_journal,name='temp_journal'),
-    re_path(r'^temp_bill$',views.temp_bill,name='temp_bill'),
-
-
-    re_path(r'^item_trans/(?P<id>\d+)$',views.item_trans,name='item_trans'),
-    re_path(r'^gostock_adjust$', views.gostock_adjust, name='gostock_adjust'),
-    re_path(r'^stock_adjustpage$', views.stock_adjustpage, name='stock_adjustpage'),
-    re_path(r'^getit$', views.getit, name='getit'),
-    re_path(r'^create_reason$', views.create_reason, name='create_reason'),
-    re_path(r'^create_stock_adjustment$', views.create_stock_adjustment, name='create_stock_adjustment'),
-    re_path(r'^view_stockadjust/(?P<id>\d+)$',views.view_stockadjust,name='view_stockadjust'),
-    re_path(r'^edit_stockadjust/(?P<id>\d+)$',views.edit_stockadjust,name='edit_stockadjust'),
-    re_path(r'^update_stock_adjustment/(?P<id>\d+)$',views.update_stock_adjustment,name='update_stock_adjustment'),
-    re_path(r'^stocksummary$', views.stocksummary, name='stocksummary'),
-    re_path(r'^stockvaluation$', views.stockvaluation, name='stockvaluation'),
-    re_path(r'^deletestockadjust/(?P<id>\d+)$', views.deletestockadjust, name='deletestockadjust'),
-    re_path(r'^saf_quandity$', views.saf_quandity, name='saf_quandity'),
-    re_path(r'^saf_value$', views.saf_value, name='saf_value'),
-
-    
-    re_path(r'^gstr1$', views.gstr1, name='gstr1'),
-    re_path(r'^gstr3b$', views.gstr3b, name='gstr3b'),
-
-    re_path(r'^goewaybill$', views.goewaybill, name='goewaybill'),
-    re_path(r'^addewaybill/(?P<id>\d+)$', views.addewaybill, name='addewaybill'),
-    re_path(r'^create_transporter$', views.create_transporter, name='create_transporter'),
-    re_path(r'^create_eway_inv$', views.create_eway_inv, name='create_eway_inv'),
-    re_path(r'^view_eway_inv$', views.view_eway_inv, name='view_eway_inv'),
+   
     
 
     
