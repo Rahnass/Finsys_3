@@ -534,9 +534,6 @@ urlpatterns = [
     re_path(r'^isales$', views.isales, name='isales'),
     re_path(r'^update_item/(?P<id>\d+)$', views.update_item, name='update_item'),
     re_path(r'^iod_rate$', views.iod_rate, name='iod_rate'),
-    re_path(r'^iod_import$', views.iod_import, name='iod_import'),
-    re_path(r'^iod_export$', views.iod_export, name='iod_export'),
-
     #  manual journal
     re_path(r'^gomjoural$', views.gomjoural, name='gomjoural'),
     re_path(r'^add_mjournal$', views.add_mjournal, name='add_mjournal'),
@@ -604,6 +601,9 @@ urlpatterns = [
     re_path(r'^create_transporter$', views.create_transporter, name='create_transporter'),
     re_path(r'^create_eway_inv$', views.create_eway_inv, name='create_eway_inv'),
     re_path(r'^view_eway_inv$', views.view_eway_inv, name='view_eway_inv'),
+
+    
+    re_path(r'^base1$', views.base1, name='base1'),
     
 
     #Jisha

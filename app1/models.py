@@ -1301,7 +1301,7 @@ class itemtable(models.Model):
     tax_reference = models.CharField(max_length=100)
     purchase_cost = models.IntegerField(default="")
     sales_cost = models.CharField(max_length=100)
-    tax_rate = models.CharField(max_length=100)
+    #tax_rate = models.CharField(max_length=100)
     acount_pur = models.CharField(max_length=100)
     account_sal = models.CharField(max_length=100)
     pur_desc = models.CharField(max_length=100)

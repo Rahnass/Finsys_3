@@ -27744,23 +27744,7 @@ def iod_rate(request):
 
 
 
-def iod_import(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        items = itemtable.objects.exclude(purchase_cost="").filter(cid=cmp1)
-        context = {'items':items,'cmp1': cmp1}
-        return render(request, 'app1/itemmodule.html',context)  
-    except:
-        return redirect('goitem')
 
-def iod_export(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        items = itemtable.objects.exclude(sales_cost="").filter(cid=cmp1)
-        context = {'items':items,'cmp1': cmp1}
-        return render(request, 'app1/itemmodule.html',context)              
-    except:
-        return redirect('goitem')
 
 @login_required(login_url='regcomp')
 def create_item(request):
@@ -27773,7 +27757,7 @@ def create_item(request):
             itax = request.POST['taxref']
             ipcost = request.POST['pcost']
             iscost = request.POST['salesprice']
-            itrate = request.POST['tax']
+            #itrate = request.POST['tax']
             ipuracc = request.POST['pur_account']
             isalacc = request.POST['sale_account']
             ipurdesc = request.POST['pur_desc']
@@ -27787,7 +27771,7 @@ def create_item(request):
                                 hsn=ihsn,tax_reference=itax,
                                 purchase_cost=ipcost,
                                 sales_cost=iscost,
-                                tax_rate=itrate,
+                                #tax_rate=itrate,
                                 acount_pur=ipuracc,
                                 account_sal=isalacc,
                                 pur_desc=ipurdesc,
@@ -28737,17 +28721,23 @@ def create_eway_inv(request):
 
 def view_eway_inv(request):
     cmp1 = company.objects.get(id=request.session['uid'])
-    upd = salesorder.objects.get(cid=cmp1)
+
 
 
     context ={
-        'sale':upd,
         'cmp1':cmp1
 
     }
 
 
     return render(request,'app1/e_way_inv.html',context)    
+
+
+def base1(request):
+        cmp1 = company.objects.get(id=request.session['uid'])
+        context = {'cmp1':cmp1}
+        return render(request, 'app1/base1.html',context)  
+  
 
 
 

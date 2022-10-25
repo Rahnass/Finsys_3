@@ -284,16 +284,7 @@ footer p {
                 <div class="btn-group" style="float: right; ">
 
                    
-                <a href="{% url 'edit_sales_order' sale.id  %}" class=" fa fa-pencil" style="padding: 10px; cursor: pointer;"> Edit</a>
-
-                
-                <a   style="padding: 10px; margin-top: -5px; cursor: pointer;" > 
-
-                 <form  action="{% url 'sales_order_delete' sale.id %}"   > 
-                    <i class="fa fa-trash-o delete"> Delete</i>
-                    <input name="_method" type="hidden" value="DELETE">
-                    
-                    </form> </a>
+               
                 
                     
             </div>    
