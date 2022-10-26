@@ -7,7 +7,8 @@
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no" name="viewport">
   <title>Fin sYs</title>
 
-  
+
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   
     <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;400;700&display=swap" rel="stylesheet">
 
@@ -39,6 +40,10 @@
       padding-top: 10px;
 }
 
+.main-sidebar .sidebar-menu li a {
+font-size:15px;
+}
+
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
@@ -61,10 +66,7 @@
 
 
 <body >
-  <!-- wrapper -->
-  <div class="wrapper">
-    <!--header-->
-    <div class="wrapper">
+
   <div id="app">
     <div class="main-wrapper main-wrapper-1" >
       <div class="navbar-bgg "></div>
@@ -83,25 +85,25 @@
           background-color: #213b52;width:550px;height:1px;">
           
              <ul id="myList" class="one" style="background-color: #213b52;">
-              <li><a href="{% url 'godash' %}">Dashboard</a></li>
-              <li><a href="{% url 'goitem' %}">Item</a></li>
-              <li><a href="{% url 'goonlinebank' %}">Online Banking</a></li>
-              <li><a href="{% url 'goofflinebank' %}">Offline Banking</a></li>
-                <li><a href="{% url 'gobankrecon' %}">Bank Reconcilation</a></li>
-                  <li><a href="{% url 'gosalesrecords' %}">Sales Records</a></li>
-                    <li><a href="{% url 'goinvoices' %}">Invoices</a></li>
-                      <li><a href="{% url 'gocustomers' %}">Customers</a></li>
-                        <li><a href="{% url 'gopands' %}">Product and Services</a></li>
-                          <li><a href="{% url 'goexpences' %}">Expenses</a></li>
-                            <li><a href="{% url 'gosupplies' %}">Suppliers</a></li>
-                              <li><a href="{% url 'gocoa' %}">Chart of Accounts</a></li>
-                                <li><a href="{% url 'gorecon' %}">Reconcile</a></li>
-                                  <li><a href="{% url 'cashposition' %}">Cash Position</a></li>
-                                    <li><a href="{% url 'gorecon' %}">Reconcile</a></li>
-                                      <li><a href="{% url 'gorecon' %}">Cash Position</a></li>
-                                        <li><a href="{% url 'govendor' %}">Vendor</li>
-                                          <li><a href="{% url 'gopurchaseorder' %}">Purchase Order</li>
-                                          <li><a href="{% url 'billing' %}">Bill</li>
+              <li><a style="color:white;text-decoration:none;"  href="{% url 'godash' %}">Dashboard</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'goitem' %}">Item</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'goonlinebank' %}">Online Banking</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'goofflinebank' %}">Offline Banking</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'gobankrecon' %}">Bank Reconcilation</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'gosalesrecords' %}">Sales Records</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'goinvoices' %}">Invoices</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'gocustomers' %}">Customers</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'gopands' %}">Product and Services</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'goexpences' %}">Expenses</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'gosupplies' %}">Suppliers</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'gocoa' %}">Chart of Accounts</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'gorecon' %}">Reconcile</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'cashposition' %}">Cash Position</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'gorecon' %}">Reconcile</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'gorecon' %}">Cash Position</a></li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'govendor' %}">Vendor</li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'gopurchaseorder' %}">Purchase Order</li>
+              <li><a style="color:white;text-decoration:none;" href="{% url 'billing' %}">Bill</li>
 
     
              </ul>
@@ -110,8 +112,8 @@
 
         </form>
         <ul class="navbar-nav navbar-right">
-          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle beep">
-            <i class="far fa-gear"></i></a>
+          <li class="dropdown dropdown-list-toggle"><a href="#" data-toggle="dropdown" class="nav-link nav-link-lg message-toggle ">
+            <i class='bx bxs-cog'></i></a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
               <div class="dropdown-header">Settings
                
@@ -121,15 +123,15 @@
                
                
                 <ul class="a" style=" list-style-type: none; margin: 0; padding: 0; width: 200px;">
-                    <li><a href="{% url 'C_profile' %}" style="display: block; padding: 8px 16px; text-decoration: none">Company Profile</a></li>
-                    <li><a href="{% url 'view_users' %}" style="display: block; padding: 8px 16px; text-decoration: none">Users</a></li>
-                    <li><a href="{% url 'godash' %}" style="display: block; padding: 8px 16px; text-decoration: none">Branches</a></li>
-                    <li><a href="{% url 'Currencies' %}" style="display: block; padding: 8px 16px; text-decoration: none">Currencies</a></li>
-                    <li><a href="{% url 'gotax' %}" style="display: block; padding: 8px 16px; text-decoration: none">Tax</a></li>
-                    <li><a href="{% url 'gotemplates' %}" style="display: block; padding: 8px 16px; text-decoration: none">Templates</a></li>
-                    <li><a href="editaccounts/{{ user.id }}" style="display: block; padding: 8px 16px; text-decoration: none">Accounts and Settings</a></li>
-                    <li><a href="{% url 'customstyle' %}" style="display: block; padding: 8px 16px; text-decoration: none">Customize Form Style</a></li>
-                    <li><a href="{% url 'gocoa' %}" style="display: block; padding: 8px 16px; text-decoration: none">Chart of Accounts</a></li>
+                    <li><a href="{% url 'C_profile' %}"  class="dropdown-item">Company Profile</a></li>
+                    <li><a href="{% url 'view_users' %}"  class="dropdown-item">Users</a></li>
+                    <li><a href="{% url 'godash' %}"  class="dropdown-item">Branches</a></li>
+                    <li><a href="{% url 'Currencies' %}"  class="dropdown-item">Currencies</a></li>
+                    <li><a href="{% url 'gotax' %}"  class="dropdown-item">Tax</a></li>
+                    <li><a href="{% url 'gotemplates' %}" class="dropdown-item">Templates</a></li>
+                    <li><a href="editaccounts/{{ user.id }}"  class="dropdown-item">Accounts and Settings</a></li>
+                    <li><a href="{% url 'customstyle' %}" class="dropdown-item">Customize Form Style</a></li>
+                    <li><a href="{% url 'gocoa' %}"  class="dropdown-item">Chart of Accounts</a></li>
                   </ul>
               
                
@@ -204,14 +206,14 @@
             <img src="{{ cmp1.cimg.url }}" class="user-img"></a>
             {% endif %}
             <div class="dropdown-menu dropdown-menu-right">
-              <a href="features-profile.html" class="dropdown-item has-icon">
+              <a href="/app1/userprofile/{{ user.id }}" class="dropdown-item has-icon">
                 <i class="far fa-user"></i> Profile
               </a>
-              <a href="features-activities.html" class="dropdown-item has-icon">
+              <a href="{% url 'godash' %}"class="dropdown-item has-icon">
                 <i class="fas fa-bolt"></i> Dashboard
               </a>
               <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item has-icon text-danger">
+              <a href="{% url 'logout' %}" class="dropdown-item has-icon text-danger">
                 <i class="fas fa-sign-out-alt"></i> Logout
               </a>
             </div>
@@ -219,80 +221,80 @@
         </ul>
       </nav>
       
-      <div class="main-sidebar sidebar-style-2" style="background-color:#A6B0B9;color:black;">
+      <div class="main-sidebar sidebar-style-2" style="background-color:#E8EBED;color:black;">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
             
             <a ><b>Fin sYs</b></a>
           </div>
-          <div class="sidebar-brand sidebar-brand-sm" style="background-color:#909eab;color:black;">
-            <a href="index.html">FS</a>
+          <div class="sidebar-brand sidebar-brand-sm" style="background-color:#E8EBED;color:black;">
+            <a >FS</a>
           </div>
           <ul class="sidebar-menu" style="color:#000;">
             <li class="dropdown">
-              <a style="color:#000;"><i class="fas fa-fire"></i><span>Dashboard</span></a>
+              <a style="color:#000;" href="{% url 'godash' %}"><i class="fas fa-fire"></i><span>Dashboard</span></a>
              
             </li>
             <li class="dropdown" style="color:#000;">
-              <a style="color:#000;" href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-columns"></i> <span>Item</span></a>
+              <a style="color:#000;" href="#" class="nav-link has-dropdown" data-toggle="dropdown"><i class="fas fa-cube"></i><span>Item</span></a>
               <ul class="dropdown-menu">
-                <li><a style="color:#000;" class="nav-link" href="layout-default.html">Item</a></li>
-                <li><a style="color:#000;" class="nav-link" href="layout-transparent.html">Stock Adjustments</a></li>
+                <li><a style="color:#000;" class="nav-link" href="{% url 'goitem' %}">Item</a></li>
+                <li><a style="color:#000;" class="nav-link" href="{% url 'gostock_adjust' %}">Stock Adjustments</a></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a style="color:#000;" href="#" class="nav-link has-dropdown"><i class="fas fa-th"></i> <span>Banking</span></a>
+              <a style="color:#000;" href="#" class="nav-link has-dropdown"><i class="fas fa-money-check"></i><span>Banking</span></a>
               <ul class="dropdown-menu">
-                <li><a style="color:#000;" class="nav-link" href="bootstrap-alert.html">Online Banking</a></li>
-                <li><a style="color:#000;" class="nav-link" href="bootstrap-badge.html">Offline Banking</a></li>
-                <li><a style="color:#000;" class="nav-link" href="bootstrap-breadcrumb.html">Bank Reconcilation</a></li>
+                <li><a style="color:#000;" class="nav-link" href="{% url 'goonlinebank' %}">Online Banking</a></li>
+                <li><a style="color:#000;" class="nav-link" href="{% url 'bnnk' %}">Offline Banking</a></li>
+                <li><a style="color:#000;" class="nav-link" href="{% url 'gobankrecon' %}">Bank Reconcilation</a></li>
                 
               </ul>
             </li>
             <li class="dropdown">
-              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="fas fa-th-large"></i> <span>Sales</span></a>
+              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="fas fa-file"></i> <span>Sales</span></a>
               <ul class="dropdown-menu">
-                <li><a style="color:#000;"  class="nav-link" href="components-article.html">Customers</a></li>    
-                <li><a style="color:#000;"  class="nav-link " href="components-avatar.html">Estimate</a></li>           
-                <li><a style="color:#000;"  class="nav-link " href="components-hero.html">Sales Order</a></li>        
-                <li><a style="color:#000;"  class="nav-link" href="components-multiple-upload.html"> Sales Records</a></li>
-                <li><a style="color:#000;"  class="nav-link " href="components-pricing.html">Invoices</a></li>               
-                <li><a style="color:#000;"  class="nav-link" href="components-table.html">Payments Received</a></li>
-                <li><a style="color:#000;"  class="nav-link" href="components-user.html">Product and Services</a></li>       
+                <li><a style="color:#000;"  class="nav-link" href="{% url 'gocustomers' %}">Customers</a></li>    
+                <li><a style="color:#000;"  class="nav-link " href="{% url 'goestimate' %}">Estimate</a></li>           
+                <li><a style="color:#000;"  class="nav-link " href="{% url 'gosalesorder' %}">Sales Order</a></li>        
+                <li><a style="color:#000;"  class="nav-link" href="{% url 'gosalesrecords' %}"> Sales Records</a></li>
+                <li><a style="color:#000;"  class="nav-link " href="{% url 'goinvoices' %}">Invoices</a></li>               
+                <li><a style="color:#000;"  class="nav-link" href="{% url 'gopayment_received' %}">Payments Received</a></li>
+                <li><a style="color:#000;"  class="nav-link" href="{% url 'gopands' %}">Product and Services</a></li>       
                       </ul>
             </li>
             <li class="dropdown">
-              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="far fa-file-alt"></i> <span>Purchase</span></a>
+              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="fas fa-briefcase"></i><span>Purchase</span></a>
               <ul class="dropdown-menu">
-                <li><a style="color:#000;"  class="nav-link" href="forms-advanced-form.html">Vendor</a></li>
-                <li><a style="color:#000;"  class="nav-link" href="forms-editor.html">Purchase Order</a></li>
-                <li><a style="color:#000;"  class="nav-link" href="forms-validation.html">Bill</a></li>
-                <li><a style="color:#000;"  class="nav-link" href="forms-validation.html">Expense</a></li>
+                <li><a style="color:#000;"  class="nav-link" href="{% url 'govendor' %}">Vendor</a></li>
+                <li><a style="color:#000;"  class="nav-link" href="{% url 'gopurchaseorder' %}">Purchase Order</a></li>
+                <li><a style="color:#000;"  class="nav-link" href="{% url 'billing' %}">Bill</a></li>
+                <li><a style="color:#000;"  class="nav-link" href="{% url 'goexpenses' %}">Expense</a></li>
               </ul>
             </li>
             <li class="dropdown">
-              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="fas fa-map-marker-alt"></i> <span>E-Way Bill</span></a>
+              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="fas fa-file-invoice"></i> <span>E-Way Bill</span></a>
               <ul class="dropdown-menu">
-                <li><a style="color:#000;"  href="gmaps-advanced-route.html">e-way bills</a></li>
-                <li><a style="color:#000;"  href="gmaps-draggable-marker.html">Bill Format</a></li>
+                <li><a style="color:#000;"  href="{% url 'goewaybill' %}">e-way bills</a></li>
+                <li><a style="color:#000;"  href="{% url 'view_eway_inv' %}">Bill Format</a></li>
                 
               </ul>
             </li>          
               <li class="dropdown">
-              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="fas fa-plug"></i> <span>Payroll</span></a>
+              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="fas fa-wallet"></i><span>Payroll</span></a>
               <ul class="dropdown-menu">
-                <li><a style="color:#000;"  class="nav-link" href="modules-calendar.html">Employee</a></li>
-                <li><a style="color:#000;"  class="nav-link" href="modules-chartjs.html">Payslip</a></li>
+                <li><a style="color:#000;"  class="nav-link" href="{% url 'goemployee' %}">Employee</a></li>
+                <li><a style="color:#000;"  class="nav-link" href="{% url 'gopayslip' %}">Payslip</a></li>
                
               </ul>
             </li>
             <li class="dropdown">
-              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Report</span></a>
+              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="fas fa-comment"></i><span>Report</span></a>
               <ul class="dropdown-menu">
-                <li><a style="color:#000;"  href="auth-forgot-password.html">Profit and Loss</a></li> 
-                <li><a style="color:#000;"  href="auth-login.html">Balance sheet</a></li> 
-                <li><a style="color:#000;"  href="auth-register.html">Account receivables</a></li> 
-                <li><a style="color:#000;"  href="auth-reset-password.html">Account payables</a></li> 
+                <li><a style="color:#000;"  href="{% url 'profitandloss' %}">Profit and Loss</a></li> 
+                <li><a style="color:#000;" href="{% url 'balancesheet' %}">Balance sheet</a></li> 
+                <li><a style="color:#000;"  href="{% url 'accreceivables' %}">Account receivables</a></li> 
+                <li><a style="color:#000;"  href="{% url 'accpayables' %}">Account payables</a></li> 
                 <li><a style="color:#000;"  href="{% url 'stocksummary' %}">Stock Summary </a>
                 </li>
                 <li><a style="color:#000;"  href="{% url 'stockvaluation' %}">Stock  Valuation</a>
@@ -300,7 +302,7 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Taxes</span></a>
+              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="fas fa-money-bill-wave"></i> <span>Taxes</span></a>
               <ul class="dropdown-menu">
                 <li><a style="color:#000;"  href="{% url 'gogst' %}">GST</a>
                 </li>
@@ -316,7 +318,7 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="far fa-user"></i> <span>Accounting</span></a>
+              <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="fas fa-file"></i> <span>Accounting</span></a>
               <ul class="dropdown-menu">
                 <li><a style="color:#000;"  href="{% url 'gocoa' %}">Chart of
                   Accounts</a>
@@ -335,17 +337,33 @@
              </aside>
       </div>
 
-      {% block body %}
 
-      {% endblock %}
+            <!-- Main Content -->
+            <div class="main-content">
+              <section class="section">
+                <div class="section-header">
+               
+                </div>
+      
+                <div class="section-body">
+                  {% block body %}
+                  {% endblock %}
+                </div>
+              </section>
+            </div>
+         
+          </div>
+        </div>
+
+
+        
 
 
 
-    </div>
-  </div>
-</div>
-</div>
-</div>
+
+
+
+
     
  
 

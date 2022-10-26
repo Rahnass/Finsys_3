@@ -3,12 +3,18 @@
     {% if user.is_authenticated %}
         {% load static %}
 
+     
+        
+
         <style type="text/css">
             input {
                 background-color: #2f516f;
                 border: 0;
                 border-radius: 5px;
                 color: white;
+            }
+            .accounts{
+                background-color: #fff;
             }
         </style>
         <div class="page-content">
@@ -101,12 +107,19 @@
                                                     <tr id='addr0'>
                                                         <td>1</td>
                                                         <td>
-                                                            <select name='account' id="account" class="form-control" required>
+                                                            <!--<select name='account' id="account" class="form-control" required>
                                                                 <option value="" selected disabled required>Select Account</option>
                                                                 {% for a in acc %}
                                                                         <option   value="{{ a.name }}">{{ a.name }} </option>
                                                                 {% endfor %}
-                                                            </select>
+                                                            </select>-->
+                                                            <input list="accc1" name='account'
+                                                            placeholder="Select Account" id="account" class="form-control" required>
+                                                            <datalist id="accc1" class="accounts">
+                                                                {% for a in acc %}
+                                                                <option   value="{{ a.name }}">{{ a.name }} </option>
+                                                        {% endfor %}
+                                                            </datalist> 
                                                         </td>
                                                         <td><input type="text" name='jdesc' id="jdesc1"
                                                                    placeholder='Enter Description' class="form-control" >
@@ -134,18 +147,26 @@
                                                     <tr id='addr0'>
                                                         <td>2</td>
                                                         <td>
-                                                            <select name='account1' id="account1" class="form-control" required>
-                                                                <option value="" selected disabled>Select Account</option>
+                                                            <input list="accc" name='account1'
+                                                            placeholder="Select Account" id="account1" class="form-control" required>
+                                                            <datalist id="accc" class="accounts">
+                                                                {% for a in acc %}
+                                                                <option   value="{{ a.name }}">{{ a.name }} </option>
+                                                        {% endfor %}
+                                                            </datalist>  
+                                                           <!-- <select name='account1' id="account1" class="form-control" required>
+                                                                <option value="" selected  >Select Account</option>
                                                                 {% for a in acc %}
                                                                         <option   value="{{ a.name }}">{{ a.name }} </option>
                                                                 {% endfor %}
-                                                            </select>
+                                                            </select>-->
+                                                           
                                                         </td>
                                                         <td><input type="text" name='jdesc1' id="jdesc2"
                                                                    placeholder='Enter Description' class="form-control">
                                                         </td>
-                                                        <td><select name='jcontact1' id="jcontact2"
-                                                                   class="form-control">
+                                                        <td><select name='jcontact1' id="jcontact2" data-live-search="true" 
+                                                                   class="form-control ">
                                                                    <option value="null"  >Select Contact</option>
                                                                 {% for a in cust %}
                                                                         <option   value="{{ a.firstname }} {{ a.lastname }}">{{ a.firstname }} {{ a.lastname }} </option>
@@ -257,7 +278,6 @@
                 </div>
             </div>
         </div>
-
 
 
         <script src="{% static 'assets/plugins/select2/js/select2.min.js' %}"></script>
@@ -400,6 +420,17 @@ function formatDate(date = new Date()) {
   ].join('-');
 }
 </script>
+
+
+<script>
+
+    $(document).ready(function () {
+        $('select').selectize({
+            sortField: 'text'
+        });
+    });
+       
+     </script>
 
        
     {% endif %}

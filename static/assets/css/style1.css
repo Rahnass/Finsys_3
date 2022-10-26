@@ -2324,7 +2324,9 @@ pre {
   width: 250px;
   background-color: #fff;
   z-index: 880;
-  left: 0; }
+  left: 0; 
+  font-size: 14px;
+}
 
 .main-sidebar,
 .navbar,
@@ -2621,8 +2623,10 @@ body.layout-3 .main-footer {
       padding: 0 20px;
       width: 100%;
       letter-spacing: .3px;
-      color: #868e96;
-      text-decoration: none; }
+      color: #08090a;
+      text-decoration: none;
+      font-size: 15px ! important;
+    }
       .main-sidebar .sidebar-menu li a .badge {
         float: right;
         padding: 5px 10px;
