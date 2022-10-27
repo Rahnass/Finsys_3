@@ -28739,6 +28739,13 @@ def base1(request):
         return render(request, 'app1/base1.html',context)  
   
 
+@login_required(login_url='regcomp')
+def temp_debit(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/tem_debitnote.html',{'cmp1':cmp1})
+    except:
+        return redirect('gotemplates')
 
 
 #Jisha

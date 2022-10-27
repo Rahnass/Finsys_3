@@ -575,6 +575,7 @@ urlpatterns = [
     re_path(r'^temp_vendorcredit$',views.temp_vendorcredit,name='temp_vendorcredit'),
     re_path(r'^temp_journal$',views.temp_journal,name='temp_journal'),
     re_path(r'^temp_bill$',views.temp_bill,name='temp_bill'),
+    re_path(r'^temp_debit$',views.temp_debit,name='temp_debit'),
 
 
     re_path(r'^item_trans/(?P<id>\d+)$',views.item_trans,name='item_trans'),
