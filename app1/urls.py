@@ -605,6 +605,7 @@ urlpatterns = [
 
     
     re_path(r'^base1$', views.base1, name='base1'),
+    re_path(r'^bnk_recon_report$', views.bnk_recon_report, name='bnk_recon_report'),
     
 
     #Jisha

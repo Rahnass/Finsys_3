@@ -27736,7 +27736,7 @@ def iodhsn(request):
 def iod_rate(request):
     try:
         cmp1 = company.objects.get(id=request.session['uid'])
-        items = itemtable.objects.order_by('tax_rate').filter(cid=cmp1)
+        items = itemtable.objects.order_by('sales_cost').filter(cid=cmp1)
         context = {'items':items,'cmp1': cmp1}
         return render(request, 'app1/itemmodule.html',context)  
     except:
@@ -28746,6 +28746,16 @@ def temp_debit(request):
         return render(request,'app1/tem_debitnote.html',{'cmp1':cmp1})
     except:
         return redirect('gotemplates')
+
+
+@login_required(login_url='regcomp')
+def bnk_recon_report(request):
+    try:
+        cmp1 = company.objects.get(id=request.session["uid"])
+        context = {'cmp1':cmp1}
+        return render(request, 'app1/bnkrecon_report.html', context)
+    except:
+        return redirect('godash')              
 
 
 #Jisha

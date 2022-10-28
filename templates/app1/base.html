@@ -41,7 +41,7 @@
 }
 
 .main-sidebar .sidebar-menu li a {
-font-size:15px;
+font-size:16px;
 }
 
 </style>
@@ -62,7 +62,7 @@ font-size:15px;
   });
 </script>
 
-</head>
+</head> 
 
 
 <body >
@@ -224,13 +224,15 @@ font-size:15px;
       <div class="main-sidebar sidebar-style-2" style="background-color:#E8EBED;color:black;">
         <aside id="sidebar-wrapper">
           <div class="sidebar-brand">
-            
-            <a ><b>Fin sYs</b></a>
+            <img src="{% static 'assets/images/logo-icon.png' %}" width="30px" alt="" />
+            <h4><b>Fin sYs</b></h4>
+            <hr>
           </div>
-          <div class="sidebar-brand sidebar-brand-sm" style="background-color:#E8EBED;color:black;">
-            <a >FS</a>
+          
+          <div class="sidebar-brand sidebar-brand-sm" style="color:black;">
+            <h3 style="margin-top:10px;" >FS</h3>
           </div>
-          <ul class="sidebar-menu" style="color:#000;">
+          <ul class="sidebar-menu" style="color:#000;margin-top:10px;">
             <li class="dropdown">
               <a style="color:#000;" href="{% url 'godash' %}"><i class="fas fa-fire"></i><span>Dashboard</span></a>
              
@@ -299,6 +301,8 @@ font-size:15px;
                 </li>
                 <li><a style="color:#000;"  href="{% url 'stockvaluation' %}">Stock  Valuation</a>
                 </li>
+                <li><a style="color:#000;"  href="{% url 'bnk_recon_report' %}">Bank Reconcilation</a>
+                </li>
               </ul>
             </li>
             <li class="dropdown">
@@ -330,6 +334,46 @@ font-size:15px;
               </li>
               </ul>
             </li>
+            <li class="dropdown">
+              <a style="color:#000;" href="{% url 'gomyacc' %}"><i class="fas fa-fire"></i><span>My Accountant</span></a>
+             
+            </li>
+          </li>
+          <li class="dropdown">
+            <a style="color:#000;"  href="#" class="nav-link has-dropdown"><i class="fas fa-money-bill-wave"></i> <span>Cash Management</span></a>
+            <ul class="dropdown-menu">
+              <li><a style="color:#000;"  href="{% url 'cashposition' %}">Cash Position</a>
+              </li>
+              <li><a style="color:#000;"  href="#">Cash Flow Analyzer</a>
+              </li>
+              
+              <li><a style="color:#000;"  href="#">Check Cash Flow</a>
+              </li>
+
+
+            </ul>
+          </li>
+          <li class="dropdown">
+            <a style="color:#000;" href="#"><i class="fas fa-fire"></i><span>Production</span></a>
+           
+          </li>
+          <li class="dropdown">
+            <a style="color:#000;" href="#"><i class="fas fa-fire"></i><span>Quality Managment</span></a>
+           
+          </li>
+          <li class="dropdown">
+            <a style="color:#000;" href="#"><i class="fas fa-fire"></i><span>Project Management</span></a>
+           
+          </li>
+          <li class="dropdown">
+            <a style="color:#000;" href="#"><i class="fas fa-fire"></i><span>Usage Decisions</span></a>
+           
+          </li>
+          <li class="dropdown">
+            <a style="color:#000;" href="#"><i class="fas fa-fire"></i><span>Accounts and Payable</span></a>
+           
+          </li>
+           
            
           
           </ul>
