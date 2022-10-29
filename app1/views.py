@@ -29665,7 +29665,7 @@ def deleteexpense(request, id):
         expnce.delete() 
         return redirect('goexpenses')
     return redirect('/')
-
+ 
 
 def bnnk(request):
     g=accounts.objects.filter(acctype='Current Liabilities')
@@ -29694,3 +29694,18 @@ def bnk1(request,pk):
     return render(request,"app1/bnk1.html",context)
 
       
+@login_required(login_url='regcomp')
+def recon_bank_page(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/reconcil_page.html')
+    except:
+        return redirect('gotemplates')  
+
+@login_required(login_url='regcomp')
+def recon_acc_page(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/reconcil_acc.html')
+    except:
+        return redirect('gotemplates')         
