@@ -46,7 +46,14 @@
   .almost-gray{
     color: #000;
   }
-
+  
+  body{
+    background-color: #eee;
+    padding-top: 25px;
+    -webkit-print-color-adjust: exact !important;
+    height: 100%;
+    margin-top: 40px;
+  }
   
   div.tempinv{
     background-color: white;
@@ -213,7 +220,7 @@
   }
   
   div.minvoice-content > div > h1{
-    font-size: 14px;
+    font-size: 16px;
   }
   
   div.minvoice-content{
@@ -222,12 +229,12 @@
   }
   
   div.minvoice-content > div > p{
-    font-size: 13px;
+    font-size: 12px;
   }
   
   
   div.minvoice-header > div > h1{
-    font-size: 18px;
+    font-size: 16px;
   }
   
  
@@ -286,7 +293,7 @@
     font-size:12px;
   }
   .mtable1{
-    color:black;font-size:12px;
+    color:black;font-size:9px;
   }
   .mtable2{
     color:black;
@@ -299,25 +306,6 @@
     width:100% 
   }
 
-
-.modal-dialog { /* Width */
-    width:500px;
-    height:800px;
-    display: inline-block;
-    font-size:20px;
-}
-.modal {
-    z-index: -1;
-    width:A4;
-    height:A4;
-    display: flex !important;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modal-open .modal {
-     z-index: 1050;
-  }
 </style>
 
 <div class="page-content">
@@ -492,8 +480,60 @@
                     One Tousand One hundred</p>
                   </div>
                   <div class="row ">
-                    <div class=" col-md-12 mtax-table ">
-                      
+                    <div class=" col-md-12 tax-table ">
+                      <table border="1" width="100%" class="table3">
+                            <thead class="thead splitForPrint" >
+                              <tr style="width:100%;">
+                                <th >HSN/SAC</th>
+                                <th >Taxable Value</th>
+                                <th >Central Tax</th>
+                                <th >State Tax</th>
+                                <th >Total</th>
+                                <th >Discount</th>
+                                <th class="text-right" >Amount</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              <tr>
+                                <td>&nbsp</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                
+                              </tr>
+                              <tr>
+                                <td>&nbsp</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                
+                              </tr>
+                              <tr>
+                                <td>&nbsp</td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                
+                              </tr>
+                              
+                              <tr>
+                                <th colspan="6">Total</th>
+                                
+                                <td class="text-right">28,75 <span class="currency">&euro;</span> </td>
+                              </tr>
+                           
+                             
+                            </tbody>
+                          </table>
                 <div class="row invoice_details">
                    <!-- invoiced to details -->
                    <div class="col-12 ">
@@ -572,7 +612,7 @@
         
           <div class="minvoice-content row ">
             <div class="col-4">
-              <p  style="color:black;">Buyer<br>
+              <p  style="color:black; font-size:8px">Buyer<br>
               Client Name<br>
               Client Adress spanning on two rows hopefully.<br>
              GSTIN/UIN: 12091803<br>
@@ -618,9 +658,7 @@
               
               </tr>
               <tr>
-                <td colspan="2">Terms of delivery
-                  <br>
-                </td>
+                <td colspan="2">Terms of delivery</td>
                 
 
               
@@ -708,7 +746,59 @@
           </div>
           <div class="row ">
             <div class=" col-md-12 mtax-table ">
-              
+              <table border="1" width="100%" class="mtable3">
+                    <thead class="thead splitForPrint" >
+                      <tr style="width:100%;">
+                        <th >HSN/SAC</th>
+                        <th >Taxable Value</th>
+                        <th >Central Tax</th>
+                        <th >State Tax</th>
+                        <th >Total</th>
+                        <th >Discount</th>
+                        <th class="text-right" >Amount</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>&nbsp</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        
+                      </tr>
+                      <tr>
+                        <td>&nbsp</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        
+                      </tr>
+                      <tr>
+                        <td>&nbsp</td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        
+                      </tr>
+                      
+                      <tr>
+                        <th colspan="6">Total</th>
+                        
+                        <td class="text-right">28,75 <span class="currency">&euro;</span> </td>
+                      </tr>
+                   
+                     
+                    </tbody>
+                  </table>
         <div class="row minvoice_details">
            <!-- invoiced to details -->
            <div class="col-12 ">

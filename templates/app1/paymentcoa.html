@@ -11,15 +11,17 @@
             </div>
         </div>
         <div class="card p-3 radius-15 p-4">
-            <form method="post" action="paymentacccreate">
+            <form method="post" action="{% url 'accpayment' %}">
                 {% csrf_token %}
                 <div class="row mt-2 mb-2">
                     <div class="col-md-6">
                         <label for="acctyp">Account Type</label>
                         <select name="acctype" id="select1"
                                 class="custom-select-md form-control w-100">
-                            <option value="3">Bank</option>
-                            <option value="2">Current Assets</option>
+                                <option>Undepposited Funds</option>
+                                <option>Cash </option>
+                                <option>Bank</option>
+                                <option>Cost Of Goods </option>
                         </select>
                     </div>
                     <div class="col-md-6">
@@ -214,6 +216,19 @@
                                 <option value="12.0% IGST">12.0% IGST</option>
                                 <option value="2.0% CST">2.0% CST</option>
                             </select>
+                        </div>
+                        <div class="row mt-2" style="display: inline-flex;">
+                            <div class="col-md-6">
+                                <label for="balance">Balance</label>
+                                <input type="text" name="balance" id="balance"
+                                       class="form-control" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="asof">as of</label>
+                                <input type="date" name="asof" id="asof"
+                                       class="form-control" 
+                                       required>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -127,7 +127,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
     color: white;
   }
 </style>
-<form action="{% url 'updateinvoice2' invoice.invoiceid %}" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
+<form action="updateinvoice/{{ invoice.invoiceid }}" method="post" class="needs-validation" enctype="multipart/form-data" novalidate>
   {% csrf_token %}
   <div class="page-content">
     <!--breadcrumb-->
@@ -274,14 +274,11 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                   </tr>
                 </thead>
                 <tbody>
-
-                  {% for j in invitem %}
                   <tr id='addr0'>
-                    <td>{{ forloop.counter }}</td>
+                    <td>1</td>
                     <td>
-                      <select name='product[]' id="product" class="form-control" style="background-color: #2f516f; color: white;">
-
-                        <option value="{{ j.product }}" selected>{{ j.product }}</option>
+                      <select name='product' id="product" class="form-control" style="background-color: #2f516f; color: white;">
+                        <option value="{{ invoice.product }}" selected>{{ invoice.product }}</option>
                         {% for i in item %}
                         {% if i.cid_id == cmp1.cid %}
                             <option 
@@ -305,18 +302,18 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                         {% endfor %} -->
                       </select>
                     </td>
-                    <td><input type="text" name='hsn[]'  value="{{ j.hsn }}" id="hsn1" placeholder='Enter HSN Code' class="form-control" style="background-color: #2f516f; color: white;" /></td>
-                    <td><input type="text" name='description[]'  value="{{ j.description }}"  id="description" placeholder='Description' class="form-control" style="background-color: #2f516f; color: white;" /></td>
-                    <td><input type="number" name='qty[]' value="{{ j.qty }}" onchange="qtychange1(this)" placeholder='Enter Qty' id="qty1" value=0 class="form-control qty" step=0 min=0 style="background-color: #2f516f; color: white;" />
+                    <td><input type="text" name='hsn' value="{{ invoice.hsn }}" id="hsn1" placeholder='Enter HSN Code' class="form-control" style="background-color: #2f516f; color: white;" /></td>
+                    <td><input type="text" name='description' value="{{ invoice.description }}"  id="description" placeholder='Description' class="form-control" style="background-color: #2f516f; color: white;" /></td>
+                    <td><input type="number" name='qty' value="{{ invoice.qty }}" onchange="qtychange1(this)" placeholder='Enter Qty' id="qty1" value=0 class="form-control qty" step=0 min=0 style="background-color: #2f516f; color: white;" />
                       <span id="qtyspan" class='text-muted'></span>
                     </td>
-                    <td><input type="number" name='price[]' value="{{ j.price }}" id="unit1" placeholder='Enter Unit Price' class="form-control price" step="0.00" min="0" style="background-color: #2f516f; color: white;" /></td>
+                    <td><input type="number" name='price' value="{{ invoice.price }}" id="unit1" placeholder='Enter Unit Price' class="form-control price" step="0.00" min="0" style="background-color: #2f516f; color: white;" /></td>
                     
                     
                    
                     <td>
-                      <select name="tax[]" id="tax1" class="form-control tax" style="background-color: #2f516f; color: white;">
-                        <option id="ta1" value={{ j.tax }} text={{ cmp1.state }}>{{ j.tax }}
+                      <select name="tax" id="tax1" class="form-control tax" style="background-color: #2f516f; color: white;">
+                        <option id="ta1" value={{ invoice.tax }} text={{ cmp1.state }}>{{ invoice.tax }}
                           % GST
                         </option>
                         <option value=28 text={{ cmp1.state }}>28.0% GST(28%)</option>
@@ -329,7 +326,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                         <option value=0 text={{ cmp1.state }}>0.0% GST(0%)</option>
                         <option value=0 text={{ cmp1.state }}>Exempt GST(0%)</option>
                         <option value=0 text={{ cmp1.state }}>Out of Scope(0%)</option>
-                        <option id="ta5" text=" " value={{ j.tax }}>{{ j.tax }} %
+                        <option id="ta5" text=" " value={{ invoice.tax }}>{{ invoice.tax }} %
                           IGST
                         </option>
                         <option value=28 text=" ">28.0% IGST(28%)</option>
@@ -344,13 +341,10 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                         <option value=0 text=" ">Out of Scope(0%)</option>
                       </select>
                     </td>
-                    <td><input type="number" name='total[]' value="{{ j.total }}" id="total1" placeholder=0 class="form-control total" value=0 step="any" readonly style="background-color: #2f516f; color: white;" /></td>
+                    <td><input type="number" name='total' value="{{ invoice.total }}" id="total1" placeholder=0 class="form-control total" value=0 step="any" readonly style="background-color: #2f516f; color: white;" /></td>
                     <td style="display: none;"><input type="number" step="any" name='taxamount1' id="taxamount1" class="form-control taxamount" />
                     </td>
                   </tr>
-                  {% endfor %}
-
-<!-- 
                   <tr id='bun1' style="display: none;">
                     <td></td>
                     <td>
@@ -546,7 +540,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                                     value="{{ i.name  }}">{{ i.name  }} </option>
                         {% endif %}
                     {% endfor %}
-                        {% for proinv in inv %}
+                        <!-- {% for proinv in inv %}
                         {% if proinv.cid_id == cmp1.cid %}
                         <option text="{{ proinv.inventoryid }}" value="{{ proinv.name }}">{{ proinv.name }} </option>
                         {% endif %}
@@ -560,7 +554,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                         {% if proinv.cid_id == cmp1.cid %}
                         <option text="{{ proinv.bundleid }}" value="{{ proinv.name }}">{{ proinv.name }} </option>
                         {% endif %}
-                        {% endfor %}
+                        {% endfor %} -->
                       </select>
                       {# <button type="button" class="btn btn-outline-secondary ml-1">+</button>#}
                     </td>
@@ -800,7 +794,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                                     value="{{ i.name  }}">{{ i.name  }} </option>
                         {% endif %}
                     {% endfor %}
-                        {% for proinv in inv %}
+                        <!-- {% for proinv in inv %}
                         {% if proinv.cid_id == cmp1.cid %}
                         <option text="{{ proinv.inventoryid }}" value="{{ proinv.name }}">{{ proinv.name }} </option>
                         {% endif %}
@@ -814,7 +808,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                         {% if proinv.cid_id == cmp1.cid %}
                         <option text="{{ proinv.bundleid }}" value="{{ proinv.name }}">{{ proinv.name }} </option>
                         {% endif %}
-                        {% endfor %}
+                        {% endfor %} -->
                       </select>
                       {#  <button type="button" class="btn btn-outline-secondary ml-1">+</button>#}
                     </td>
@@ -1054,7 +1048,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                                     value="{{ i.name  }}">{{ i.name  }} </option>
                         {% endif %}
                     {% endfor %}
-                        {% for proinv in inv %}
+                        <!-- {% for proinv in inv %}
                         {% if proinv.cid_id == cmp1.cid %}
                         <option text="{{ proinv.inventoryid }}" value="{{ proinv.name }}">{{ proinv.name }} </option>
                         {% endif %}
@@ -1068,7 +1062,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                         {% if proinv.cid_id == cmp1.cid %}
                         <option text="{{ proinv.bundleid }}" value="{{ proinv.name }}">{{ proinv.name }} </option>
                         {% endif %}
-                        {% endfor %}
+                        {% endfor %} -->
                       </select>
                       {#                                                <button type="button" class="btn btn-outline-secondary ml-1">+</button>#}
                     </td>
@@ -1296,7 +1290,7 @@ $('#baldue').val(parseFloat(x .toFixed(2)));
                     </td>
                     <td style="display: none;"><input type="number" step="any" name='taxamount44' id="taxamount44" class="form-control taxamount" readonly />
                     </td>
-                  </tr> -->
+                  </tr>
                 </tbody>
               </table>
 

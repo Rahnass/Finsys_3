@@ -1,6 +1,5 @@
 from django.urls import re_path,path
 from . import views
-from django.views.decorators.csrf import csrf_exempt
 
 urlpatterns = [
     re_path(r'^$', views.index, name='index'),
@@ -359,17 +358,7 @@ urlpatterns = [
     
     re_path(r'^gosearch',views.gosearch,name='gosearch'),
 
-    path('gocustomers1',views.gocustomers1,name='gocustomers1'),
-
-    path('gocustomers2',views.gocustomers2,name='gocustomers2'),
-
-    
-
     path('gstverification',views.gstverification,name='gstverification'),
-
-    path('customer_profile/<int:id>',views.customer_profile,name='customer_profile'),
-
-    
 
     path('goestimate',views.goestimate,name='goestimate'),
 
@@ -378,15 +367,6 @@ urlpatterns = [
     path('estcreate2',views.estcreate2,name='estcreate2'),
 
     path('new_customers',views.new_customers,name='new_customers'),
-
-    path('estimate_create_item',views.estimate_create_item,name='estimate_create_item'),
-
-    path('estimate_create_item2/<int:id>',views.estimate_create_item2,name='estimate_create_item2'),
-
-     path('new_customers4/<int:id>',views.new_customers4,name='new_customers4'),
-
-
-    
 
     path('updateestimate2/<int:id>',views.updateestimate2,name='updateestimate2'),
 
@@ -403,9 +383,6 @@ urlpatterns = [
     path('estmate_filter2',views.estmate_filter2,name='estmate_filter2'),
 
     path('estmate_filter3',views.estmate_filter3,name='estmate_filter3'),
-
-    path('estimate_pdf',views.estimate_pdf,name='estimate_pdf'),
-     
 
 
     # Sales
@@ -442,10 +419,6 @@ urlpatterns = [
 
     path('new_customers3',views.new_customers3,name='new_customers3'),
 
-    path('sale_create_item',views.sale_create_item,name='sale_create_item'),
-
-    
-
 
     # invoice
 
@@ -456,13 +429,6 @@ urlpatterns = [
     re_path(r'^editinvoice/updateinvoice/(?P<id>\d+)$', views.updateinvoice, name='updateinvoice'),
     path('invoice_status/<int:id>',views.invoice_status,name='invoice_status'),
 
-    path('inv_create_item',views.inv_create_item,name='inv_create_item'),
-
-    path('updateinvoice2/<int:id>',views.updateinvoice2,name='updateinvoice2'),
-
-    
-    
-    path('invcreate2',views.invcreate2,name='invcreate2'),
     path('goinvoices1',views.goinvoices1,name='goinvoices1'),
 
     path('goinvoices2',views.goinvoices2,name='goinvoices2'),
@@ -471,40 +437,9 @@ urlpatterns = [
 
     
 
-    # receipt
-
-    
-    path('gopayment_received',views.gopayment_received,name='gopayment_received'),
-    path('payment_received',views.payment_received,name='payment_received'),
-
-    path('getdatainv',views.getdatainv,name='getdatainv'),
-
-    path('paymentcreate2',views.paymentcreate2,name='paymentcreate2'),
-
-    path('search_payment_received',csrf_exempt(views.search_payment_received),name='search_payment_received'),
-
-    path('payment_view/<int:id>',views.payment_view,name='payment_view'),
-
-    path('delete_payment/<int:id>',views.delete_payment,name='delete_payment'),
-
-    path('search_resept/<int:id>',views.search_resept,name='search_resept'),
-
-    path('account_transactions/<str:id>',views.account_transactions,name='account_transactions'),
-
-    path('account_transactions1',views.account_transactions1,name='account_transactions1'),
-
 
     
 
-
-    
-
-
-    
-
-
-    
-    
 
     # path('pdf',views.pdf,name='pdf'),
 
@@ -534,6 +469,9 @@ urlpatterns = [
     re_path(r'^isales$', views.isales, name='isales'),
     re_path(r'^update_item/(?P<id>\d+)$', views.update_item, name='update_item'),
     re_path(r'^iod_rate$', views.iod_rate, name='iod_rate'),
+    re_path(r'^iod_import$', views.iod_import, name='iod_import'),
+    re_path(r'^iod_export$', views.iod_export, name='iod_export'),
+
     #  manual journal
     re_path(r'^gomjoural$', views.gomjoural, name='gomjoural'),
     re_path(r'^add_mjournal$', views.add_mjournal, name='add_mjournal'),
@@ -558,57 +496,6 @@ urlpatterns = [
     re_path(r'^update_currency/(?P<id>\d+)$', views.update_currency, name='update_currency'),
     re_path(r'^delete_currency/(?P<id>\d+)$', views.delete_currency, name='delete_currency'),
     re_path(r'^temp_est$', views.temp_est, name='temp_est'),
-
-
-
-    re_path(r'^gotemplates$', views.gotemplates, name='gotemplates'),
-    re_path(r'^temp_inv$', views.temp_inv, name='temp_inv'),
-    re_path(r'^temp_est$', views.temp_est, name='temp_est'),
-    re_path(r'^temp_payrec$',views.temp_payrec,name='temp_payrec'),
-    re_path(r'^temp_vendpay$',views.temp_vendpay,name='temp_vendpay'),
-    re_path(r'^temp_custst$',views.temp_custst,name='temp_custst'),
-    re_path(r'^temp_vendst$',views.temp_vendst,name='temp_vendst'),
-    re_path(r'^temp_deliveryc$',views.temp_deliveryc,name='temp_deliveryc'),
-    re_path(r'^temp_creditnote$',views.temp_creditnote,name='temp_creditnote'),
-    re_path(r'^temp_salesorder$',views.temp_salesorder,name='temp_salesorder'),
-    re_path(r'^temp_purchaseorder$',views.temp_purchaseorder,name='temp_purchaseorder'),
-    re_path(r'^temp_vendorcredit$',views.temp_vendorcredit,name='temp_vendorcredit'),
-    re_path(r'^temp_journal$',views.temp_journal,name='temp_journal'),
-    re_path(r'^temp_bill$',views.temp_bill,name='temp_bill'),
-    re_path(r'^temp_debit$',views.temp_debit,name='temp_debit'),
-
-
-    re_path(r'^item_trans/(?P<id>\d+)$',views.item_trans,name='item_trans'),
-    re_path(r'^gostock_adjust$', views.gostock_adjust, name='gostock_adjust'),
-    re_path(r'^stock_adjustpage$', views.stock_adjustpage, name='stock_adjustpage'),
-    re_path(r'^getit$', views.getit, name='getit'),
-    re_path(r'^create_reason$', views.create_reason, name='create_reason'),
-    re_path(r'^create_stock_adjustment$', views.create_stock_adjustment, name='create_stock_adjustment'),
-    re_path(r'^view_stockadjust/(?P<id>\d+)$',views.view_stockadjust,name='view_stockadjust'),
-    re_path(r'^edit_stockadjust/(?P<id>\d+)$',views.edit_stockadjust,name='edit_stockadjust'),
-    re_path(r'^update_stock_adjustment/(?P<id>\d+)$',views.update_stock_adjustment,name='update_stock_adjustment'),
-    re_path(r'^stocksummary$', views.stocksummary, name='stocksummary'),
-    re_path(r'^stockvaluation$', views.stockvaluation, name='stockvaluation'),
-    re_path(r'^deletestockadjust/(?P<id>\d+)$', views.deletestockadjust, name='deletestockadjust'),
-    re_path(r'^saf_quandity$', views.saf_quandity, name='saf_quandity'),
-    re_path(r'^saf_value$', views.saf_value, name='saf_value'),
-
-    
-    re_path(r'^gstr1$', views.gstr1, name='gstr1'),
-    re_path(r'^gstr3b$', views.gstr3b, name='gstr3b'),
-
-    re_path(r'^goewaybill$', views.goewaybill, name='goewaybill'),
-    re_path(r'^addewaybill/(?P<id>\d+)$', views.addewaybill, name='addewaybill'),
-    re_path(r'^create_transporter$', views.create_transporter, name='create_transporter'),
-    re_path(r'^create_eway_inv$', views.create_eway_inv, name='create_eway_inv'),
-    re_path(r'^view_eway_inv$', views.view_eway_inv, name='view_eway_inv'),
-
-    
-    re_path(r'^base1$', views.base1, name='base1'),
-    re_path(r'^bnk_recon_report$', views.bnk_recon_report, name='bnk_recon_report'),
-    re_path(r'^recon_bank_page$', views.recon_bank_page, name='recon_bank_page'),
-    re_path(r'^recon_acc_page$', views.recon_acc_page, name='recon_acc_page'),
-
     
 
     #Jisha
@@ -661,7 +548,30 @@ urlpatterns = [
 
 
         
-   
+    #rahnas---------
+
+    
+    re_path(r'^temp_payrec$',views.temp_payrec,name='temp_payrec'),
+    re_path(r'^temp_vendpay$',views.temp_vendpay,name='temp_vendpay'),
+    re_path(r'^temp_custst$',views.temp_custst,name='temp_custst'),
+    re_path(r'^temp_vendst$',views.temp_vendst,name='temp_vendst'),
+    re_path(r'^accpayment$',views.accpayment,name='accpayment'),
+    re_path(r'^trial$',views.trial,name='trial'),
+    re_path(r'^cras$',views.cras,name='cras'),
+    
+    re_path(r'^acre$',views.acre,name='acre'),
+    re_path(r'^acres/(?P<pk>\d+)$',views.acres,name='acres'),
+    re_path(r'^curli$',views.curli,name='curli'),
+    re_path(r'^fix$',views.fix,name='fix'),
+    re_path(r'^nonass$',views.nonass,name='nonass'),
+    re_path(r'^accpay$',views.accpay,name='accpay'),
+    re_path(r'^credc$',views.credc,name='credc'),
+    re_path(r'^nonli$',views.nonli,name='nonli'),
+    re_path(r'^eqt$',views.eqt,name='eqt'),
+    re_path(r'^incm$',views.incm,name='incm'),
+    re_path(r'^oincm$',views.oincm,name='oincm'),
+    re_path(r'^cog$',views.cog,name='cog'),
+    re_path(r'^exp$',views.exp,name='exp'),
     
 
     
@@ -670,7 +580,12 @@ urlpatterns = [
     
 
     
-
+    re_path(r'^recon_bank_page/(?P<pk>\d+)$',views.recon_bank_page,name='recon_bank_page'),
+    re_path(r'^recon_acc_page/(?P<pk>\d+)$',views.recon_acc_page,name='recon_acc_page'),
+    
+    re_path(r'^create_reconcil/(?P<pk>\d+)$',views.create_reconcil,name='create_reconcil'),
+    
+    re_path(r'^reconcil2_page/(?P<pk>\d+)$',views.reconcil2_page,name='reconcil2_page'),
 
 
     

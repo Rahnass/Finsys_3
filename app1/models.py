@@ -1,7 +1,4 @@
-import datetime
 from distutils.command.upload import upload
-from email.policy import default
-from xml.parsers.expat import model
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils import timezone
@@ -43,7 +40,7 @@ class company(models.Model):
 class customer(models.Model):
     customerid = models.AutoField(('CUSTID'), primary_key=True)
     cid = models.ForeignKey(company, on_delete=models.CASCADE)
-    title= models.CharField(max_length=10)
+    title = models.CharField(max_length=10)
     firstname = models.CharField(max_length=100)
     lastname = models.CharField(max_length=100)
     company = models.CharField(max_length=100)
@@ -64,19 +61,6 @@ class customer(models.Model):
     shipstate = models.CharField(max_length=100, null=True)
     shippincode = models.CharField(max_length=100, null=True)
     shipcountry = models.CharField(max_length=100, null=True)
-    opening_balance = models.FloatField(null=True)
-    date = models.DateField(null=True)
-    
-
-    customer_status = (
-        ('Active','Active'),
-        ('Inactive','Inactive'),
-       
-
-    )
-    
-    status =models.CharField(max_length=150,choices=customer_status,default='Active')
-
 
     class meta:
         db_table = "customer"
@@ -290,49 +274,49 @@ class invoice(models.Model):
     email = models.CharField(max_length=100, default='')
     invoiceno = models.IntegerField(default=1000)
     terms = models.CharField(max_length=100, default='')
-    invoicedate = models.DateField()
+    invoicedate = models.CharField(max_length=100)
     duedate = models.CharField(max_length=100)
     bname = models.CharField(max_length=255, default='')
     placosupply = models.CharField(max_length=100, default='')
 
-    # product = models.CharField(max_length=100)
-    # hsn = models.CharField(max_length=100)
-    # description = models.CharField(max_length=100, default='')
-    # qty = models.IntegerField(default=0, null=True)
-    # price = models.CharField(max_length=100)
-    # total = models.IntegerField(default=0, null=True)
-    # tax = models.CharField(max_length=100)
-    
+    product = models.CharField(max_length=100)
+    hsn = models.CharField(max_length=100)
+    description = models.CharField(max_length=100, default='')
+    qty = models.IntegerField(default=0, null=True)
+    price = models.CharField(max_length=100)
+    total = models.IntegerField(default=0, null=True)
+    tax = models.CharField(max_length=100)
+    subtotal = models.IntegerField(default=0, null=True)
+    grandtotal = models.IntegerField(default=0, null=True)
 
-    # product2 = models.CharField(max_length=100, default='')
-    # hsn2 = models.CharField(max_length=100, default='')
-    # description2 = models.CharField(max_length=100, default='')
-    # qty2 = models.IntegerField(default=0, null=True)
-    # price2 = models.CharField(max_length=100, default='')
-    # total2 = models.IntegerField(default=0, null=True)
-    # tax2 = models.CharField(max_length=100, default='')
+    product2 = models.CharField(max_length=100, default='')
+    hsn2 = models.CharField(max_length=100, default='')
+    description2 = models.CharField(max_length=100, default='')
+    qty2 = models.IntegerField(default=0, null=True)
+    price2 = models.CharField(max_length=100, default='')
+    total2 = models.IntegerField(default=0, null=True)
+    tax2 = models.CharField(max_length=100, default='')
 
-    # product3 = models.CharField(max_length=100, default='')
-    # hsn3 = models.CharField(max_length=100, default='')
-    # description3 = models.CharField(max_length=100, default='')
-    # qty3 = models.IntegerField(default=0, null=True)
-    # price3 = models.CharField(max_length=100, default='')
-    # total3 = models.IntegerField(default=0, null=True)
-    # tax3 = models.CharField(max_length=100, default='')
+    product3 = models.CharField(max_length=100, default='')
+    hsn3 = models.CharField(max_length=100, default='')
+    description3 = models.CharField(max_length=100, default='')
+    qty3 = models.IntegerField(default=0, null=True)
+    price3 = models.CharField(max_length=100, default='')
+    total3 = models.IntegerField(default=0, null=True)
+    tax3 = models.CharField(max_length=100, default='')
 
-    # product4 = models.CharField(max_length=100, default='')
-    # hsn4 = models.CharField(max_length=100, default='')
-    # description4 = models.CharField(max_length=100, default='')
-    # qty4 = models.IntegerField(default=0, null=True)
-    # price4 = models.CharField(max_length=100, default='')
-    # total4 = models.IntegerField(default=0, null=True)
-    # tax4 = models.CharField(max_length=100, default='')
+    product4 = models.CharField(max_length=100, default='')
+    hsn4 = models.CharField(max_length=100, default='')
+    description4 = models.CharField(max_length=100, default='')
+    qty4 = models.IntegerField(default=0, null=True)
+    price4 = models.CharField(max_length=100, default='')
+    total4 = models.IntegerField(default=0, null=True)
+    tax4 = models.CharField(max_length=100, default='')
 
     amtrecvd = models.IntegerField(default=0, null=True)
     # taxamount = models.IntegerField(default=0, null=True)
-    baldue = models.FloatField()
-    subtotal = models.IntegerField(default=0, null=True)
-    grandtotal = models.IntegerField(default=0, null=True)
+    baldue = models.CharField(max_length=100, default='')
+
     invoice_orderno = models.CharField(max_length=255, default='', null=True)
 
     
@@ -353,17 +337,7 @@ class invoice(models.Model):
     SGST = models.CharField(max_length=100,default=0, null=True)
     TCS = models.CharField(max_length=100,default=0, null=True)
 
-    # add_open_invoice = models.FloatField()
 
-class invoice_item(models.Model):
-    invoice = models.ForeignKey(invoice,on_delete=models.CASCADE)
-    product = models.CharField(max_length=100)
-    hsn = models.CharField(max_length=100)
-    description = models.CharField(max_length=100, default='')
-    qty = models.IntegerField(default=0, null=True)
-    price = models.CharField(max_length=100)
-    total = models.IntegerField(default=0, null=True)
-    tax = models.CharField(max_length=100)
 
 class bills(models.Model):
     billid = models.AutoField(('BILLID'), primary_key=True)
@@ -548,6 +522,72 @@ class credit(models.Model):
         db_table = "credit"
 
 
+class payment(models.Model):
+    paymentid = models.AutoField(('PAYMENTID'), primary_key=True)
+    cid = models.ForeignKey(company, on_delete=models.CASCADE)
+    customer = models.CharField(max_length=100)
+    email = models.CharField(max_length=100)
+    findinvoice = models.CharField(max_length=100, null=True)
+    paymdate = models.CharField(max_length=100)
+    pmethod = models.CharField(max_length=100)
+    refno = models.CharField(max_length=100)
+    depto = models.CharField(max_length=100)
+    amtreceived = models.CharField(max_length=100)
+    descrip = models.CharField(max_length=100, default='')
+    duedate = models.CharField(max_length=10, default='')
+    orgamt = models.CharField(max_length=100, default='0')
+    openbal = models.CharField(max_length=100, default='0')
+    payment = models.CharField(max_length=100, default='0')
+    amtapply = models.CharField(max_length=100, default='0')
+    amtcredit = models.CharField(max_length=100, default='0')
+    descrip1 = models.CharField(max_length=100, default='')
+    duedate1 = models.CharField(max_length=10, default='')
+    orgamt1 = models.CharField(max_length=100, default='')
+    openbal1 = models.CharField(max_length=100, default='')
+    payment1 = models.CharField(max_length=100, default='0')
+    descrip2 = models.CharField(max_length=100, default='')
+    duedate2 = models.CharField(max_length=10, default='')
+    orgamt2 = models.CharField(max_length=100, default='')
+    openbal2 = models.CharField(max_length=100, default='')
+    payment2 = models.CharField(max_length=100, default='0')
+    descrip3 = models.CharField(max_length=100, default='')
+    duedate3 = models.CharField(max_length=10, default='')
+    orgamt3 = models.CharField(max_length=100, default='')
+    openbal3 = models.CharField(max_length=100, default='')
+    payment3 = models.CharField(max_length=100, default='0')
+    descrip4 = models.CharField(max_length=100, default='')
+    duedate4 = models.CharField(max_length=10, default='')
+    orgamt4 = models.CharField(max_length=100, default='0')
+    openbal4 = models.CharField(max_length=100, default='0')
+    payment4 = models.CharField(max_length=100, default='0')
+    descrip5 = models.CharField(max_length=100, default='')
+    duedate5 = models.CharField(max_length=10, default='')
+    orgamt5 = models.CharField(max_length=100, default='0')
+    openbal5 = models.CharField(max_length=100, default='0')
+    payment5 = models.CharField(max_length=100, default='0')
+    descrip6 = models.CharField(max_length=100, default='')
+    duedate6 = models.CharField(max_length=10, default='')
+    orgamt6 = models.CharField(max_length=100, default='0')
+    openbal6 = models.CharField(max_length=100, default='0')
+    payment6 = models.CharField(max_length=100, default='0')
+    descrip7 = models.CharField(max_length=100, default='')
+    duedate7 = models.CharField(max_length=10, default='')
+    orgamt7 = models.CharField(max_length=100, default='0')
+    openbal7 = models.CharField(max_length=100, default='0')
+    payment7 = models.CharField(max_length=100, default='0')
+    descrip8 = models.CharField(max_length=100, default='')
+    duedate8 = models.CharField(max_length=10, default='')
+    orgamt8 = models.CharField(max_length=100, default='0')
+    openbal8 = models.CharField(max_length=100, default='0')
+    payment8 = models.CharField(max_length=100, default='0')
+    descrip9 = models.CharField(max_length=100, default='')
+    duedate9 = models.CharField(max_length=10, default='')
+    orgamt9 = models.CharField(max_length=100, default='0')
+    openbal9 = models.CharField(max_length=100, default='0')
+    payment9 = models.CharField(max_length=100, default='0')
+
+    class meta:
+        db_table = "payment"
 
 
 class expences(models.Model):
@@ -833,8 +873,7 @@ class accounts(models.Model):
    
     name = models.CharField(max_length=100)
     description = models.CharField(max_length=100)
-    gst = models.CharField(max_length=100, default='', null=True)
-    deftaxcode = models.CharField(max_length=100)
+    
     balance = models.FloatField(default=0.0, null=True)
     asof = models.DateField()
 
@@ -845,10 +884,11 @@ class accounts1(models.Model):
     acctype = models.CharField(max_length=100)
     detype = models.CharField(max_length=100)
     name = models.CharField(max_length=100)
-    description = models.CharField(max_length=100)
+    description = models.CharField(max_length=100,null=True)
     gst = models.CharField(max_length=100, default='', null=True)
     deftaxcode = models.CharField(max_length=100)
     balance = models.FloatField(default=0.0, null=True)
+    dbbalance=models.FloatField(default=0.0, null=True)
     asof = models.DateField(null=True)
 
 
@@ -1044,38 +1084,39 @@ class estimate(models.Model):
     estimateno = models.CharField(max_length=100)
     placeofsupply = models.CharField(max_length=100)
 
-    # product = models.CharField(max_length=100)
-    # hsn = models.CharField(max_length=100)
-    # description = models.CharField(max_length=100)
-    # qty = models.CharField(max_length=100)
-    # rate = models.CharField(max_length=100)
-    # total = models.CharField(max_length=100)
-    # tax = models.CharField(max_length=100, default='0')
-    
+    product = models.CharField(max_length=100)
+    hsn = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    qty = models.CharField(max_length=100)
+    rate = models.CharField(max_length=100)
+    total = models.CharField(max_length=100)
+    tax = models.CharField(max_length=100, default='0')
+    subtotal = models.CharField(max_length=100)
+    estimatetotal = models.CharField(max_length=100)
 
-    # product1 = models.CharField(max_length=100, default='')
-    # hsn1 = models.CharField(max_length=100, default='')
-    # description1 = models.CharField(max_length=100, default='')
-    # qty1 = models.CharField(max_length=100, default='')
-    # rate1 = models.CharField(max_length=100, default='')
-    # total1 = models.CharField(max_length=100, default='')
-    # tax1 = models.CharField(max_length=100, default='0')
+    product1 = models.CharField(max_length=100, default='')
+    hsn1 = models.CharField(max_length=100, default='')
+    description1 = models.CharField(max_length=100, default='')
+    qty1 = models.CharField(max_length=100, default='')
+    rate1 = models.CharField(max_length=100, default='')
+    total1 = models.CharField(max_length=100, default='')
+    tax1 = models.CharField(max_length=100, default='0')
 
-    # product2 = models.CharField(max_length=100, default='')
-    # hsn2 = models.CharField(max_length=100, default='')
-    # description2 = models.CharField(max_length=100, default='')
-    # qty2 = models.CharField(max_length=100, default='')
-    # rate2 = models.CharField(max_length=100, default='')
-    # total2 = models.CharField(max_length=100, default='')
-    # tax2 = models.CharField(max_length=100, default='0')
+    product2 = models.CharField(max_length=100, default='')
+    hsn2 = models.CharField(max_length=100, default='')
+    description2 = models.CharField(max_length=100, default='')
+    qty2 = models.CharField(max_length=100, default='')
+    rate2 = models.CharField(max_length=100, default='')
+    total2 = models.CharField(max_length=100, default='')
+    tax2 = models.CharField(max_length=100, default='0')
 
-    # product3 = models.CharField(max_length=100, default='')
-    # hsn3 = models.CharField(max_length=100, default='')
-    # description3 = models.CharField(max_length=100, default='')
-    # qty3 = models.CharField(max_length=100, default='')
-    # rate3 = models.CharField(max_length=100, default='')
-    # total3 = models.CharField(max_length=100, default='')
-    # tax3 = models.CharField(max_length=100, default='0')
+    product3 = models.CharField(max_length=100, default='')
+    hsn3 = models.CharField(max_length=100, default='')
+    description3 = models.CharField(max_length=100, default='')
+    qty3 = models.CharField(max_length=100, default='')
+    rate3 = models.CharField(max_length=100, default='')
+    total3 = models.CharField(max_length=100, default='')
+    tax3 = models.CharField(max_length=100, default='0')
 
     taxamount = models.CharField(max_length=100, default='')
     reference_number = models.CharField(max_length=100, default='')
@@ -1084,10 +1125,7 @@ class estimate(models.Model):
     CGST  =  models.CharField(max_length=100)
     SGST =  models.CharField(max_length=100)
     TCS =  models.CharField(max_length=100)
-    subtotal = models.CharField(max_length=100)
-    estimatetotal = models.CharField(max_length=100)
     file = models.FileField(upload_to='estimate')
-    file_share = models.FileField(upload_to='estimate')
 
     estimate_status = (
         ('Draft','Draft'),
@@ -1103,17 +1141,6 @@ class estimate(models.Model):
     def __str__(self):
         return self.customer
 
-class estimate_item(models.Model):
-    estimate = models.ForeignKey(estimate, on_delete=models.CASCADE,null=True)
-    item = models.CharField(max_length=255,default='')
-    hsn =  models.CharField(max_length=255,default='')
-    description = models.CharField(max_length=255,default='')
-    quantity = models.CharField(max_length=100,null=True,default=0)
-    rate = models.CharField(max_length=100,null=True,default=0)
-    tax = models.CharField(max_length=100,null=True,default=0)
-    total = models.CharField(max_length=100,null=True,default=0)
-
-
 class salesorder(models.Model):
 
     cid = models.ForeignKey(company, on_delete=models.CASCADE)
@@ -1127,39 +1154,39 @@ class salesorder(models.Model):
     placeofsupply = models.CharField(max_length=100)
 
 
-    # product = models.CharField(max_length=100)
-    # hsn = models.CharField(max_length=100)
-    # description = models.CharField(max_length=100)
-    # qty = models.CharField(max_length=100)
-    # rate = models.CharField(max_length=100)
-    # total = models.CharField(max_length=100)
-    # tax = models.CharField(max_length=100, default='0')
+    product = models.CharField(max_length=100)
+    hsn = models.CharField(max_length=100)
+    description = models.CharField(max_length=100)
+    qty = models.CharField(max_length=100)
+    rate = models.CharField(max_length=100)
+    total = models.CharField(max_length=100)
+    tax = models.CharField(max_length=100, default='0')
 
     
-    # product1 = models.CharField(max_length=100, default='')
-    # hsn1 = models.CharField(max_length=100, default='')
-    # description1 = models.CharField(max_length=100, default='')
-    # qty1 = models.CharField(max_length=100, default='')
-    # rate1 = models.CharField(max_length=100, default='')
-    # total1 = models.CharField(max_length=100, default='')
-    # tax1 = models.CharField(max_length=100, default='0')
+    product1 = models.CharField(max_length=100, default='')
+    hsn1 = models.CharField(max_length=100, default='')
+    description1 = models.CharField(max_length=100, default='')
+    qty1 = models.CharField(max_length=100, default='')
+    rate1 = models.CharField(max_length=100, default='')
+    total1 = models.CharField(max_length=100, default='')
+    tax1 = models.CharField(max_length=100, default='0')
 
-    # product2 = models.CharField(max_length=100, default='')
-    # hsn2 = models.CharField(max_length=100, default='')
-    # description2 = models.CharField(max_length=100, default='')
-    # qty2 = models.CharField(max_length=100, default='')
-    # rate2 = models.CharField(max_length=100, default='')
-    # total2 = models.CharField(max_length=100, default='')
-    # tax2 = models.CharField(max_length=100, default='0')
+    product2 = models.CharField(max_length=100, default='')
+    hsn2 = models.CharField(max_length=100, default='')
+    description2 = models.CharField(max_length=100, default='')
+    qty2 = models.CharField(max_length=100, default='')
+    rate2 = models.CharField(max_length=100, default='')
+    total2 = models.CharField(max_length=100, default='')
+    tax2 = models.CharField(max_length=100, default='0')
 
-    # product3 = models.CharField(max_length=100, default='')
-    # hsn3 = models.CharField(max_length=100, default='')
-    # description3 = models.CharField(max_length=100, default='')
-    # qty3 = models.CharField(max_length=100, default='')
-    # rate3 = models.CharField(max_length=100, default='')
-    # total3 = models.CharField(max_length=100, default='')
-    # tax3 = models.CharField(max_length=100, default='0')
-    # taxamount = models.CharField(max_length=100, default='')
+    product3 = models.CharField(max_length=100, default='')
+    hsn3 = models.CharField(max_length=100, default='')
+    description3 = models.CharField(max_length=100, default='')
+    qty3 = models.CharField(max_length=100, default='')
+    rate3 = models.CharField(max_length=100, default='')
+    total3 = models.CharField(max_length=100, default='')
+    tax3 = models.CharField(max_length=100, default='0')
+    taxamount = models.CharField(max_length=100, default='')
 
     reference_number = models.CharField(max_length=100, default='')
     note = models.TextField()
@@ -1176,117 +1203,14 @@ class salesorder(models.Model):
     sale_status = (
         ('Draft','Draft'),
         ('Approved','Approved'),
-        ('Invoiced','Invoiced'),
+        ('Sales Order','Sales Order'),
 
     )
     
     status =models.CharField(max_length=150,choices=sale_status,default='Draft')
 
 
-class sales_item(models.Model):
-    salesorder= models.ForeignKey(salesorder,on_delete=models.CASCADE)
-    product = models.CharField(max_length=100)
-    hsn = models.CharField(max_length=100)
-    description = models.CharField(max_length=100, default='')
-    qty = models.IntegerField(default=0, null=True)
-    price = models.CharField(max_length=100)
-    total = models.IntegerField(default=0, null=True)
-    tax = models.CharField(max_length=100)
 
-
-class payment(models.Model):
-    paymentid = models.AutoField(('PAYMENTID'), primary_key=True)
-    cid = models.ForeignKey(company, on_delete=models.CASCADE)
-    customer = models.CharField(max_length=100)
-    email = models.CharField(max_length=100)
-    paymdate = models.DateField()
-    pmethod = models.CharField(max_length=100)
-    refno = models.CharField(max_length=100)
-    depto = models.CharField(max_length=100)
-    amtreceived = models.FloatField()
-    amtapply = models.FloatField()
-    amtcredit = models.FloatField()
-    referno = models.CharField(max_length=255, )
-    balance= models.FloatField(default='0')
-    
-    # descrip = models.CharField(max_length=100, default='')
-    # duedate = models.CharField(max_length=10, default='')
-    # orgamt = models.CharField(max_length=100, default='0')
-    # openbal = models.CharField(max_length=100, default='0')
-    # payment = models.CharField(max_length=100, default='0')
-   
-
-    # descrip1 = models.CharField(max_length=100, default='')
-    # duedate1 = models.CharField(max_length=10, default='')
-    # orgamt1 = models.CharField(max_length=100, default='')
-    # openbal1 = models.CharField(max_length=100, default='')
-    # payment1 = models.CharField(max_length=100, default='0')
-
-    # descrip2 = models.CharField(max_length=100, default='')
-    # duedate2 = models.CharField(max_length=10, default='')
-    # orgamt2 = models.CharField(max_length=100, default='')
-    # openbal2 = models.CharField(max_length=100, default='')
-    # payment2 = models.CharField(max_length=100, default='0')
-    # descrip3 = models.CharField(max_length=100, default='')
-    # duedate3 = models.CharField(max_length=10, default='')
-    # orgamt3 = models.CharField(max_length=100, default='')
-    # openbal3 = models.CharField(max_length=100, default='')
-    # payment3 = models.CharField(max_length=100, default='0')
-    # descrip4 = models.CharField(max_length=100, default='')
-    # duedate4 = models.CharField(max_length=10, default='')
-    # orgamt4 = models.CharField(max_length=100, default='0')
-    # openbal4 = models.CharField(max_length=100, default='0')
-    # payment4 = models.CharField(max_length=100, default='0')
-    # descrip5 = models.CharField(max_length=100, default='')
-    # duedate5 = models.CharField(max_length=10, default='')
-    # orgamt5 = models.CharField(max_length=100, default='0')
-    # openbal5 = models.CharField(max_length=100, default='0')
-    # payment5 = models.CharField(max_length=100, default='0')
-    # descrip6 = models.CharField(max_length=100, default='')
-    # duedate6 = models.CharField(max_length=10, default='')
-    # orgamt6 = models.CharField(max_length=100, default='0')
-    # openbal6 = models.CharField(max_length=100, default='0')
-    # payment6 = models.CharField(max_length=100, default='0')
-    # descrip7 = models.CharField(max_length=100, default='')
-    # duedate7 = models.CharField(max_length=10, default='')
-    # orgamt7 = models.CharField(max_length=100, default='0')
-    # openbal7 = models.CharField(max_length=100, default='0')
-    # payment7 = models.CharField(max_length=100, default='0')
-    # descrip8 = models.CharField(max_length=100, default='')
-    # duedate8 = models.CharField(max_length=10, default='')
-    # orgamt8 = models.CharField(max_length=100, default='0')
-    # openbal8 = models.CharField(max_length=100, default='0')
-    # payment8 = models.CharField(max_length=100, default='0')
-    # descrip9 = models.CharField(max_length=100, default='')
-    # duedate9 = models.CharField(max_length=10, default='')
-    # orgamt9 = models.CharField(max_length=100, default='0')
-    # openbal9 = models.CharField(max_length=100, default='0')
-    # payment9 = models.CharField(max_length=100, default='0')
-
-    class meta:
-        db_table = "payment"
-
-class paymentitems(models.Model):
-    payment = models.ForeignKey(payment,on_delete=models.CASCADE)
-    invno = models.CharField(max_length=100, default='')
-    duedate = models.CharField(max_length=100, default='')
-    invamount = models.CharField(max_length=100, default='')
-    balamount = models.FloatField()
-    paymentamount = models.CharField(max_length=100, default='0')
-    
-
-class cust_statment(models.Model):
-    customer = models.CharField(max_length=255, default='')
-    cid = models.ForeignKey(company, on_delete=models.CASCADE)
-    inv = models.ForeignKey(invoice,on_delete=models.CASCADE,blank=True,null=True)
-    pay=models.ForeignKey(payment,on_delete=models.CASCADE,blank=True,null=True)
-    Date = models.DateField()
-    Transactions = models.CharField(max_length=255,blank=True,null=True)
-    Details	= models.CharField(max_length=255,blank=True,null=True)
-    Details2= models.CharField(max_length=255,blank=True,null=True)
-    Amount	= models.FloatField(blank=True,null=True)
-    Payments=models.FloatField(blank=True,null=True)	
-    Balance=models.FloatField(blank=True,null=True)
 
 
 
@@ -1299,17 +1223,17 @@ class itemtable(models.Model):
     unit = models.CharField(max_length=100)
     hsn = models.CharField(max_length=100)
     tax_reference = models.CharField(max_length=100)
-    purchase_cost = models.IntegerField(default="")
+    purchase_cost = models.CharField(max_length=100)
     sales_cost = models.CharField(max_length=100)
-    #tax_rate = models.CharField(max_length=100)
+    tax_rate = models.CharField(max_length=100)
     acount_pur = models.CharField(max_length=100)
     account_sal = models.CharField(max_length=100)
     pur_desc = models.CharField(max_length=100)
     sale_desc = models.CharField(max_length=100)
     intra_st = models.CharField(max_length=100)
     inter_st = models.CharField(max_length=100)
-    inventry = models.CharField(max_length=100, default='',null=True,blank=True)
-    stock = models.IntegerField(default='')
+    inventry = models.CharField(max_length=100)
+    stock = models.CharField(max_length=100)
     status = models.CharField(max_length=100)
 
 class unittable(models.Model):
@@ -1352,75 +1276,6 @@ class currencies(models.Model):
     symbol = models.CharField(max_length=255, default='', blank=True)
     decimal_places = models.CharField(max_length=255, default='', blank=True)
     format = models.CharField(max_length=255, default='', blank=True)
-
-
-class stockreason(models.Model):
-    reasonid = models.AutoField(("REASONID"), primary_key=True)
-    cid = models.ForeignKey(company, on_delete=models.CASCADE)
-    reason = models.CharField(max_length=255, default='', blank=True)
-
-
-class stockadjust(models.Model):
-    cid = models.ForeignKey(company, on_delete=models.CASCADE)
-    mode = models.CharField(max_length=100, default='')
-    ref_no = models.CharField(max_length=100, default='')
-    date = models.CharField(max_length=100, default='')
-    account = models.CharField(max_length=100,null=True,blank=True)
-    reason = models.CharField(max_length=100, default='')
-    description = models.CharField(max_length=100, default='',null=True,blank=True)
-    attach = models.FileField(upload_to="", default='') 
-    status = models.CharField(max_length=100, default='DRAFT') 
-
-
-    item1 = models.CharField(max_length=100,null=True)
-    qty1 = models.CharField(max_length=100,null=True)
-    qty_hand1 = models.CharField(max_length=100, default='')
-    new_qty1 = models.CharField(max_length=100, default='')
-
-    item2 = models.CharField(max_length=100,null=True)
-    qty2 = models.CharField(max_length=100,null=True)
-    qty_hand2 = models.CharField(max_length=100, default='')
-    new_qty2 = models.CharField(max_length=100, default='')
-
-    item3 = models.CharField(max_length=100,null=True)
-    qty3 = models.CharField(max_length=100,null=True)
-    qty_hand3 = models.CharField(max_length=100, default='')
-    new_qty3 = models.CharField(max_length=100, default='')
-    
-    item4 = models.CharField(max_length=100,null=True)
-    qty4 = models.CharField(max_length=100,null=True)
-    qty_hand4 = models.CharField(max_length=100, default='')
-    new_qty4 = models.CharField(max_length=100, default='')
-
-    item5 = models.CharField(max_length=100,null=True)
-    qty5 = models.CharField(max_length=100,null=True)
-    qty_hand5 = models.CharField(max_length=100, default='')
-    new_qty5 = models.CharField(max_length=100, default='')
-
-
-
-class etransporter(models.Model):
-    etransporterid = models.AutoField(("ETRANSPORTERID"), primary_key=True)
-    cid = models.ForeignKey(company, on_delete=models.CASCADE)
-    name = models.CharField(max_length=255, default='', blank=True)   
-    tid = models.CharField(max_length=255, default='', blank=True) 
-
-
-class ewayinv(models.Model):
-    ewayinvid = models.AutoField(("EWAYINV"), primary_key=True)
-    cid = models.ForeignKey(company, on_delete=models.CASCADE)
-    transaction_stype = models.CharField(max_length=255, default='', blank=True)   
-    transporter = models.CharField(max_length=255, default='', blank=True)     
-    distance = models.CharField(max_length=255, default='', blank=True)   
-    transport_mode = models.CharField(max_length=255, default='', blank=True)  
-    vehicle_type = models.CharField(max_length=255, default='', blank=True)   
-    vehicle_no = models.CharField(max_length=255, default='', blank=True)  
-    transport_doc_no = models.CharField(max_length=255, default='', blank=True)   
-    transport_doc_date = models.CharField(max_length=255, default='', blank=True)  
-        
-
-
-
 
 #Jisha
 
@@ -1497,7 +1352,7 @@ class porder_item(models.Model):
 
 class purchasebill(models.Model):
     billid = models.AutoField(('bid'), primary_key=True)
-    vendor_name = models.CharField(max_length=100)
+    vendor_name = models.CharField(max_length=100,null=True)
     billing_address = models.TextField()
     bill_no = models.IntegerField(default=1000)
     sourceofsupply = models.CharField(max_length=100, null=True)
@@ -1519,7 +1374,7 @@ class purchasebill(models.Model):
     tcs_amount = models.CharField(max_length=100,null=True)
     round_off = models.CharField(max_length=100,null=True)
     tax_amount = models.CharField(max_length=100,null=True)
-    grand_total = models.CharField(max_length=100,null=True)
+    grand_total = models.IntegerField(max_length=100,null=True)
     note = models.CharField(max_length=255,null=True)
     file = models.FileField(upload_to='purchase/bill',null=True)
 
@@ -1536,6 +1391,7 @@ class bill_item(models.Model):
     rate = models.CharField(max_length=100,null=True)
     tax = models.CharField(max_length=100,null=True)
     amount = models.CharField(max_length=100,null=True)
+    
 
 class purchase_expense(models.Model):
     expenseid = models.AutoField(('eid'), primary_key=True)
@@ -1555,3 +1411,11 @@ class purchase_expense(models.Model):
     reference = models.CharField(max_length=100,null=True)
     note = models.CharField(max_length=255,null=True)
     file = models.FileField(upload_to='purchase/expense',null=True)
+
+class reconcile(models.Model):
+    reconcileid = models.AutoField(("RECONCILEID"), primary_key=True)
+    cid = models.ForeignKey(company, on_delete=models.CASCADE)
+    aid = models.ForeignKey(accounts1, on_delete=models.CASCADE)
+    start_date = models.CharField(max_length=255, default='', blank=True)
+    end_date = models.CharField(max_length=255, default='', blank=True)
+    closing_balance = models.CharField(max_length=255, default='', blank=True)

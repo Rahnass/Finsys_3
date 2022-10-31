@@ -65,11 +65,12 @@
                                                                     <option>Equity</option>
                                                                     <option>Income</option>
                                                                     <option>Other Incomes</option>
-                                                                    <option>Cost Of Goods</option>
+                                                                    <option>Cost Of Goods Sold</option>
                                                                     <option>Expenses</option>
                                                                     <option>Other Expenses</option>
+                                                                    <option>Undepposited Funds</option>
                                                                     <option>Stock(New)</option>
-                                                                    <option>Cash(New)</option>
+                                                                    <option>Cash</option>
                                                                     
                                                                    
                                                                 
@@ -78,7 +79,7 @@
                                                         <div class="col-md-6">
                                                             <label for="name">*Name</label>
                                                             <input name="name" id="name"
-                                                                   class="custom-select-md form-control w-100">
+                                                                   class="custom-select-md form-control w-100"> required
                                                         </div>
                                                     </div>
                                                     <div class="row mt-2 mb-2">
@@ -293,16 +294,22 @@
                                                             </div>
                                                             <div class="row mt-2" style="display: inline-flex;">
                                                                 <div class="col-md-6">
-                                                                    <label for="balance">Balance</label>
+                                                                    <label for="balance">Credit</label>
                                                                     <input type="text" name="balance" id="balance"
-                                                                           class="form-control">
+                                                                           class="form-control" >
+                                                                </div>
+                                                                <div class="col-md-6">
+                                                                    <label for="balance">Debit</label>
+                                                                    <input type="text" name="dbbalance" id="balance"
+                                                                           class="form-control" >
                                                                 </div>
                                                                 <div class="col-md-6">
                                                                     <label for="asof">as of</label>
-                                                                    <input type="text" name="asof" id="asof"
+                                                                    <input type="date" name="asof" id="asof"
                                                                            class="form-control" value="{{ tod }}"
-                                                                           required>
+                                                                           required >
                                                                 </div>
+                                                             
                                                             </div>
 
                                                         </div>
@@ -327,7 +334,7 @@
                             <tr>
                                 <th scope="col">NAME</th>
                                 <th scope="col">TYPE</th>
-                                <th scope="col">DETAIL TYPE</th>
+                               
                                 <th scope="col">TAX RATE</th>
                                 <th scope="col">FINSYS BALANCE</th>
                                 <th scope="col">BANK BALANCE</th>
@@ -340,7 +347,7 @@
                                     <tr>
                                         <td>{{ acoun.name }}</td>
                                         <td>{{ acoun.acctype }}</td>
-                                        <td>{{ acoun.detype }}</td>
+                                        
                                         <td>{{ acoun.deftaxcode }}</td>
                                         <td>{{ acoun.balance }}</td>
                                         <td></td>

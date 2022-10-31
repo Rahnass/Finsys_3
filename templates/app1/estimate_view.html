@@ -276,10 +276,7 @@ footer p {
             doc.addImage(canvas.toDataURL("image/png"), 'PNG', 15, 10, 700, 850);
         })
 
-        
-
         doc.save("Document.pdf");
-
 
         //End of downloading
 
@@ -290,54 +287,8 @@ footer p {
 </script>
 
 
-<script>
-
-function uplodfile(){
-
-    async function generatePDF() {
-        // document.getElementById("downloadButton").innerHTML = "Currently downloading, please wait";
-
-        //Downloading
-        var downloading = document.getElementById("whatToPrint");
-        var doc = new jsPDF('l', 'pt');
-
-        await html2canvas(downloading, {
-            //allowTaint: true,
-            //useCORS: true,
-            // width: 600
-            
-        }).then((canvas) => {
-            //Canvas (convert to PNG)
-            doc.addImage(canvas.toDataURL("image/png"), 'PNG', 15, 10, 700, 850);
-        })
-
-        
-
-        data=doc.save("Document.pdf");
-
-
-        //End of downloading
-
-        // document.getElementById("downloadButton").innerHTML = "Click to download";
-    }
-
-    $.ajax({
-        method: "POST",
-        url : "/estimate_pdf/",
-        processData :false,
-        contentType :false,
-        data : data,
-        success:function(res){
-            console.log(res)
-        }
-
-
-    })
-}
-   
-</script>
 	
-<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	
     
 
     
@@ -364,7 +315,7 @@ function uplodfile(){
                     
                     </form> </a>
                 
-                    <div class="dropdown  " style="padding: 10px; cursor: pointer; margin-top: -10px;" onclick="uplodfile()">
+                    <div class="dropdown  " style="padding: 10px; cursor: pointer; margin-top: -10px;">
                         <li  class=" dropdown-toggle fa fa-share-alt "data-toggle="dropdown"> &nbsp;Share
                     </li>
                         <ul class="dropdown-menu" style="background-color: black;">
@@ -374,9 +325,8 @@ function uplodfile(){
                             <a class="dropdown-item fa fa-whatsapp" href=""> &nbsp;Whatsapp</a>
                             <a class="dropdown-item fa fa-envelope-o" href=""> &nbsp;Email</a> -->
 
-                         
-                            <!-- <li style="margin-left: 50px;" > {% post_to_whatsapp object_or_url "WhatsApp" %}</li> -->
-                            <li style="margin-left: 50px;" ><a href="">WhatsApp </a></li>
+                            <li style="margin-left: 50px;"  ></i>{% post_to_facebook object_or_url "Facebook!" %}</li>
+                            <li style="margin-left: 50px;" > {% post_to_whatsapp object_or_url "WhatsApp" %}</li>
                             <li style="margin-left: 50px;" >{% send_email object.title "New Song: {{object.title}}. Check it out!" object_or_url "Email" %}</li>
                             
                            
@@ -393,13 +343,12 @@ function uplodfile(){
                 </li>
                     <ul class="dropdown-menu" style="background-color: black;">
                         <a class="dropdown-item " href="{% url 'convert1' estimate.estimateid %}"> &nbsp;Approved </a>
-                        {% if estimate.status != 'Sales' %}
                         <a class="dropdown-item " href="{% url 'convert2' estimate.estimateid %}"> &nbsp;Sales</a>
-                        {% endif %}
+                        
                         
                     </ul>
             </div>
-            <a class="fa fa-download" style="padding: 10px; cursor: pointer;" download  href="{{estimate.file.url}}" >Attachefile</a>
+
             </div>    
             </div>
         </div>
@@ -464,31 +413,81 @@ function uplodfile(){
                                         <td>Item Description</td>
                                         <td>Price</td>
                                         <td>Quantity</td>
-                                        <td>Tax</td>
                                         <td>Total</td>
                                     </tr>
                                 </thead>
                                 <tbody>
 
-                                    {% for j in estitem  %}
+                                    
                                     <tr>
                                         <td>
                                             <div class="media">
                                                 
                                                 <div class="media-body">
-                                                    <p class="mt-0 title" style="color:black">{{j.item}}</p>
-                                                    <span style="color:black">{{j.description}}</span>
+                                                    <p class="mt-0 title" style="color:black">{{estimate.product}}</p>
+                                                    <span style="color:black">{{estimate.description}}</span>
                                                 </div>
                                             </div>
                                         </td>
-                                        <td style="color:black">{{j.rate}}</td>
-                                        <td style="color:black">{{j.quantity}}</td>
-                                        <td style="color:black">{{j.tax}} %</td>
-                                        <td style="color:black">{{j.total}}</td>
+                                        <td style="color:black">{{estimate.rate}}</td>
+                                        <td style="color:black">{{estimate.qty}}</td>
+                                        <td style="color:black">{{estimate.total}}</td>
                                     </tr>
                                     
-                                    {% endfor %}
-                                   
+
+                                    {% if estimate.product1 == NIL  %}
+                                    <tr>
+                                        <td>
+                                            <div class="media">
+                                                
+                                                <div class="media-body">
+                                                    <p class="mt-0 title" style="color:black">{{estimate.product1}}</p>
+                                                    <span style="color:black">{{estimate.description1}}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="color:black">{{estimate.rate1}}</td>
+                                        <td style="color:black">{{estimate.qty1}}</td>
+                                        <td style="color:black">{{estimate.total1}}</td>
+                                    </tr>
+                                    {% endif %}
+
+                                    {% if estimate.product2 == NIL  %}
+                                    <tr>
+                                        <td>
+                                            <div class="media">
+                                                
+                                                <div class="media-body">
+                                                    <p class="mt-0 title" style="color:black">{{estimate.product2}}</p>
+                                                    <span style="color:black">{{estimate.description2}}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="color:black">{{estimate.rate2}}</td>
+                                        <td style="color:black">{{estimate.qty2}}</td>
+                                        <td style="color:black">{{estimate.total2}}</td>
+                                    </tr>
+                                    {% endif %}
+                                    {% if estimate.product3 == NIL  %}
+
+                                    <tr>
+                                        <td>
+                                            <div class="media">
+                                                
+                                                <div class="media-body">
+                                                    <p class="mt-0 title" style="color:black">{{estimate.product3}}</p>
+                                                    <span style="color:black">{{estimate.description3}}</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td style="color:black">{{estimate.rate3}}</td>
+                                        <td style="color:black">{{estimate.qty3}}</td>
+                                        <td style="color:black">{{estimate.total3}}</td>
+                                    </tr>
+
+                                    {% endif %}
+
+
 
 
                                     
@@ -508,25 +507,25 @@ function uplodfile(){
                                             <td style="color:black">Sub Total :</td>
                                             <td style="color:black">{{estimate.subtotal}}</td>
                                         </tr>
-                                        {% if estimate.IGST != "" %}
+                                        {% if estimate.IGST != "0.00" %}
                                         <tr>
                                             <td style="color:black">IGST :</td>
                                             <td style="color:black">{{estimate.IGST}}</td>
                                         </tr>
                                         {% endif %}
-                                        {% if estimate.CGST != "" %}
+                                        {% if estimate.CGST != "0.00" %}
                                         <tr>
                                             <td style="color:black">CGST :</td>
                                             <td style="color:black">{{estimate.CGST}}</td>
                                         </tr>
                                         {% endif %}
-                                        {% if estimate.SGST != "" %}
+                                        {% if estimate.SGST != "0.00" %}
                                         <tr>
                                             <td style="color:black">SGST:</td>
                                             <td style="color:black">{{estimate.SGST}}</td>
                                         </tr>
                                         {% endif %}
-                                        {% if estimate.TCS != "" %}
+                                        {% if estimate.TCS != "0.00" %}
                                         <tr>
                                             <td style="color:black">TCS:</td>
                                             <td style="color:black">{{estimate.TCS}}</td>

@@ -1,7 +1,6 @@
 {% extends 'app1/base.html' %}
 
 {% block body %}
-<script type="text/javascript" src="https://unpkg.com/xlsx@0.15.1/dist/xlsx.full.min.js"></script>
 
 <div class="page-content">
     <div class="card radius-15 h-20">
@@ -23,7 +22,7 @@
                 <div class="col"></div>
                 <div class="col-md-5">
                 <div class="search-bar">
-                    <div class="input-group"> 
+                    <div class="input-group">
                         <div class="input-group-prepend search-arrow-back">
                             <button class="btn btn-search-back" type="button"><i class="bx bx-arrow-back"></i></button>
                         </div>
@@ -82,9 +81,10 @@
                                style="height: 40px; font-size: 15px; color: white;">Rate</a>
                             <a class="dropdown-item" href="{% url 'iodhsn' %}"
                                style="height: 40px; font-size: 15px; color: white;">HSN</a>
-                               <hr>
-                            <a class="dropdown-item" onclick="ExportToExcel('xlsx')"
-                               style="height: 40px; font-size: 15px; color: white;">Export</a>
+                            <a class="dropdown-item" href="{% url 'iod_import' %}"
+                               style="height: 40px; font-size: 15px; color: white;">Import item</a>
+                            <a class="dropdown-item" href="{% url 'iod_export' %}"
+                               style="height: 40px; font-size: 15px; color: white;">Export item</a>
                         </div>
                 </div>
             </div>
@@ -110,6 +110,7 @@
                         <th>HSN</th>
                         <th>PURCHASE COST</th>
                         <th>SALES COST</th>
+                        <th>TAX</th>
                         <th>STOCK</th>
                     </tr>
                     </thead>
@@ -122,9 +123,25 @@
                                 <td>{{ a.hsn }}</td>
                                 <td>{{ a.purchase_cost }}</td>
                                 <td>{{ a.sales_cost }}</td>
+                                <td>{{ a.tax_rate }}</td>
                                 <td>{{ a.stock }}
                                         
-                                 
+                                    <!--<div class="dropdown">
+                                        <button type="button" class="btn btn-outline-info dropdown-toggle text-grey"
+                                                data-toggle="dropdown">Actions
+                                        </button>
+                                        <div class="dropdown-menu" style="background-color: white;">
+                                            <a href="itemedit_page/{{ a.id }}" class="dropdown-item"
+                                               style="color: black; font-size: 15px;">
+                                                <i class="bx bx-edit"><b>EDIT</b></i>
+                                            </a>
+                                            <a href="view_item/{{ a.id }}" class="dropdown-item"
+                                               style="color: black; font-size: 15px;">
+                                                <i class="bx bx-edit"><b>VIEW</b></i>
+                                            </a>
+                                            
+                                        </div>
+                                    </div>-->
 
                                 </td></a>
                             </tr>
@@ -215,19 +232,6 @@
                 }
             }
         }
-    </script>
-
-
-    <script>
-
-        function ExportToExcel(type, fn, dl) {
-            var elt = document.getElementById('tabletobe');
-            var wb = XLSX.utils.table_to_book(elt, { sheet: "sheet1" });
-            return dl ?
-                XLSX.write(wb, { bookType: type, bookSST: true, type: 'base64' }) :
-                XLSX.writeFile(wb, fn || ('Items.' + (type || 'xlsx')));
-        }
-
     </script>
 
 {% endblock %}

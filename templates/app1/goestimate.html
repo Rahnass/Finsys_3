@@ -64,8 +64,6 @@ body{
   /* transform: translate(-50%, -50%); */
 }
       </style>
-
-      
         <div class="page-content">
             <div class="card radius-15">
                 <div class="card-body">
@@ -156,20 +154,42 @@ body{
                                 <th style="text-align: center;">Coustomer Name</th>
                                 <th style="text-align: center;">Status</th>
                                 <th style="text-align: center;">Amount</th>
-                               
+                                <!-- <th style="text-align: center;">ACTION</th> -->
                             </tr>
                             </thead>
                             <tbody>
                                 {% for estimate in est1 %}
                                 {% if estimate.cid_id == cmp1.cid %}
-                                    <tr  class="table-row " data-href="{% url 'estimate_view' estimate.estimateid %}" >
+                                    <tr tr class="table-row " data-href="{% url 'estimate_view' estimate.estimateid %}" >
                                         <th style="text-align: center;">{{ estimate.estimatedate | date:'d-m-Y' }}</th>
                                         <td style="text-align: center;">{{ estimate.estimateno }}</td>
                                         <td style="text-align: center;"> {{ estimate.reference_number }}</td>
                                         <td style="text-align: center;">{{ estimate.customer }}</td>
                                         <td style="text-align: center;"> {{ estimate.status }}</td>
                                         <td style="text-align: center;">{{ estimate.estimatetotal }}</td>
-                                        
+                                        <!-- <td style="text-align: center;">
+                                            <div class="dropdown">
+                                                <button type="button" class="btn btn-outline-info dropdown-toggle text-grey"
+                                                        data-toggle="dropdown">Actions
+                                                </button>
+                                                <div class="dropdown-menu" style="background-color: white;">
+                                                    <a href="editestimate/{{ estimate.estimateid }}" class="dropdown-item"
+                                                       style="color:black; font-size: 15px;"><i
+                                                            class="bx bx-edit"><b>EDIT</b></i></a>
+                                                    <form  action=" deleteestimate/{{ estimate.estimateid }}"   >  
+                                                        <input name="_method" type="hidden" value="DELETE">
+                                                    <a  class="dropdown-item delete"
+                                                       style="color:black; font-size: 15px;cursor: pointer;" >
+                                                       
+                                                       <i class="bx bx-trash"><b>
+                                                                DELETE
+                                                            </b></i>
+                                                            
+                                                            <input name="_method" type="hidden" value="DELETE"></a>
+                                                        </form> 
+                                                </div>
+                                            </div>
+                                        </td> -->
                                     </tr>
                                 {% endif %}
                             {% endfor %}

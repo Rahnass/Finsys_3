@@ -1,8 +1,8 @@
-from asyncio.windows_events import NULL
 from curses.ascii import HT
 from http.client import HTTPResponse
 from multiprocessing import context
 import os
+from tkinter import N
 from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import render, redirect,HttpResponse
@@ -27,8 +27,6 @@ from num2words import num2words
 import random
 
 
-from django.db.models import F
-from django.db.models import Count
 from . models import *
 
 def index(request):
@@ -703,8 +701,6 @@ def customers(request):
                               f"Customer {firstname} {lastname} already exists. Please provide a different name.")
                 return redirect('gocustomers')
             else:
-                toda = date.today()
-                tod = toda.strftime("%Y-%m-%d")
                 customer1 = customer(title=request.POST['title'], firstname=request.POST['firstname'],
                                      lastname=request.POST['lastname'], company=request.POST['company'],
                                      location=request.POST['location'], gsttype=request.POST['gsttype'],
@@ -717,47 +713,9 @@ def customers(request):
                                      shipstreet=request.POST['shipstreet'], shipcity=request.POST['shipcity'],
                                      shipstate=request.POST['shipstate'],
                                      shippincode=request.POST['shippincode'], shipcountry=request.POST['shipcountry'],
-                                     cid=cmp1,
-
-                                     opening_balance = request.POST['openbalance'],
-
-                                     date= tod,
-                                     
-                                     
-                                     )
+                                     cid=cmp1)
 
                 customer1.save()
-
-                if customer1.opening_balance != "":
-
-                    add_cust_stat=cust_statment(
-
-                    customer = customer1.firstname +" "+ customer1.lastname,
-
-                    cid  = cmp1,
-
-                    
-
-                    Date = customer1.date,
-
-                    Transactions="Customer Opening Balance",
-
-                    Amount= customer1.opening_balance,
-
-                )
-
-                
-
-                add_cust_stat.save()
-
-                    
-
-
-
-
-
-
-
                 return redirect('/app1/customers')
         customers = customer.objects.filter(cid=cmp1).all()
         context = {'customers': customers, 'cmp1': cmp1}
@@ -814,8 +772,6 @@ def updatecustomer(request, id):
         custom.shipstate = request.POST['shipstate']
         custom.shippincode = request.POST['shippincode']
         custom.shipcountry = request.POST['shipcountry']
-        custom.opening_balance = request.POST['openbalance']
-
         custom.save()
         return redirect('gocustomers')
     except:
@@ -940,16 +896,19 @@ def createaccount(request):
     acctype = request.POST.get('acctype')
         
     name = request.POST.get('name')
-    description = request.POST.get('description')
-    gst = request.POST.get('gst')
-    deftaxcode = request.POST.get('deftaxcode')
+    description = request.POST.get('description')                           
+    
     balance = request.POST.get('balance')
+    if balance=="":
+            balance=0.0
     asof = request.POST.get('asof')
+    dbbalance=request.POST.get('dbbalance')
+    if dbbalance=="":
+            dbbalance=0.0
        
         
-    account = accounts(acctype=acctype, name=name, description=description,
-                                   gst=gst,
-                                   deftaxcode=deftaxcode, balance=balance, asof=asof, cid=cmp1)
+    account = accounts1(acctype=acctype, name=name, description=description,
+                                    balance=balance, asof=asof, cid=cmp1,dbbalance=dbbalance)
     account.save()
                 
     return redirect('gocoa')
@@ -1495,11 +1454,7 @@ def cust(request):
                              website=request.POST['website'], mobile=request.POST['mobile'],
                              street=request.POST['street'],
                              city=request.POST['city'], state=request.POST['state'], pincode=request.POST['pincode'],
-                             country=request.POST['country']
-
-                             
-                             
-                             )
+                             country=request.POST['country'])
         customer1.save()
         custo = customer.objects.filter(cid=cmp1).all()
         context = {'customer': custo}
@@ -3320,65 +3275,6 @@ def invindex(request):
         return render(request, 'app1/addinvoics.html', context)
     except:
         return redirect('goinvoices')
-
-@login_required(login_url='regcomp')
-def invcreate2(request):
-    if request.method == 'POST':
-        cmp1 = company.objects.get(id=request.session["uid"])
-        inv2 = invoice(customername=request.POST['customername'], email=request.POST['email'],
-                       invoiceno='1000',
-                       invoicedate=request.POST['invoicedate'],
-                       terms=request.POST['terms'], duedate=request.POST['duedate'], bname=request.POST['bname'],
-                       placosupply=request.POST['placosupply'],
-
-                       cid=cmp1,
-                        subtotal=float(request.POST['subtotal']),
-                       note = request.POST['Note'],
-                       IGST = request.POST['IGST'],
-                       CGST = request.POST['CGST'],
-                       SGST = request.POST['SGST'],
-                       TCS = request.POST['TCS'],
-                       grandtotal=request.POST['grandtotal'],
-                       amtrecvd=request.POST['amtrecvd'], 
-                       baldue=request.POST['baldue'],
-
-
-                       )
-        if len(request.FILES) != 0:
-            inv2.file=request.FILES['file'] 
-        orderno = 'OR'+str(random.randint(1111111,9999999))
-        while invoice.objects.filter(invoice_orderno=orderno ) is None:
-            orderno = 'OR'+str(random.randint(1111111,9999999))
-        inv2.invoice_orderno =orderno
-        inv2.save()
-        inv2.invoiceno = int(inv2.invoiceno) + inv2.invoiceid
-        inv2.save()
-
-        product = request.POST.getlist("product[]")
-        hsn  = request.POST.getlist("hsn[]")
-        description = request.POST.getlist("description[]")
-        qty = request.POST.getlist("qty[]")
-        price = request.POST.getlist("price[]")
-        
-        tax = request.POST.getlist("tax[]")
-        total = request.POST.getlist("total[]")
-
-        invoiceid=invoice.objects.get(invoiceid =inv2.invoiceid)
-
-        if len(product)==len(hsn)==len(description)==len(qty)==len(price)==len(tax)==len(total) and product and hsn and description and qty and price and tax and total:
-            mapped=zip(product,hsn,description,qty,price,tax,total)
-            mapped=list(mapped)
-            for ele in mapped:
-                invoiceAdd,created = invoice_item.objects.get_or_create(product = ele[0],hsn=ele[1],description=ele[2],
-                qty=ele[3],price=ele[4],tax=ele[5],total=ele[6],invoice=invoiceid)
-
-        return redirect('goinvoices')
-    else:
-        return redirect('goinvoices')
-
-
-
-
 
 
 @login_required(login_url='regcomp')
@@ -9494,29 +9390,6 @@ def getdata(request):
     return JsonResponse(json.dumps(list), content_type="application/json", safe=False)
 
 
-def getdatainv(request):
-    if request.method == 'POST':
-        cmp1 = company.objects.get(id=request.session["uid"])
-        id = request.POST['select']
-        print (id)
-        x = id.split()
-        x.append(" ")
-        a = x[0]
-        b = x[1]
-        if x[2] is not None:
-            b = x[1] + " " + x[2]
-        custobject = customer.objects.values().filter(firstname=a, lastname=b, cid=cmp1)
-        invitems = invoice.objects.values().filter(customername=id ,cid =cmp1,status='Approved' )
-        x_data = list(invitems)
-        ct= list(custobject)
-        
-        return JsonResponse({"status":" not","invitem":x_data,"ct":ct })
-        # return redirect('goexpences')
-
-
-
-
-
 def getdata1(request):
     cmp1 = company.objects.get(id=request.session["uid"])
     id = request.GET.get('id')
@@ -9557,10 +9430,8 @@ def getdata1(request):
                         'price3': i.price3, 'total3': i.total3,
                         'product4': i.product4, 'hsn4': i.hsn4,
                         'description4': i.description4, 'qty4': i.qty4,
-                        'price4': i.price4, 'total4': i.total4,
-                        'amtrecvd': i.amtrecvd,
-                        'baldue': i.baldue
-                        }
+                        'price4': i.price4, 'total4': i.total4, 'amtrecvd': i.amtrecvd,
+                        'baldue': i.baldue}
                 list.append(dict)
     else:
         custobject = customer.objects.get(firstname=a, lastname=b, cid=cmp1)
@@ -9700,10 +9571,6 @@ def getitems(request):
         except:
             pass
         list.append(noninventorydict)
-
-
-
-
     else:
         notany = {'item': 'notany', 'name': ' ',
                   'sku': ' ', 'hsn': ' ',
@@ -13425,123 +13292,43 @@ def balancesheet(request):
 
 
 def profitandloss(request):
-    try:
+    
+
+  
+
+    
         cmp1 = company.objects.get(id=request.session["uid"])
         context = {'cmp1': cmp1}
+        pur=purchasebill.objects.all()
 
-        try:
-            tot10 = 0.0
-            if accounts1.objects.filter(acctype='Income', cid=cmp1):
-                acc = accounts1.objects.filter(acctype='Income', cid=cmp1)
-                for i in acc:
-                    tot10 = tot10 + i.balance
-                context['account1'] = acc
+        sum1=0
+        
+        for i in pur:
+            sum1+=i.grand_total
 
-        except:
-            pass
-        try:
-            tot11 = 0.0
-            if accounts.objects.filter(acctype='Income', cid=cmp1):
-                acc = accounts.objects.filter(acctype='Income', cid=cmp1)
-                for i in acc:
-                    tot11 = tot11 + i.balance
-                context['account2'] = acc
-        except:
-            pass
-        tincome = tot10 + tot11
-        context['tin'] = tincome
-        try:
-            tot12 = 0.0
-            if accounts1.objects.filter(acctype='Cost of Goods Sold', cid=cmp1):
-                acc = accounts1.objects.filter(
-                    acctype='Cost of Goods Sold', cid=cmp1)
-                for i in acc:
-                    tot12 = tot12 + i.balance
-                context['account3'] = acc
-        except:
-            pass
-        try:
-            tot13 = 0.0
-            if accounts.objects.filter(acctype='Cost of Goods Sold', cid=cmp1):
-                acc = accounts.objects.filter(
-                    acctype='Cost of Goods Sold', cid=cmp1)
-                for i in acc:
-                    tot13 = tot13 + i.balance
-                context['account4'] = acc
-        except:
-            pass
-        tcogs = tot12 + tot13
-        context['tcg'] = tcogs
-        grosprofit = tincome - tcogs
-        context['gros'] = grosprofit
-        try:
-            tot14 = 0.0
-            if accounts1.objects.filter(acctype='Other Income', cid=cmp1):
-                acc = accounts1.objects.filter(
-                    acctype='Other Income', cid=cmp1)
-                for i in acc:
-                    tot14 = tot14 + i.balance
-                context['account5'] = acc
-        except:
-            pass
-        try:
-            tot15 = 0.0
-            if accounts.objects.filter(acctype='Other Income', cid=cmp1):
-                acc = accounts.objects.filter(acctype='Other Income', cid=cmp1)
-                for i in acc:
-                    tot15 = tot15 + i.balance
-                context['account6'] = acc
-        except:
-            pass
-        totherincome = tot14 + tot15
-        context['ot'] = totherincome
-        try:
-            tot16 = 0.0
-            if accounts1.objects.filter(acctype='Expenses', cid=cmp1):
-                acc = accounts1.objects.filter(acctype='Expenses', cid=cmp1)
-                for i in acc:
-                    tot16 = tot16 + i.balance
-                context['account7'] = acc
-        except:
-            pass
-        try:
-            tot17 = 0.0
-            if accounts.objects.filter(acctype='Expenses', cid=cmp1):
-                acc = accounts.objects.filter(acctype='Expenses', cid=cmp1)
-                for i in acc:
-                    tot17 = tot17 + i.balance
-                context['account8'] = acc
-        except:
-            pass
-        texpences = tot16 + tot17
-        context['tex'] = texpences
-        try:
-            tot18 = 0.0
-            if accounts1.objects.filter(acctype='Other Expenses', cid=cmp1):
-                acc = accounts1.objects.filter(
-                    acctype='Other Expenses', cid=cmp1)
-                for i in acc:
-                    tot18 = tot18 + i.balance
-                context['account9'] = acc
-        except:
-            pass
-        try:
-            tot19 = 0.0
-            if accounts.objects.filter(acctype='Other Expenses', cid=cmp1):
-                acc = accounts.objects.filter(
-                    acctype='Other Expenses', cid=cmp1)
-                for i in acc:
-                    tot19 = tot19 + i.balance
-                context['account10'] = acc
-        except:
-            pass
-        toexpences = tot18 + tot19
-        context['toex'] = toexpencescustomer_profile
-        print(texpences, toexpences)
-        proandloss = ((grosprofit + totherincome) - (texpences + toexpences))
-        context['prolo'] = proandloss
+        
+        inv = invoice.objects.filter()
+        sum2=0
+        for i in inv:
+            sum2+=i.grandtotal
+
+        ex=purchase_expense.objects.all()
+        sum3=0
+        for i in ex:
+            sum3+=i.amount
+
+
+
+
+        sumtot=sum1+sum2+sum3  
+
+
+
+        context={'pur':pur,'sum1':sum1,'inv': inv,'sum2':sum2,'sumtot':sumtot,'ex':ex,'sum3':sum3}
+
+
+
         return render(request, 'app1/profitandloss.html', context)
-    except:
         return redirect('godash')
 
 
@@ -14936,16 +14723,12 @@ def profitandlossfiltered(request):
 def accreceivables(request):
     try:
         cmp1 = company.objects.get(id=request.session["uid"])
-
         inv = invoice.objects.filter(cid=cmp1).values(
             'customername').annotate(t1=Sum('baldue'))
         cre = credit.objects.filter(cid=cmp1).values(
             'customer').annotate(t1=Coalesce(Sum('grndtot'), 0))
         tot = invoice.objects.filter(
             cid=cmp1).all().aggregate(t2=Sum('baldue'))
-
-        
-
         tot1 = credit.objects.filter(
             cid=cmp1).all().aggregate(t2=Sum('grndtot'))
         context = {'invoice': inv, 'cmp1': cmp1,
@@ -14967,10 +14750,6 @@ def accreceivables1(request):
         elif filmeth == 'Custom':
             fromdate = request.POST['fper']
             todate = request.POST['tper']
-
-            print(fromdate)
-
-
         elif filmeth == 'This month':
             fromdate = toda.strftime("%Y-%m-01")
             todate = toda.strftime("%Y-%m-31")
@@ -25035,7 +24814,7 @@ def deletestyle(request, customizeid):
 
 
 # Ananthakrishnan
-@login_required(login_url='regcomp')
+
 def gosearch(request):
     if request.method == "POST":
         cmp1 = company.objects.get(id=request.session["uid"])
@@ -25054,33 +24833,12 @@ def gosearch(request):
                 custo = customer.objects.filter(cid=cmp1,firstname=search).all()
                 context = {'customers': custo, 'cmp1': cmp1}
                 return render(request, 'app1/customers.html', context)
-            
 
    
     else:
         return redirect('gocustomers')
 
-@login_required(login_url='regcomp')
-def gocustomers1(request):
-    try:
-        cmp1 = company.objects.get(id=request.session["uid"])
-        custo = customer.objects.filter(cid=cmp1).all()
-        context = {'customer': custo, 'cmp1': cmp1}
-        return render(request, 'app1/customers.html', context)
-    except:
-        return redirect('godash')
 
-
-
-@login_required(login_url='regcomp')
-def gocustomers2(request):
-    try:
-        cmp1 = company.objects.get(id=request.session["uid"])
-        custo = customer.objects.filter(cid=cmp1).all()
-        context = {'customer': custo, 'cmp1': cmp1}
-        return render(request, 'app1/customers.html', context)
-    except:
-        return redirect('godash')
 
 
 def gstverification(request):
@@ -25096,223 +24854,6 @@ def gstverification(request):
     
     return render(request,'app1/addcust.html',{'response':res})
 
-
-
-
-def customer_profile(request,id):
-    cmp1 = company.objects.get(id=request.session["uid"])
-    custo = customer.objects.get(customerid=id, cid=cmp1)
-    fn =custo.firstname
-    ln = custo.lastname
-    su = fn+ ' ' +ln
-    toda = date.today()
-    tod = toda.strftime("%Y-%m-%d")
-    to = toda.strftime("%d-%m-%Y")
-    inv = invoice.objects.filter(cid=cmp1,customername=su,status='Approved',invoicedate=tod)
-    
-
-    pay = payment.objects.filter(cid=cmp1,customer=su,paymdate=tod)
-
-    preamount =0
-    prepayment= 0
-    prebalance=0
-    prev_balance = cust_statment.objects.filter(customer=su,Date__lt=tod)
-    for j in prev_balance:
-        if j.Amount:
-            preamount += j.Amount
-
-        if j.Payments:
-            prepayment += j.Payments
-    
-
-    prebalance = preamount-prepayment
-    print(prebalance)
-
-
-    statment = cust_statment.objects.filter(customer=su,Date=tod)
-    bal=0
-    if prebalance !=0:
-        bal=prebalance
-        
-
-
-    for i in statment:
-        if i.Transactions =="Invoice" or "Customer Opening Balance":
-            if i.Amount:
-                i.Balance = bal + i.Amount
-                bal = i.Balance
-        if i.Transactions =="Payment Received":
-            i.Balance = bal-i.Payments
-            
-
-        i.save() 
-         
-        
-
-
-    invoiced=0
-    sum=0
-    sum2=0
-    re=0
-    for i in inv:
-        if i.baldue:
-            sum+=i.baldue
-        if i.grandtotal:
-            invoiced += i.grandtotal  
-
-    for i in pay:
-        if i.amtcredit:
-            sum2+=i.amtcredit 
-        if i.amtapply:
-           re+=i.amtapply
-    
-    resum = 0
-    invo2= invoice.objects.filter(cid=cmp1,customername=su,status='Approved')
-    for i in invo2:
-        if i.baldue:
-            resum +=i.baldue
-         
-
-
-
-
-
-
-    baldue=invoiced+prebalance-re
-    invs = invoice.objects.filter(cid=cmp1,customername=su,).all() 
-    payme = payment.objects.filter(cid=cmp1,customer=su,).all()  
-    est1 = estimate.objects.filter(cid=cmp1,customer=su,).all()   
-    sel1 = salesorder.objects.filter(cid=cmp1,salename=su,).all() 
-    context = {'customer': custo,
-                'cmp1': cmp1,
-                'inv':inv,
-                'sum':sum,
-                'sum2':sum2,
-                'invoiced':invoiced,
-                'tod':tod,
-                're':re,
-                'pay':pay,
-                'invs':invs,
-                'payme':payme,
-                'est1':est1,
-                'sel1':sel1,
-                'statment':statment,
-                'baldue':baldue,
-                'resum':resum,
-                'bal_amount':prebalance,
-                'tod':to,
-
-                
-     }
-    return render(request, 'app1/customer_view.html', context)
-
-def search_resept(request,id):
-    if request.method == 'POST':
-        cmp1 = company.objects.get(id=request.session["uid"])
-        
-        
-
-        fst =  request.POST['fd']
-        lst = request.POST['ld']
-        print(fst)
-        print(lst)
-        
-        custo = customer.objects.get(customerid=id, cid=cmp1)
-        fn =custo.firstname
-        ln = custo.lastname
-        su = fn+ ' ' +ln
-        invoiced=0
-        sum=0
-        sum2=0
-        re=0
-        
-        inv = invoice.objects.values().filter(cid=cmp1,customername=su,status='Approved',invoicedate__gte=fst,invoicedate__lte=lst)
-        inv2 =invoice.objects.filter(cid=cmp1,customername=su,status='Approved',invoicedate__gte=fst,invoicedate__lte=lst)
-        for i in  inv2:
-            if i.baldue:
-                sum+=i.baldue
-            if i.grandtotal:
-                invoiced += i.grandtotal  
-          
-        pay = payment.objects.values().filter(cid=cmp1,customer=su,paymdate__gte=fst,paymdate__lte=lst,)
-        pay2 = payment.objects.filter(cid=cmp1,customer=su,paymdate__gte=fst,paymdate__lte=lst,)
-        for i in pay2:
-            if i.amtcredit:
-                sum2+=i.amtcredit
-            if i.amtapply:
-                re+=i.amtapply
-
-
-
-        preamount =0
-        prepayment= 0
-        prebalance=0
-        prev_balance = cust_statment.objects.filter(customer=su,Date__lt=fst)
-        for j in prev_balance:
-            if j.Amount:
-                preamount += j.Amount
-
-            if j.Payments:
-                prepayment += j.Payments
-    
-
-        prebalance = preamount-prepayment
-        print(prebalance)
-
-        currentamt =0 
-        current = cust_statment.objects.filter(customer=su,Date__gte=fst,Date__lte=lst)
-
-        for j in current:
-            if j.Amount:
-                currentamt += j.Amount
-
-        
-        baldue=currentamt+prebalance-re 
-        statment2 = cust_statment.objects.all()
-        for j in statment2:
-            if j.Transactions =="Invoice":
-                j.Details2 = "INV-"+" "+str(j.inv.invoiceno) +" "+ "due on" +" "+ str(j.inv.duedate)
-            if j.Transactions =="Payment Received":
-                 j.Details2 = "₹"+ str(j.Payments) +" "+"payment"
-                      
-            j.save()          
-       
-        statment = cust_statment.objects.filter(customer=su,Date__gte=fst,Date__lte=lst)
-
-
-        bal=0
-        if prebalance !=0:
-            bal=prebalance
-        
-        for i in statment:
-            if i.Transactions =="Invoice" or "Customer Opening Balance":
-                if i.Amount:
-                    i.Balance = i.Amount + bal
-            
-                    bal = i.Balance
-             
-            if i.Transactions =="Payment Received":
-                i.Balance = bal - i.Payments
-                bal=i.Balance
-  
-            i.save() 
-             
-        
-        stat = cust_statment.objects.values().filter(customer=su,Date__gte=fst,Date__lte=lst,)
-        x_data = list(inv)
-        ct= list(pay)
-        st=list(stat)
-            
-            
-        return JsonResponse({"status":" not",
-        "invitem":x_data,"ct":ct ,
-        "invoiced":currentamt,'re':re,'sum':sum,
-        "df":fst,"dl":lst,"st":st,"baldue":baldue,
-        'opening':prebalance,
-        'fst':fst,
-
-        
-        })
 
 
 def goestimate(request):
@@ -25350,35 +24891,29 @@ def estindex2(request):
 def estcreate2(request):
     if request.method == 'POST':
         cmp1 = company.objects.get(id=request.session["uid"])
-        est2 = estimate(customer=request.POST['customer'], email=request.POST['email'], billingaddress=request.POST['billingaddress'], 
-                        estimatedate=request.POST['estimatedate'], expirationdate=request.POST['expirationdate'],
-                        placeofsupply=request.POST['placosupply'],
-                        estimateno='1000',
-                        
-                        
-                        #  product=request.POST['product'], description=request.POST['description'],
-                        # hsn=request.POST['hsn'],
-                        # qty=request.POST['qty'], rate=request.POST['rate'], tax=request.POST['tax'],
-                        # total=request.POST['total'], taxamount=request.POST['taxamount'],
-                        #  , product1=request.POST[
-                        #     'product1'], hsn1=request.POST['hsn1'], qty1=request.POST['qty1'],
-                        # description1=request.POST['description1'], rate1=request.POST[
-                        #     'rate1'], total1=request.POST['total1'], tax1=request.POST['tax1'],
-                        # product2=request.POST['product2'], hsn2=request.POST['hsn2'], qty2=request.POST['qty2'],
-                        # description2=request.POST['description2'], rate2=request.POST[
-                        #     'rate2'], total2=request.POST['total2'], tax2=request.POST['tax2'],
-                        # product3=request.POST['product3'], hsn3=request.POST['hsn3'], qty3=request.POST['qty3'],
-                        # description3=request.POST['description3'], rate3=request.POST[
-                        #     'rate3'], total3=request.POST['total3'], tax3=request.POST['tax3'],
+        est2 = estimate(customer=request.POST['customer'], email=request.POST['email'], billingaddress=request.POST['billingaddress'], estimatedate=request.POST['estimatedate'], expirationdate=request.POST['expirationdate'], placeofsupply=request.POST['placeofsupply'],
+                        estimateno='1000', product=request.POST['product'], description=request.POST['description'],
+                        hsn=request.POST['hsn'],
+                        qty=request.POST['qty'], rate=request.POST['rate'], tax=request.POST['tax'],
+                        total=request.POST['total'], taxamount=request.POST['taxamount'],
+                        subtotal=request.POST['sub_total'], estimatetotal=request.POST['estimatetotal'], product1=request.POST[
+                            'product1'], hsn1=request.POST['hsn1'], qty1=request.POST['qty1'],
+                        description1=request.POST['description1'], rate1=request.POST[
+                            'rate1'], total1=request.POST['total1'], tax1=request.POST['tax1'],
+                        product2=request.POST['product2'], hsn2=request.POST['hsn2'], qty2=request.POST['qty2'],
+                        description2=request.POST['description2'], rate2=request.POST[
+                            'rate2'], total2=request.POST['total2'], tax2=request.POST['tax2'],
+                        product3=request.POST['product3'], hsn3=request.POST['hsn3'], qty3=request.POST['qty3'],
+                        description3=request.POST['description3'], rate3=request.POST[
+                            'rate3'], total3=request.POST['total3'], tax3=request.POST['tax3'],
                         cid=cmp1,
                         reference_number = request.POST['Ref_No'],
                         note = request.POST['Note'],
-                        subtotal=request.POST['subtotal'],
+
                         IGST =request.POST['IGST'],
                         CGST  = request.POST['CGST'],
                         SGST = request.POST['SGST'],
                         TCS = request.POST['TCS'],
-                        estimatetotal=request.POST['grandtotal']
                         
                         
                         )
@@ -25389,26 +24924,6 @@ def estcreate2(request):
         est2.save()
         est2.estimateno = int(est2.estimateno) + est2.estimateid
         est2.save()
-
-        items = request.POST.getlist("product[]")
-        hsn = request.POST.getlist("hsn[]")
-        description = request.POST.getlist("description[]")
-        quantity = request.POST.getlist("qty[]")
-        rate = request.POST.getlist("price[]")
-        tax = request.POST.getlist("tax[]")
-        amount = request.POST.getlist("total[]")
-
-        estimateid= estimate.objects.get(estimateid=est2.estimateid)
-
-        if len(items)==len(hsn)==len(description)==len(quantity)==len(rate)==len(tax )==len(amount) and items and hsn and description and quantity and rate and tax and amount:
-                mapped=zip(items,hsn,description ,quantity,rate,tax,amount)
-                mapped=list(mapped)
-                for ele in mapped:
-                    itemAdd,created = estimate_item.objects.get_or_create(item = ele[0],hsn=ele[1],description=ele[2],
-                    quantity=ele[3],rate=ele[4],tax=ele[5],total=ele[6] ,estimate = estimateid)
-
-
-
         return redirect('goestimate')
     
     return redirect('goestimate')
@@ -25450,124 +24965,23 @@ def new_customers(request):
 
 
 
-
-def estimate_create_item(request):
-    if 'uid' in request.session:
-        if request.session.has_key('uid'):
-            uid = request.session['uid']
-        else:
-            return redirect('/')
-        cmp1 = company.objects.get(id=request.session['uid'])
-        if request.method == 'POST':
-            cmp1 = company.objects.get(id=request.session['uid'])
-            iname = request.POST['name']
-            itype = request.POST['type']
-            iunit = request.POST.get('unit')
-            ihsn = request.POST['hsn']
-            itax = request.POST['taxref']
-            ipcost = request.POST['pcost']
-            iscost = request.POST['salesprice']
-            itrate = request.POST['tax']
-            ipuracc = request.POST['pur_account']
-            isalacc = request.POST['sale_account']
-            ipurdesc = request.POST['pur_desc']
-            isaledesc = request.POST['sale_desc']
-            iintra = request.POST['intra_st']
-            iinter = request.POST['inter_st']
-            iinv = request.POST['invacc']
-            istock = request.POST['stock']
-            istatus = request.POST['status']
-            item = itemtable(name=iname,item_type=itype,unit=iunit,
-                                hsn=ihsn,tax_reference=itax,
-                                purchase_cost=ipcost,
-                                sales_cost=iscost,
-                                tax_rate=itrate,
-                                acount_pur=ipuracc,
-                                account_sal=isalacc,
-                                pur_desc=ipurdesc,
-                                sale_desc=isaledesc,
-                                intra_st=iintra,
-                                inter_st=iinter,
-                                inventry=iinv,
-                                stock=istock,
-                                status=istatus,
-                                cid=cmp1)
-            item.save()
-            return redirect('estindex2')
-        return render(request,'app1/estimate2.html')
-    return redirect('/') 
-
-
-def estimate_create_item2(request,id):
-    if 'uid' in request.session:
-        if request.session.has_key('uid'):
-            uid = request.session['uid']
-        else:
-            return redirect('/')
-        cmp1 = company.objects.get(id=request.session['uid'])
-        if request.method == 'POST':
-            cmp1 = company.objects.get(id=request.session['uid'])
-            iname = request.POST['name']
-            itype = request.POST['type']
-            iunit = request.POST.get('unit')
-            ihsn = request.POST['hsn']
-            itax = request.POST['taxref']
-            ipcost = request.POST['pcost']
-            iscost = request.POST['salesprice']
-            itrate = request.POST['tax']
-            ipuracc = request.POST['pur_account']
-            isalacc = request.POST['sale_account']
-            ipurdesc = request.POST['pur_desc']
-            isaledesc = request.POST['sale_desc']
-            iintra = request.POST['intra_st']
-            iinter = request.POST['inter_st']
-            iinv = request.POST['invacc']
-            istock = request.POST['stock']
-            istatus = request.POST['status']
-            item = itemtable(name=iname,item_type=itype,unit=iunit,
-                                hsn=ihsn,tax_reference=itax,
-                                purchase_cost=ipcost,
-                                sales_cost=iscost,
-                                tax_rate=itrate,
-                                acount_pur=ipuracc,
-                                account_sal=isalacc,
-                                pur_desc=ipurdesc,
-                                sale_desc=isaledesc,
-                                intra_st=iintra,
-                                inter_st=iinter,
-                                inventry=iinv,
-                                stock=istock,
-                                status=istatus,
-                                cid=cmp1)
-            item.save()
-            return redirect(editestimate,id)
-        return render(request,'app1/estimate2.html')
-    return redirect('/') 
-
-
 @login_required(login_url='regcomp')
 def editestimate(request, id):
     try:
         cmp1 = company.objects.get(cid=request.session['uid'])
-       
+        edt = estimate.objects.get(estimateid=id, cid=cmp1)
         inv = inventory.objects.filter(cid=cmp1).all()
         bun = bundle.objects.filter(cid=cmp1).all()
         noninv = noninventory.objects.filter(cid=cmp1).all()
         ser = service.objects.filter(cid=cmp1).all()
-        customers = customer.objects.filter(cid=cmp1).all()
-        edt = estimate.objects.get(estimateid=id, cid=cmp1)
         item = itemtable.objects.filter(cid=cmp1).all()
-        estimateitem = estimate_item.objects.filter(estimate=id).all()
-        
 
 
         context = {'estimate': edt, 'cmp1': cmp1, 'inv': inv,
-                   'noninv': noninv, 'bun': bun, 'ser': ser,'item':item,'estimateitem':estimateitem ,'customers':customers}
+                   'noninv': noninv, 'bun': bun, 'ser': ser,'item':item}
         return render(request, 'app1/edit_estimate.html', context)
     except:
         return redirect('goestimate')
-
-
 
 
 @login_required(login_url='regcomp')
@@ -25580,83 +24994,58 @@ def updateestimate2(request, id):
         upd.billingaddress = request.POST['billingaddress']
         upd.estimatedate = request.POST['estimatedate']
         upd.expirationdate = request.POST['expirationdate']
-        upd.placeofsupply = request.POST['placosupply']
-        
+        upd.placeofsupply = request.POST['placeofsupply']
+        upd.product = request.POST['product']
+        upd.hsn = request.POST['hsn']
+        upd.description = request.POST['description']
+        upd.qty = request.POST['qty']
+        upd.rate = request.POST['rate']
+        upd.tax = request.POST['tax']
+        upd.total = request.POST['total']
+        upd.estimatetotal = request.POST['estimatetotal']
+        upd.product1 = request.POST['product1']
+        upd.hsn1 = request.POST['hsn1']
+        upd.description1 = request.POST['description1']
+        upd.qty1 = request.POST['qty1']
+        upd.rate1 = request.POST['rate1']
+        upd.total1 = request.POST['total1']
+        upd.tax1 = request.POST['tax1']
+        upd.product2 = request.POST['product2']
+        upd.hsn2 = request.POST['hsn2']
+        upd.description2 = request.POST['description2']
+        upd.qty2 = request.POST['qty2']
+        upd.rate2 = request.POST['rate2']
+        upd.total2 = request.POST['total2']
+        upd.tax2 = request.POST['tax2']
+        upd.product3 = request.POST['product3']
+        upd.hsn3 = request.POST['hsn3']
+        upd.description3 = request.POST['description3']
+        upd.qty3 = request.POST['qty3']
+        upd.rate3 = request.POST['rate3']
+        upd.total3 = request.POST['total3']
+        upd.tax3 = request.POST['tax3']
+        upd.taxamount = request.POST['taxamount']
         upd.reference_number = request.POST['Ref_No']
         upd.note = request.POST['Note']
-        upd.subtotal=request.POST['subtotal']
+        upd.subtotal=request.POST['sub_total'],
 
-        upd.IGST =request.POST['IGST']
-        upd.CGST  = request.POST['CGST']
-        upd.SGST = request.POST['SGST']
-        upd.TCS = request.POST['TCS']
-        upd.estimatetotal = request.POST['grandtotal']
+        upd.IGST =request.POST['IGST'],
+        upd.CGST  = request.POST['CGST'],
+        upd.SGST = request.POST['SGST'],
+        upd.TCS = request.POST['TCS'],
+
         if len(request.FILES) != 0:
             if len(upd.file) > 0  :
                 os.remove(upd.estimate.path)
                 
-            upd.file = request.FILES['file']
+            upd.file = request.FILES['file'],
+
+        
 
         upd.save()
-        items = request.POST.getlist("product[]")
-        hsn = request.POST.getlist("hsn[]")
-        description = request.POST.getlist("description[]")
-        quantity = request.POST.getlist("qty[]")
-        rate = request.POST.getlist("price[]")
-        tax = request.POST.getlist("tax[]")
-        amount = request.POST.getlist("total[]")
-
-        estimateid= estimate.objects.get(estimateid=upd.estimateid)
-
-        if len(items)==len(hsn)==len(description)==len(quantity)==len(rate)==len(tax )==len(amount) and items and hsn and description and quantity and rate and tax and amount:
-                mapped=zip(items,hsn,description ,quantity,rate,tax,amount)
-                mapped=list(mapped)
-                for ele in mapped:
-                    itemAdd,created = estimate_item.objects.get_or_create(item = ele[0],hsn=ele[1],description=ele[2],
-                    quantity=ele[3],rate=ele[4],tax=ele[5],total=ele[6] ,estimate = estimateid)
-                   
-
-
-
         return redirect('goestimate')
     else:
         return redirect('goestimate')
-
-
-@login_required(login_url='regcomp')
-def new_customers4(request,id):
-    try:
-        cmp1 = company.objects.get(id=request.session["uid"])
-        if request.method == "POST":
-            firstname = request.POST['firstname']
-            lastname = request.POST['lastname']
-            if customer.objects.filter(firstname=firstname, lastname=lastname, cid=cmp1).exists():
-                messages.info(request,
-                              f"Customer {firstname} {lastname} already exists. Please provide a different name.")
-                return redirect('gocustomers')
-            else:
-                customer1 = customer(title=request.POST['title'], firstname=request.POST['firstname'],
-                                     lastname=request.POST['lastname'], company=request.POST['company'],
-                                     location=request.POST['location'], gsttype=request.POST['gsttype'],
-                                     gstin=request.POST['gstin'], panno=request.POST['panno'],
-                                     email=request.POST['email'],
-                                     website=request.POST['website'], mobile=request.POST['mobile'],
-                                     street=request.POST['street'], city=request.POST['city'],
-                                     state=request.POST['state'],
-                                     pincode=request.POST['pincode'], country=request.POST['country'],
-                                     shipstreet=request.POST['shipstreet'], shipcity=request.POST['shipcity'],
-                                     shipstate=request.POST['shipstate'],
-                                     shippincode=request.POST['shippincode'], shipcountry=request.POST['shipcountry'],
-                                     cid=cmp1)
-
-                customer1.save()
-                return redirect('editestimate',id)
-        customers = customer.objects.filter(cid=cmp1).all()
-        context = {'customers': customers, 'cmp1': cmp1}
-        return render(request, 'app1/customers.html', context)
-    except:
-        return redirect('goaddinvoices')
-
 
 
 @login_required(login_url='regcomp')
@@ -25710,14 +25099,12 @@ def estimate_view(request,id):
     cmp1 = company.objects.get(id=request.session['uid'])
     upd = estimate.objects.get(estimateid=id, cid=cmp1)
 
-    estitem = estimate_item.objects.filter(estimate=id)
-
     context ={
         'estimate':upd,
-        'cmp1':cmp1,
-        'estitem':estitem,
+        'cmp1':cmp1
 
     }
+
 
     return render(request,'app1/estimate_view.html',context)
 
@@ -25751,37 +25138,37 @@ def convert2(request,id):
     upd.shipmentdate = est.expirationdate
     upd.placeofsupply= est.placeofsupply
 
-    # upd.product = est.product
-    # upd.hsn = est.hsn
-    # upd.description =est.description
-    # upd.qty = est.qty
-    # upd.rate = est.rate
-    # upd.tax = est.tax
-    # upd.total = est.total
+    upd.product = est.product
+    upd.hsn = est.hsn
+    upd.description =est.description
+    upd.qty = est.qty
+    upd.rate = est.rate
+    upd.tax = est.tax
+    upd.total = est.total
         
-    # upd.product1 = est.product1
-    # upd.hsn1 = est.hsn1
-    # upd.description1 =est.description1
-    # upd.qty1 = est.qty1
-    # upd.rate1 =est.rate1
-    # upd.total1 = est.total1
-    # upd.tax1 =est.tax1
+    upd.product1 = est.product1
+    upd.hsn1 = est.hsn1
+    upd.description1 =est.description1
+    upd.qty1 = est.qty1
+    upd.rate1 =est.rate1
+    upd.total1 = est.total1
+    upd.tax1 =est.tax1
 
-    # upd.product2 =est.product2
-    # upd.hsn2 = est.hsn2
-    # upd.description2 = est.description2
-    # upd.qty2 = est.qty2
-    # upd.rate2 = est.rate2
-    # upd.total2 = est.total2
-    # upd.tax2 = est.tax2
+    upd.product2 =est.product2
+    upd.hsn2 = est.hsn2
+    upd.description2 = est.description2
+    upd.qty2 = est.qty2
+    upd.rate2 = est.rate2
+    upd.total2 = est.total2
+    upd.tax2 = est.tax2
 
-    # upd.product3 = est.product3
-    # upd.hsn3 = est.hsn3
-    # upd.description3  = est.description3
-    # upd.qty3 = est.qty3
-    # upd.rate3 = est.rate3
-    # upd.total3 = est.total3
-    # upd.tax3 = est.tax3
+    upd.product3 = est.product3
+    upd.hsn3 = est.hsn3
+    upd.description3  = est.description3
+    upd.qty3 = est.qty3
+    upd.rate3 = est.rate3
+    upd.total3 = est.total3
+    upd.tax3 = est.tax3
     upd.taxamount = est.taxamount
 
     upd.reference_number = est.reference_number
@@ -25800,21 +25187,7 @@ def convert2(request,id):
     upd.save()
     upd.saleno = int(upd.saleno) + upd.id
     upd.save()
-
-    es =estimate_item.objects.filter(estimate=id)
-
-    salid = salesorder.objects.get(id=upd.id)
-    for i in es:
-        a=sales_item()
-        a. salesorder = salid 
-        a.product = i.item
-        a.hsn = i.hsn
-        a.description = i.description
-        a.qty  = i.quantity
-        a.price = i.rate
-        a.total = i.total
-        a.tax = i.tax
-        a.save()
+    
 
 
     return redirect(estimate_view,id)
@@ -25894,66 +25267,45 @@ def createsales_record(request):
 
         sel2 = salesorder(salename=request.POST['customer'], saleemail=request.POST['email'],
                         saleaddress=request.POST['billingaddress'], saledate=request.POST['Salesdate'],
-                        shipmentdate=request.POST['Shipmentdate'], placeofsupply=request.POST['placosupply'],
+                        shipmentdate=request.POST['Shipmentdate'], placeofsupply=request.POST['placeofsupply'],
                         saleno='1000', 
-                        # product=request.POST['product'], 
-                        # description=request.POST['description'],
-                        # hsn=request.POST['hsn'],
-                        # qty=request.POST['qty'],
-                        # rate=request.POST['rate'],
-                        # tax=request.POST['tax'],
+                        product=request.POST['product'], 
+                        description=request.POST['description'],
+                        hsn=request.POST['hsn'],
+                        qty=request.POST['qty'],
+                        rate=request.POST['rate'],
+                        tax=request.POST['tax'],
 
 
 
-                        # total=request.POST['total'],
-                        # taxamount=request.POST['taxamount'],
+                        total=request.POST['total'],
+                        taxamount=request.POST['taxamount'],
 
-                        #  product1=request.POST['product1'],
-                        #  hsn1=request.POST['hsn1'], qty1=request.POST['qty1'],
-                        # description1=request.POST['description1'], rate1=request.POST[
-                        #     'rate1'], total1=request.POST['total1'], tax1=request.POST['tax1'],
-                        # product2=request.POST['product2'], hsn2=request.POST['hsn2'], qty2=request.POST['qty2'],
-                        # description2=request.POST['description2'], rate2=request.POST[
-                        #     'rate2'], total2=request.POST['total2'], tax2=request.POST['tax2'],
-                        # product3=request.POST['product3'], hsn3=request.POST['hsn3'], qty3=request.POST['qty3'],
-                        # description3=request.POST['description3'], rate3=request.POST[
-                        #     'rate3'], total3=request.POST['total3'], tax3=request.POST['tax3'],
+                         product1=request.POST['product1'],
+                         hsn1=request.POST['hsn1'], qty1=request.POST['qty1'],
+                        description1=request.POST['description1'], rate1=request.POST[
+                            'rate1'], total1=request.POST['total1'], tax1=request.POST['tax1'],
+                        product2=request.POST['product2'], hsn2=request.POST['hsn2'], qty2=request.POST['qty2'],
+                        description2=request.POST['description2'], rate2=request.POST[
+                            'rate2'], total2=request.POST['total2'], tax2=request.POST['tax2'],
+                        product3=request.POST['product3'], hsn3=request.POST['hsn3'], qty3=request.POST['qty3'],
+                        description3=request.POST['description3'], rate3=request.POST[
+                            'rate3'], total3=request.POST['total3'], tax3=request.POST['tax3'],
                         cid=cmp1,
                         reference_number = request.POST['Ref_No'],
                         note = request.POST['Note'],
 
-                        subtotal=request.POST['subtotal'],
+                        subtotal=request.POST['sub_total'],
                         IGST =request.POST['IGST'],
                         CGST  = request.POST['CGST'],
                         SGST = request.POST['SGST'],
                         TCS = request.POST['TCS'],
-                        salestotal=request.POST['grandtotal'],)            
+                        salestotal=request.POST['totalamount'],)            
         if len(request.FILES) != 0:
             sel2.file=request.FILES['file']                    
         sel2.save()
         sel2.saleno= int(sel2.saleno) + sel2.id
         sel2.save()
-
-        product = request.POST.getlist("product[]")
-        hsn  = request.POST.getlist("hsn[]")
-        description = request.POST.getlist("description[]")
-        qty = request.POST.getlist("qty[]")
-        price = request.POST.getlist("price[]")
-        
-        tax = request.POST.getlist("tax[]")
-        total = request.POST.getlist("total[]")
-
-        salesorderid=salesorder.objects.get(id =sel2.id)
-
-        if len(product)==len(hsn)==len(description)==len(qty)==len(price)==len(tax)==len(total) and product and hsn and description and qty and price and tax and total:
-            mapped=zip(product,hsn,description,qty,price,tax,total)
-            mapped=list(mapped)
-            for ele in mapped:
-                salesorderAdd,created = sales_item.objects.get_or_create(product = ele[0],hsn=ele[1],description=ele[2],
-                qty=ele[3],price=ele[4],tax=ele[5],total=ele[6],salesorder=salesorderid)
-
-
-
         return redirect('gosalesorder')
     
     return redirect('gosalesorder')
@@ -25994,63 +25346,15 @@ def new_customers2(request):
     except:
         return redirect('newsalesorder')
 
-def sale_create_item(request):
-    if 'uid' in request.session:
-        if request.session.has_key('uid'):
-            uid = request.session['uid']
-        else:
-            return redirect('/')
-        cmp1 = company.objects.get(id=request.session['uid'])
-        if request.method == 'POST':
-            cmp1 = company.objects.get(id=request.session['uid'])
-            iname = request.POST['name']
-            itype = request.POST['type']
-            iunit = request.POST.get('unit')
-            ihsn = request.POST['hsn']
-            itax = request.POST['taxref']
-            ipcost = request.POST['pcost']
-            iscost = request.POST['salesprice']
-            itrate = request.POST['tax']
-            ipuracc = request.POST['pur_account']
-            isalacc = request.POST['sale_account']
-            ipurdesc = request.POST['pur_desc']
-            isaledesc = request.POST['sale_desc']
-            iintra = request.POST['intra_st']
-            iinter = request.POST['inter_st']
-            iinv = request.POST['invacc']
-            istock = request.POST['stock']
-            istatus = request.POST['status']
-            item = itemtable(name=iname,item_type=itype,unit=iunit,
-                                hsn=ihsn,tax_reference=itax,
-                                purchase_cost=ipcost,
-                                sales_cost=iscost,
-                                tax_rate=itrate,
-                                acount_pur=ipuracc,
-                                account_sal=isalacc,
-                                pur_desc=ipurdesc,
-                                sale_desc=isaledesc,
-                                intra_st=iintra,
-                                inter_st=iinter,
-                                inventry=iinv,
-                                stock=istock,
-                                status=istatus,
-                                cid=cmp1)
-            item.save()
-            return redirect('newsalesorder')
-        return render(request,'app1/salesorder.html')
-    return redirect('/') 
 
 
 def sales_order_view(request,id):
     cmp1 = company.objects.get(id=request.session['uid'])
     upd = salesorder.objects.get(id=id, cid=cmp1)
 
-    saleitem = sales_item.objects.filter(salesorder=id)
-
     context ={
         'sale':upd,
-        'cmp1':cmp1,
-        'saleitem':saleitem
+        'cmp1':cmp1
 
     }
 
@@ -26081,9 +25385,8 @@ def edit_sales_order(request, id):
         noninv = noninventory.objects.filter(cid=cmp1).all()
         ser = service.objects.filter(cid=cmp1).all()
         item = itemtable.objects.filter(cid=cmp1).all()
-        itemsale = sales_item.objects.filter(salesorder=id)
         context = {'sale': edt, 'cmp1': cmp1, 'inv': inv,
-                   'noninv': noninv, 'bun': bun, 'ser': ser,'item':item,'itemsale':itemsale}
+                   'noninv': noninv, 'bun': bun, 'ser': ser,'item':item,}
         return render(request, 'app1/edit_sales_order.html', context)
     except:
         return redirect('gosalesorder')
@@ -26100,55 +25403,55 @@ def updatesale(request, id):
         upd.saleaddress = request.POST['billingaddress']
         upd.saledate = request.POST['Salesdate']
         upd.shipmentdate = request.POST['Shipmentdate']
-        upd.placeofsupply= request.POST['placosupply']
-        # upd.product = request.POST['product']
-        # upd.hsn = request.POST['hsn']
-        # upd.description = request.POST['description']
-        # upd.qty = request.POST['qty']
-        # upd.rate = request.POST['rate']
-        # upd.tax = request.POST['tax']
-        # upd.total = request.POST['total']
+        upd.placeofsupply= request.POST['placeofsupply']
+        upd.product = request.POST['product']
+        upd.hsn = request.POST['hsn']
+        upd.description = request.POST['description']
+        upd.qty = request.POST['qty']
+        upd.rate = request.POST['rate']
+        upd.tax = request.POST['tax']
+        upd.total = request.POST['total']
         
-        # upd.product1 = request.POST['product1']
-        # upd.hsn1 = request.POST['hsn1']
-        # upd.description1 = request.POST['description1']
-        # upd.qty1 = request.POST['qty1']
-        # upd.rate1 = request.POST['rate1']
-        # upd.total1 = request.POST['total1']
-        # upd.tax1 = request.POST['tax1']
+        upd.product1 = request.POST['product1']
+        upd.hsn1 = request.POST['hsn1']
+        upd.description1 = request.POST['description1']
+        upd.qty1 = request.POST['qty1']
+        upd.rate1 = request.POST['rate1']
+        upd.total1 = request.POST['total1']
+        upd.tax1 = request.POST['tax1']
 
-        # upd.product2 = request.POST['product2']
-        # upd.hsn2 = request.POST['hsn2']
-        # upd.description2 = request.POST['description2']
-        # upd.qty2 = request.POST['qty2']
-        # upd.rate2 = request.POST['rate2']
-        # upd.total2 = request.POST['total2']
-        # upd.tax2 = request.POST['tax2']
+        upd.product2 = request.POST['product2']
+        upd.hsn2 = request.POST['hsn2']
+        upd.description2 = request.POST['description2']
+        upd.qty2 = request.POST['qty2']
+        upd.rate2 = request.POST['rate2']
+        upd.total2 = request.POST['total2']
+        upd.tax2 = request.POST['tax2']
 
-        # upd.product3 = request.POST['product3']
-        # upd.hsn3 = request.POST['hsn3']
-        # upd.description3  = request.POST['description3']
-        # upd.qty3 = request.POST['qty3']
-        # upd.rate3 = request.POST['rate3']
-        # upd.total3 = request.POST['total3']
-        # upd.tax3 = request.POST['tax3']
-        # upd.taxamount = request.POST['taxamount']
+        upd.product3 = request.POST['product3']
+        upd.hsn3 = request.POST['hsn3']
+        upd.description3  = request.POST['description3']
+        upd.qty3 = request.POST['qty3']
+        upd.rate3 = request.POST['rate3']
+        upd.total3 = request.POST['total3']
+        upd.tax3 = request.POST['tax3']
+        upd.taxamount = request.POST['taxamount']
 
         upd.reference_number = request.POST['Ref_No']
         upd.note = request.POST['Note']
 
-        upd.subtotal=request.POST['subtotal']
-        upd.IGST =request.POST['IGST']
-        upd.CGST  = request.POST['CGST']
-        upd.SGST = request.POST['SGST']
-        upd.TCS = request.POST['TCS']
-        upd.salestotal = request.POST['grandtotal']
+        upd.subtotal=request.POST['sub_total'],
+        upd.IGST =request.POST['IGST'],
+        upd.CGST  = request.POST['CGST'],
+        upd.SGST = request.POST['SGST'],
+        upd.TCS = request.POST['TCS'],
+        upd.salestotal = request.POST['totalamount'],
 
         if len(request.FILES) != 0:
             if len(upd.file) > 0  :
                 os.remove(upd.sales.path)
                 
-            upd.file = request.FILES['file']
+            upd.file = request.FILES['file'],
 
         
 
@@ -26177,57 +25480,6 @@ def sale_convert2(request,id):
 
     upd.status = 'Invoice'
     upd.save()
-
-    inv = invoice()
-    inv.cid =  cmp1 
-    inv.customername  = upd.salename
-    inv.email = upd.saleemail
-   
-    inv.invoicedate = upd.saledate
-    inv.duedate  =  upd.shipmentdate
-    inv.bname = upd.saleaddress
-    inv.placosupply= upd.placeofsupply
-
-    # inv.reference_number = est.reference_number
-    inv.note = upd.note
-    
-    inv.subtotal=upd.subtotal 
-    inv.IGST =upd. IGST
-    inv.CGST  = upd.CGST
-    inv.SGST = upd.SGST
-    inv.TCS = upd.TCS 
-    inv.amtrecvd = 0 
-    inv.baldue = upd.salestotal 
-    inv.grandtotal = upd.salestotal 
-  
-    inv.file = upd.file
-    inv.saleno = '1000'
-
-
-
-    orderno = 'OR'+str(random.randint(1111111,9999999))
-    while invoice.objects.filter(invoice_orderno=orderno ) is None:
-        orderno = 'OR'+str(random.randint(1111111,9999999))
-    inv.invoice_orderno =orderno
-    inv.save()
-    inv.invoiceno = int(inv.invoiceno) + inv.invoiceid
-    inv.save()
-    
-    sl =sales_item.objects.filter(salesorder=id)
-
-    salid = invoice.objects.get(invoiceid=inv.invoiceid)
-    for i in sl:
-        a=invoice_item()
-        a. invoice = salid 
-        a.product = i.product
-        a.hsn = i.hsn
-        a.description = i.description
-        a.qty  = i.qty
-        a.price = i.price
-        a.total = i.total
-        a.tax = i.tax
-        a.save()
-
 
 
 
@@ -26337,8 +25589,6 @@ def invoice_view(request,id):
     cmp1 = company.objects.get(id=request.session['uid'])
     upd = invoice.objects.get(invoiceid=id, cid=cmp1)
 
-    invitem = invoice_item.objects.filter(invoice=id)
-
     total = upd.grandtotal
     words_total = num2words(total)
 
@@ -26346,7 +25596,6 @@ def invoice_view(request,id):
         'invoice':upd,
         'cmp1':cmp1,
         'words_total':words_total,
-        'invitem':invitem,
 
     }
 
@@ -26401,9 +25650,7 @@ def editinvoice(request, id):
         noninv = noninventory.objects.filter(cid=cmp1).all()
         ser = service.objects.filter(cid=cmp1).all()
         item = itemtable.objects.filter(cid=cmp1).all()
-
-        invitem = invoice_item.objects.filter(invoice =id )
-        context = {'invoice': invo3, 'cmp1': cmp1, 'inv': inv, 'item':item,'invitem':invitem,
+        context = {'invoice': invo3, 'cmp1': cmp1, 'inv': inv, 'item':item,
                    'noninv': noninv, 'bun': bun, 'ser': ser}
         return render(request, 'app1/editinvoice.html', context)
     except:
@@ -27046,65 +26293,6 @@ def updateinvoice(request, id):
         return redirect('goinvoices')
 
 @login_required(login_url='regcomp')
-def updateinvoice2(request, id):
-    if request.method =='POST':
-        cmp1 = company.objects.get(id=request.session['uid'])
-        invoi = invoice.objects.get(invoiceid=id, cid=cmp1)
-        invoi.customername = request.POST['customername']
-        invoi.email = request.POST['email']
-        invoi.terms = request.POST['terms']
-        invoi.invoicedate = request.POST['invoicedate']
-        invoi.duedate = request.POST['duedate']
-        invoi.bname = request.POST['bname']
-        invoi.placosupply = request.POST['placosupply']
-
-   
-        invoi.subtotal = request.POST['subtotal']
-        invoi.grandtotal = request.POST['grandtotal']
-        invoi.amtrecvd = request.POST['amtrecvd']
-        invoi.baldue = request.POST['baldue']
-        
-        invoi.note = request.POST['Note']
-        invoi.IGST = request.POST['IGST']
-        invoi.CGST = request.POST['CGST']
-        invoi.SGST = request.POST['SGST']
-        invoi.TCS = request.POST['TCS']
-
-        if len(request.FILES) != 0:
-            if len(invoi.file) > 0  :
-                os.remove(invoi.invoice.path)
-                
-            invoi.file = request.FILES['file'],
-
-        invoi.save()
-
-        # product = request.POST.getlist("product[]")
-        # hsn  = request.POST.getlist("hsn[]")
-        # description = request.POST.getlist("description[]")
-        # qty = request.POST.getlist("qty[]")
-        # price = request.POST.getlist("price[]")
-        
-        # tax = request.POST.getlist("tax[]")
-        # total = request.POST.getlist("total[]")
-
-        # invoiceid=invoice.objects.get(invoiceid =invoi.invoiceid)
-
-        # if len(product)==len(hsn)==len(description)==len(qty)==len(price)==len(tax)==len(total) and product and hsn and description and qty and price and tax and total:
-        #     mapped=zip(product,hsn,description,qty,price,tax,total)
-        #     mapped=list(mapped)
-        #     for ele in mapped:
-        #         created = invoice_item.objects.get_or_create(product = ele[0],hsn=ele[1],description=ele[2],
-        #         qty=ele[3],price=ele[4],tax=ele[5],total=ele[6],invoice=invoiceid)
-
-
-        return redirect('goinvoices')
-    else:
-        return redirect('goinvoices')
-
-
-
-
-@login_required(login_url='regcomp')
 def deleteinvoice(request, id):
     try:
         cmp1 = company.objects.get(id=request.session['uid'])
@@ -27121,18 +26309,6 @@ def invoice_status(request,id):
 
     inoi.status = 'Approved'
     inoi.save()
-
-    statment = cust_statment()
-    statment.customer =inoi.customername 
-
-    statment.cid = cmp1
-    statment.inv =inoi
-    
-    statment.Date = inoi.invoicedate
-    statment.Transactions = "Invoice"
-    statment.Amount = inoi.grandtotal
-    statment.save()
-
     return redirect(invoice_view,id)
 
 
@@ -27175,457 +26351,14 @@ def goinvoices3(request):
     
     return redirect('goinvoices')
 
-def inv_create_item(request):
-    if 'uid' in request.session:
-        if request.session.has_key('uid'):
-            uid = request.session['uid']
-        else:
-            return redirect('/')
-        cmp1 = company.objects.get(id=request.session['uid'])
-        if request.method == 'POST':
-            cmp1 = company.objects.get(id=request.session['uid'])
-            iname = request.POST['name']
-            itype = request.POST['type']
-            iunit = request.POST.get('unit')
-            ihsn = request.POST['hsn']
-            itax = request.POST['taxref']
-            ipcost = request.POST['pcost']
-            iscost = request.POST['salesprice']
-            itrate = request.POST['tax']
-            ipuracc = request.POST['pur_account']
-            isalacc = request.POST['sale_account']
-            ipurdesc = request.POST['pur_desc']
-            isaledesc = request.POST['sale_desc']
-            iintra = request.POST['intra_st']
-            iinter = request.POST['inter_st']
-            iinv = request.POST['invacc']
-            istock = request.POST['stock']
-            istatus = request.POST['status']
-            item = itemtable(name=iname,item_type=itype,unit=iunit,
-                                hsn=ihsn,tax_reference=itax,
-                                purchase_cost=ipcost,
-                                sales_cost=iscost,
-                                tax_rate=itrate,
-                                acount_pur=ipuracc,
-                                account_sal=isalacc,
-                                pur_desc=ipurdesc,
-                                sale_desc=isaledesc,
-                                intra_st=iintra,
-                                inter_st=iinter,
-                                inventry=iinv,
-                                stock=istock,
-                                status=istatus,
-                                cid=cmp1)
-            item.save()
-            return redirect('goaddinvoices')
-        return render(request,'app1/addcustinvoice.html')
-    return redirect('/') 
 
-
-def estimate_pdf(request):
-
-    return redirect('')
-
-def gopayment_received(request):
-    cmp1 = company.objects.get(id=request.session["uid"])
-    pay = payment.objects.filter(cid=cmp1).all()
-    
-    context = {
-        'pay' :pay,
-        'cmp1': cmp1
-
-    }
-
-    return render(request, 'app1/gopayment_received.html',context)
-
-    
-
-
-@login_required(login_url='regcomp')
-def payment_received(request):
-    try:
-        cmp1 = company.objects.get(id=request.session["uid"])
-        customers = customer.objects.filter(cid=cmp1)
-        toda = date.today()
-        tod = toda.strftime("%Y-%m-%d")
-        inv = inventory.objects.filter(cid=cmp1)
-        bun = bundle.objects.filter(cid=cmp1)
-        noninv = noninventory.objects.filter(cid=cmp1)
-        ser = service.objects.filter(cid=cmp1)
-        acounts = accounts.objects.filter(cid=cmp1)
-        item = itemtable.objects.filter(cid=cmp1)
-        context = {'cmp1': cmp1, 'customers': customers, 'inv': inv, 'bun': bun, 'noninv': noninv, 'ser': ser,'item':item,
-                   'tod': tod, 'accoun': acounts}
-        return render(request, 'app1/payment_received.html', context)
-    except:
-        return redirect('/')
-
-
-
-
-@login_required(login_url='regcomp')
-def paymentcreate2(request):
-    if request.method == 'POST':
-        cmp1 = company.objects.get(id=request.session["uid"])
-        pay2 = payment(customer=request.POST['customer'],
-                        email=request.POST['email'],
-                       paymdate=request.POST['paymdate'],
-                       pmethod=request.POST['pmethod'], refno='1000', depto=request.POST['depto'],
-                       amtreceived=request.POST['amtreceived'],
-                       amtapply=request.POST['amtapply'],
-                       amtcredit=request.POST['amtcredit'],
-                       cid=cmp1,
-                       referno=request.POST['ref'],
-
-
-                    #    descrip=request.POST['invno0'], duedate=request.POST['duedate0'], orgamt=request.POST['inv_amount0'],
-                    #    openbal=request.POST['openbal0'], payment=request.POST['payment0'],
-                    #    descrip1=request.POST['invno1'],
-                    #    duedate1=request.POST['duedate1'], orgamt1=request.POST['inv_amount1'],
-                    #    openbal1=request.POST['openbal1'], payment1=request.POST['payment1'],
-                    #    descrip2=request.POST['invno2'],
-                    #    duedate2=request.POST['duedate2'], orgamt2=request.POST['inv_amount2'],
-                    #    openbal2=request.POST['openbal2'],
-                    #    payment2=request.POST['payment2'], descrip3=request.POST['invno3'],
-                    #    duedate3=request.POST['duedate3'],
-                    #    orgamt3=request.POST['inv_amount3'], openbal3=request.POST['openbal3'],
-                    #    payment3=request.POST['payment3'], descrip4=request.POST['invno4'],
-                    #    duedate4=request.POST['duedate4'],
-                    #    orgamt4=request.POST['inv_amount4'], openbal4=request.POST['openbal4'],
-                    #    payment4=request.POST['payment4'], descrip5=request.POST['invno5'],
-                    #    duedate5=request.POST['duedate5'],
-                    #    orgamt5=request.POST['inv_amount5'], openbal5=request.POST['openbal5'],
-                    #    payment5=request.POST['payment5'], descrip6=request.POST['invno6'],
-                    #    duedate6=request.POST['duedate6'],
-                    #    orgamt6=request.POST['inv_amount6'], openbal6=request.POST['openbal6'],
-                    #    payment6=request.POST['payment6'], descrip7=request.POST['invno7'],
-                    #    duedate7=request.POST['duedate7'],
-                    #    orgamt7=request.POST['inv_amount7'], openbal7=request.POST['openbal7'],
-                    #    payment7=request.POST['payment7'], descrip8=request.POST['invno8'],
-                    #    duedate8=request.POST['duedate8'],
-                    #    orgamt8=request.POST['inv_amount8'], openbal8=request.POST['openbal8'],
-                    #    payment8=request.POST['payment8'], descrip9=request.POST['invno9'],
-                    #    duedate9=request.POST['duedate9'],
-                    #    orgamt9=request.POST['inv_amount9'], openbal9=request.POST['openbal9'],
-                    #    payment9=request.POST['payment9'],
-                       
-                        )
-        pay2.save()
-        pay2.refno = int(pay2.refno) + pay2.paymentid
-        pay2.save()
-
-
-        statment2=cust_statment()
-        statment2.customer = pay2.customer
-        statment2.cid = cmp1
-        statment2.Transactions = "Payment Received"
-        statment2.pay = pay2
-        statment2.Date = pay2.paymdate
-        statment2.Payments = pay2.amtapply
-        statment2.save()
-        
-        
-
-
-
-
-
-        invno = request.POST.getlist("invno[]")
-        duedate = request.POST.getlist("duedate[]")
-        invamount = request.POST.getlist("inv_amount[]")
-        balamount = request.POST.getlist("openbal[]")
-        paymentamount = request.POST.getlist("payment[]")
-
-        payment_id=payment.objects.get(paymentid = pay2.paymentid )
-
-        if len(invno)==len(duedate)==len(invamount)==len(balamount)==len(paymentamount) and invno and duedate and invamount and balamount and paymentamount :
-            mapped=zip(invno,duedate,invamount,balamount,paymentamount)
-            mapped=list(mapped)
-            for ele in mapped:
-                salesorderAdd,created = paymentitems.objects.get_or_create(
-                    invno = ele[0],
-                    duedate=ele[1],
-                    invamount=ele[2],
-                    balamount=ele[3],
-                    paymentamount=ele[4],
-                    
-                    payment=payment_id)
-
-        pyit = paymentitems.objects.filter(payment=pay2.paymentid)
-        print(pyit)
-        amt =0
-        for m in pyit:
-            if m.balamount:
-                amt+=m.balamount
-        pay2.balance = amt     
-        pay2.save()
-        amtreceived = float(request.POST['amtreceived'])
-        accont = accounts1.objects.get(
-            name='Account Receivable(Debtors)', cid=cmp1)
-        accont.balance = accont.balance - amtreceived
-        accont.save()
-        deposito = request.POST['depto']
-        try:
-            if accounts1.objects.get(name=deposito, cid=cmp1):
-                print(deposito)
-                acconut = accounts1.objects.get(name=deposito, cid=cmp1)
-                acconut.balance = acconut.balance + amtreceived
-                acconut.save()
-        except:
-            pass
-        try:
-            if accounts.objects.get(name=deposito, cid=cmp1):
-                acconut = accounts.objects.get(name=deposito, cid=cmp1)
-                acconut.balance = acconut.balance + amtreceived
-                acconut.save()
-        except:
-            pass
-        # 
-        paymetitem = paymentitems.objects.filter()
-        
-        pay2.save()              
-        try:
-            for i in paymetitem:
-                if invoice.objects.get(invoiceno=i.invno, cid=cmp1) and i.invno != 'undefined':
-                    print(deposito)
-                    invo = invoice.objects.get(invoiceno=i.invno, cid=cmp1)
-                    invo.amtrecvd = int(invo.amtrecvd) + int(i.paymentamount)
-                    invo.baldue = float(i.balamount) - float(i.paymentamount)
-                    if invo.baldue == 0.0:
-                        invo.status = "Paid"
-        
-                    invo.save()
-        
-
-
-
-        
-        except:
-            pass
-        return redirect('gopayment_received')
-    else:
-        return redirect('gopayment_received')
-
-
-def search_payment_received(request):
-    cmp1 = company.objects.get(id=request.session["uid"])
-    if request.method == "POST":
-        search_str = json.loads(request.body).get('searchText')
-
-        expenses = payment.objects.filter(customer__istartswith=search_str,cid=cmp1) | payment.objects.filter(
-            paymdate__istartswith=search_str,cid=cmp1)| payment.objects.filter(
-            referno__icontains=search_str,cid=cmp1)| payment.objects.filter(
-            amtcredit__istartswith=search_str,cid=cmp1) | payment.objects.filter(
-            refno__istartswith=search_str,cid=cmp1)
-           
-        data =expenses .values()  
-        return JsonResponse(list(data),safe=False)   
-
-
-def payment_view(request,id):
-    cmp1 = company.objects.get(id=request.session["uid"])
-    pay = payment.objects.get(paymentid=id)
-    pk =  pay.customer 
-    x = pk.split()
-    x.append(" ")
-    a = x[0]
-    b = x[1]
-    if x[2] is not None:
-        b = x[1] + " " + x[2]
-        custobject = customer.objects.get(firstname=a, lastname=b, cid=cmp1)
-    
-
-    context = {
-        'pay':pay ,
-        'cmp1':cmp1,
-        'custobject':custobject
-    }
-
-    return render(request,'app1/payment_view.html',context)
-
-
-def delete_payment(request,id):
-    cmp1 = company.objects.get(id=request.session['uid'])
-    pay = payment.objects.get(paymentid=id,cid = cmp1)
-    pay.delete()
-
-    return redirect('gopayment_received')
-
-def account_transactions(request,id):
-    cmp1 = company.objects.get(id=request.session["uid"])
-
-    x = id.split()
-    x.append(" ")
-    a = x[0]
-    b = x[1]
-
-    toda = date.today()
-    tod = toda.strftime("%Y-%m-%d")
-
-    to=toda.strftime("%d-%m-%Y")
-    
-    custobject = customer.objects.get(firstname=a, lastname=b, cid=cmp1)
-    opnbal =custobject.opening_balance
-    print(opnbal) 
-    
-    statment = cust_statment.objects.filter(customer=id,cid=cmp1)
-    debit=0
-    credit=0
-    total1 = 0
-    
-
-    for i in statment :
-        if i.Amount:
-            debit+=i.Amount
-        if i.Payments:
-            credit+=i.Payments
-
-    total1=debit-credit          
-
-    bal=custobject.opening_balance
-    for i in statment:
-        if i.Transactions =="Invoice":
-            
-            i.Balance = bal + i.Amount
-            bal = i.Balance
-        if i.Transactions =="Payment Received":
-            i.Balance = bal-i.Payments
-            
-
-        i.save() 
-    print(bal)
-
-    fdate =""
-    ldate =""
-
-    context = {
-        "statment":statment,
-        "cmp1":cmp1,
-        'total1':total1,
-        'credit':credit,
-        'cust2':id,
-        'to':to,
-        'fdate':fdate,
-        'ldate':ldate,
-        
-    }
-
-    return render(request,'app1/account_transactions.html',context)
-
-def account_transactions1(request):
-
-    if request.method =="POST":
-        cust = request.POST['cust']
-
-        select=request.POST['reportperiod']
-
-        if select =="All dates":
-            return redirect('account_transactions',cust)
-        if select == "Custom":
-            fdate = request.POST['fdate']
-            ldate = request.POST['ldate']
-            cmp1 = company.objects.get(id=request.session["uid"])
-            print(fdate)
-
-            x = cust.split()
-            x.append(" ")
-            a = x[0]
-            b = x[1]
-            cu = a +" "+ b
-            custobject = customer.objects.get(firstname=a, lastname=b, cid=cmp1)
-            opnbal =custobject.opening_balance
-            print(opnbal) 
-
-            statment1 = cust_statment.objects.filter(customer=cu,cid=cmp1)
-            bal=0
-            for i in statment1:
-                if i.Transactions =="Invoice":
-                    if i.Amount:
-                        i.Balance = bal + i.Amount
-                        bal = i.Balance
-                if i.Transactions =="Payment Received":
-                    if i.Payments:
-                        i.Balance = bal-i.Payments
-            
-
-                i.save() 
-
-            preamount=0
-            prepayment=0
-            prebalance = 0
-            prev_balance = cust_statment.objects.filter(customer=cu,Date__lt=fdate)
-            for j in prev_balance:
-                if j.Amount:
-                    preamount += j.Amount
-
-                if j.Payments:
-                    prepayment += j.Payments
-    
-
-            prebalance = preamount-prepayment
-            print(prebalance)   
-
-            statment = cust_statment.objects.filter(customer=cu,cid=cmp1,Date__gte=fdate,Date__lte=ldate)
-            bal=0
-            for i in statment:
-                if i.Transactions =="Invoice":
-                    if i.Amount:
-                        i.Balance = bal + i.Amount
-                        bal = i.Balance
-                if i.Transactions =="Payment Received":
-                    if i.Payments:
-                        i.Balance = bal-i.Payments
-            
-
-                i.save()  
-
-            value = ""
-            if statment.exists():
-                value=1
-
-                
- 
-
-
-
-
-            debit=0
-            credit=0
-            total1 = 0
-    
-
-            for i in statment :
-                if i.Amount:
-                    debit+=i.Amount
-                if i.Payments:
-                    credit+=i.Payments
-
-            total1=prebalance+debit-credit          
-
-            bal=custobject.opening_balance
-            
-        
-            context = {
-            "statment":statment,
-            "cmp1":cmp1,
-            'total1':total1,
-            'credit':credit,
-            "cust2":cust,
-            "prebalance":prebalance,
-            'fdate':fdate,
-            'ldate':ldate,
-            'value':value,
-
-
-            }
-
-
-            return render(request,'app1/account_transactions.html',context)
 
 # Ananthakrishnanend
 
 
 # Rahanas
+
+
 
 @login_required(login_url='regcomp')
 def add_item(request):
@@ -27736,7 +26469,7 @@ def iodhsn(request):
 def iod_rate(request):
     try:
         cmp1 = company.objects.get(id=request.session['uid'])
-        items = itemtable.objects.order_by('sales_cost').filter(cid=cmp1)
+        items = itemtable.objects.order_by('tax_rate').filter(cid=cmp1)
         context = {'items':items,'cmp1': cmp1}
         return render(request, 'app1/itemmodule.html',context)  
     except:
@@ -27744,10 +26477,27 @@ def iod_rate(request):
 
 
 
+def iod_import(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        items = itemtable.objects.exclude(purchase_cost="").filter(cid=cmp1)
+        context = {'items':items,'cmp1': cmp1}
+        return render(request, 'app1/itemmodule.html',context)  
+    except:
+        return redirect('goitem')
 
+def iod_export(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        items = itemtable.objects.exclude(sales_cost="").filter(cid=cmp1)
+        context = {'items':items,'cmp1': cmp1}
+        return render(request, 'app1/itemmodule.html',context)              
+    except:
+        return redirect('goitem')
 
 @login_required(login_url='regcomp')
 def create_item(request):
+    try:
         if request.method == 'POST':
             cmp1 = company.objects.get(id=request.session['uid'])
             iname = request.POST['name']
@@ -27757,21 +26507,21 @@ def create_item(request):
             itax = request.POST['taxref']
             ipcost = request.POST['pcost']
             iscost = request.POST['salesprice']
-            #itrate = request.POST['tax']
+            itrate = request.POST['tax']
             ipuracc = request.POST['pur_account']
             isalacc = request.POST['sale_account']
             ipurdesc = request.POST['pur_desc']
             isaledesc = request.POST['sale_desc']
             iintra = request.POST['intra_st']
             iinter = request.POST['inter_st']
-            iinv = request.POST.get('invacc')
-            istock = request.POST.get('stock')
+            iinv = request.POST['invacc']
+            istock = request.POST['stock']
             istatus = request.POST['status']
             item = itemtable(name=iname,item_type=itype,unit=iunit,
                                 hsn=ihsn,tax_reference=itax,
                                 purchase_cost=ipcost,
                                 sales_cost=iscost,
-                                #tax_rate=itrate,
+                                tax_rate=itrate,
                                 acount_pur=ipuracc,
                                 account_sal=isalacc,
                                 pur_desc=ipurdesc,
@@ -27785,7 +26535,8 @@ def create_item(request):
             item.save()
             return redirect('goitem')
         return render(request,'app1/additem.html')
-
+    except:
+        return redirect('goitem')
 
 @login_required(login_url='regcomp')
 def create_unit(request):
@@ -28186,576 +26937,8 @@ def mjpublish(request):
         mj = mjournal.objects.filter(status='publish',cid=cmp1)
         return render(request,'app1/mjournal.html',{'mj':mj})
     except:
-        return redirect('gomjoural')
+        return redirect('gomjoural')            
 
-
-@login_required(login_url='regcomp')
-def temp_payrec(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/tem_payment_receipt.html')
-    except:
-        return redirect('gotemplates')
-
-@login_required(login_url='regcomp')
-def temp_vendpay(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/tem_vendor_payment.html')
-    except:
-        return redirect('gotemplates')        
-
-@login_required(login_url='regcomp')
-def temp_custst(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/tem_cust_stmnt.html')
-    except:
-        return redirect('gotemplates')                
-
-@login_required(login_url='regcomp')
-def temp_vendst(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/tem_vend_stmnt.html')
-    except:
-        return redirect('gotemplates')      
-
-@login_required(login_url='regcomp')
-def temp_deliveryc(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/tem_deliveryc.html')
-    except:
-        return redirect('gotemplates')        
-
-@login_required(login_url='regcomp')
-def temp_creditnote(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/tem_creditnote.html')
-    except:
-        return redirect('gotemplates')             
-
-@login_required(login_url='regcomp')
-def temp_salesorder(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/tem_salesorder.html')
-    except:
-        return redirect('gotemplates')   
-
-@login_required(login_url='regcomp')
-def temp_purchaseorder(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/tem_purchaseorder.html')
-    except:
-        return redirect('gotemplates')       
-
-@login_required(login_url='regcomp')
-def temp_vendorcredit(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/tem_vendorcredit.html')
-    except:
-        return redirect('gotemplates')   
-
-@login_required(login_url='regcomp')
-def temp_journal(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/tem_journal.html')
-    except:
-        return redirect('gotemplates')                                     
-
-
-@login_required(login_url='regcomp')
-def temp_bill(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/tem_bill.html')
-    except:
-        return redirect('gotemplates')
-
-
-
-
-
-@login_required(login_url='regcomp')
-def item_trans(request,id):   
-        cmp1 = company.objects.get(id=request.session['uid'])
-        item = itemtable.objects.filter(id=id)
-        sales = salesorder.objects.filter(cid=cmp1)
-        purchase = purchaseorder.objects.all()
-        pitems  = porder_item.objects.all()
-        sitems  = sales_item.objects.all()
-        est = estimate.objects.filter(cid=cmp1)
-        eitems = estimate_item.objects.all()
-        inv = invoice.objects.filter(cid=cmp1)
-        iitems = invoice_item.objects.all()
-        bill = purchasebill.objects.all()
-        bitems = bill_item.objects.all()
-        context = {'item':item,'bill':bill,'bitems':bitems,'inv':inv,'iitems':iitems,'sales':sales,'pitems':pitems,'sitems':sitems,'cmp1': cmp1,'purchase':purchase,'est':est,'eitems':eitems}
-        return render(request,'app1/item_transactions.html',context) 
-        
-@login_required(login_url='regcomp')
-def gostock_adjust(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        stock = stockadjust.objects.filter(cid=cmp1)
-        context = {'cmp1':cmp1,'stock':stock}
-        return render(request, 'app1/gostock_adjust.html',context)  
-    except:
-        return redirect('gostock_adjust')        
-
-@login_required(login_url='regcomp')
-def saf_quandity(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        stock = stockadjust.objects.filter(cid=cmp1,mode="Quandity")
-        context = {'cmp1':cmp1,'stock':stock}
-        return render(request, 'app1/gostock_adjust.html',context)  
-    except:
-        return redirect('gostock_adjust')    
-
-@login_required(login_url='regcomp')
-def saf_value(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        stock = stockadjust.objects.filter(cid=cmp1,mode="Value")
-        context = {'cmp1':cmp1,'stock':stock}
-        return render(request, 'app1/gostock_adjust.html',context)  
-    except:
-        return redirect('gostock_adjust')              
-
-
-@login_required(login_url='regcomp')
-def stock_adjustpage(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        acc = accounts1.objects.filter(cid=cmp1)
-        item = itemtable.objects.filter(cid=cmp1)
-        reason = stockreason.objects.filter(cid=cmp1)
-        context = {'cmp1':cmp1,'acc':acc,'item':item,'reason':reason}
-        return render(request, 'app1/add_stock_adjust.html',context)  
-    except:
-        return redirect('gostock_adjust')             
-
-
-def getit(request):
-    cmp1 = company.objects.get(id=request.session['uid'])
-    id = request.GET.get('id')
-    list = []
-    itemobject = itemtable.objects.get(name=id, cid=cmp1)
-    dict = {'name': itemobject.name,
-            'item_type': itemobject.item_type,
-            'unit': itemobject.unit,
-            'hsn': itemobject.hsn,
-            'tax_reference': itemobject.tax_reference,
-            'purchase_cost': itemobject.purchase_cost,
-            'sales_cost': itemobject.sales_cost,
-            'tax_rate': itemobject.tax_rate,
-            'acount_pur': itemobject.acount_pur,
-            'account_sal': itemobject.account_sal,
-            'pur_desc': itemobject.pur_desc,
-            'sale_desc': itemobject.sale_desc,
-            'intra_st': itemobject.intra_st,
-            'inter_st': itemobject.inter_st,
-            'inventry': itemobject.inventry,
-             'stock': itemobject.stock,
-             'status': itemobject.status}
-    list.append(dict)
-    return JsonResponse(json.dumps(list), content_type="application/json", safe=False)
-
-
-@login_required(login_url='regcomp')
-def create_reason(request):
-    try:
-        if request.method == 'POST':
-            cmp1 = company.objects.get(id=request.session['uid'])
-            ireason = request.POST['reason1']
-            
-            item = stockreason(reason=ireason,
-                                cid=cmp1)
-            item.save()
-            return redirect('stock_adjustpage')
-        return render(request,'app1/add_stock_adjust.html')
-    except:
-        return redirect('stock_adjustpage')
-
-
-
-@login_required(login_url='regcomp')
-def create_stock_adjustment(request):
-        if request.method == 'POST':
-            cmp1 = company.objects.get(id=request.session['uid'])
-            smode = request.POST['mode']
-            sreference = request.POST['refno']
-            sadte = request.POST.get('date')
-            saccount = request.POST['account']
-            sreason = request.POST['reason']
-            sdescription = request.POST['desc']
-            sattach = request.FILES.get('file')
-
-            sitem1 = request.POST['item1']
-            sqty1 = request.POST['qty1']
-            sqtyh1 = request.POST['qty_hand1']
-            snqty1 = request.POST['new_qty1']
-
-            sitem2 = request.POST.get('item2')
-            sqty2 = request.POST['qty2']
-            sqtyh2 = request.POST['qty_hand2']
-            snqty2 = request.POST['new_qty2']
-
-            sitem3 = request.POST.get('item3')
-            sqty3 = request.POST['qty3']
-            sqtyh3 = request.POST['qty_hand3']
-            snqty3 = request.POST['new_qty3']
-
-            sitem4 = request.POST.get('item4')
-            sqty4 = request.POST['qty4']
-            sqtyh4 = request.POST['qty_hand4']
-            snqty4 = request.POST['new_qty4']
-
-            sitem5 = request.POST.get('item5')
-            sqty5 = request.POST['qty5']
-            sqtyh5 = request.POST['qty_hand5']
-            snqty5 = request.POST['new_qty5']
-            
-            stock = stockadjust(mode=smode,ref_no=sreference,date=sadte,
-                                account=saccount,reason=sreason,
-                                description=sdescription,
-                                attach=sattach,
-                                item1=sitem1,
-                                qty1=sqty1,
-                                qty_hand1=sqtyh1,
-                                new_qty1=snqty1,
-                                item2=sitem2,
-                                qty2=sqty2,
-                                qty_hand2=sqtyh2,
-                                new_qty2=snqty2,
-                                item3=sitem3,
-                                qty3=sqty3,
-                                qty_hand3=sqtyh3,
-                                new_qty3=snqty3,
-                                item4=sitem4,
-                                qty4=sqty4,
-                                qty_hand4=sqtyh4,
-                                new_qty4=snqty4,
-                                item5=sitem5,
-                                qty5=sqty5,
-                                qty_hand5=sqtyh5,
-                                new_qty5=snqty5,
-                                cid=cmp1)
-            item = itemtable.objects.get(name=sitem1)
-            item.stock = stock.qty_hand1
-            item.save()  
-            try:
-                item1 = itemtable.objects.get(name=sitem2)
-                item1.stock = stock.qty_hand2
-                item1.save() 
-            except itemtable.DoesNotExist:
-                item1 = None
-            try:
-                item2 = itemtable.objects.get(name=sitem3)
-                item2.stock = stock.qty_hand3
-                item2.save() 
-            except itemtable.DoesNotExist:
-                item1 = None
-            try:        
-                item3 = itemtable.objects.get(name=sitem4)
-                item3.stock = stock.qty_hand4
-                item3.save() 
-            except itemtable.DoesNotExist:
-                item1 = None  
-            try:      
-                item4 = itemtable.objects.get(name=sitem5)
-                item4.stock = stock.qty_hand5
-                item4.save()  
-            except itemtable.DoesNotExist:
-                item1 = None                     
-            stock.save()
-            
-            messages.success(request, 'Stock adjusted successfully')
-            
-            return redirect('stock_adjustpage')
-        return render(request,'app1/add_stock_adjust.html')
-
-
-@login_required(login_url='regcomp')
-def view_stockadjust(request,id):
-        cmp1 = company.objects.get(id=request.session['uid'])
-        stock = stockadjust.objects.filter(id=id)
-        item = itemtable.objects.filter(cid=cmp1)
-        context = {'cmp1':cmp1,'stock':stock,'item':item}
-        return render(request, 'app1/view_stock_adjust.html',context)  
-
-
-@login_required(login_url='regcomp')
-def edit_stockadjust(request,id):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        stock = stockadjust.objects.filter(id=id)
-        acc = accounts1.objects.filter(cid=cmp1)
-        item = itemtable.objects.filter(cid=cmp1)
-        reason = stockreason.objects.filter(cid=cmp1)
-        context = {'cmp1':cmp1,'acc':acc,'item':item,'reason':reason,'stock':stock}
-        return render(request, 'app1/edit_stockadjust.html',context)  
-    except:
-        return redirect('gostock_adjust') 
-
-@login_required(login_url='regcomp')
-def update_stock_adjustment(request,id):
-        if request.method == 'POST':
-            cmp1 = company.objects.get(id=request.session['uid'])
-            stock = stockadjust.objects.get(id=id)
-            stock.mode = request.POST.get('mode')
-            stock.ref_no = request.POST.get('refno')
-            stock.date = request.POST.get('date')
-            stock.account = request.POST.get('account')
-            stock.reason = request.POST.get('reason')
-            stock.description = request.POST.get('desc')
-            stock.attach = request.FILES.get('file')
-
-            stock.item1 = request.POST.get('item1')
-            stock.qty1 = request.POST.get('qty1')
-            stock.qty_hand1 = request.POST.get('qty_hand1')
-            stock.new_qty1 = request.POST.get('new_qty1')
-
-            stock.item2 = request.POST.get('item2')
-            stock.qty2 = request.POST.get('qty2')
-            stock.qty_hand2 = request.POST.get('qty_hand2')
-            stock.new_qty2 = request.POST.get('new_qty2')
-
-            stock.item3 = request.POST.get('item3')
-            stock.qty3 = request.POST.get('qty3')
-            stock.qty_hand3 = request.POST.get('qty_hand3')
-            stock.new_qty3 = request.POST.get('new_qty3')
-
-            stock.item4 = request.POST.get('item4')
-            stock.qty4 = request.POST.get('qty4')
-            stock.qty_hand4 = request.POST.get('qty_hand4')
-            stock.new_qty4 = request.POST.get('new_qty4')
-
-            stock.item5 = request.POST.get('item5')
-            stock.qty5 = request.POST.get('qty5')
-            stock.qty_hand5 = request.POST.get('qty_hand5')
-            stock.new_qty5 = request.POST.get('new_qty5')
-            
-            item = itemtable.objects.get(name=stock.item1)
-            item.stock = stock.qty_hand1
-            item.save()  
-            try:
-                item1 = itemtable.objects.get(name=stock.item2)
-                item1.stock = stock.qty_hand2
-                item1.save() 
-            except itemtable.DoesNotExist:
-                item1 = None
-            try:
-                item2 = itemtable.objects.get(name=stock.item3)
-                item2.stock = stock.qty_hand3
-                item2.save() 
-            except itemtable.DoesNotExist:
-                item1 = None
-            try:        
-                item3 = itemtable.objects.get(name=stock.item4)
-                item3.stock = stock.qty_hand4
-                item3.save() 
-            except itemtable.DoesNotExist:
-                item1 = None  
-            try:      
-                item4 = itemtable.objects.get(name=stock.item5)
-                item4.stock = stock.qty_hand5
-                item4.save()  
-            except itemtable.DoesNotExist:
-                item1 = None                     
-            stock.save()
-            
-            messages.success(request, 'Stock Updated successfully')
-            
-            return redirect('gostock_adjust')
-        return render(request,'app1/edit_stockadjust.html')        
-
-       
-
-@login_required(login_url='regcomp')
-def stocksummary(request):
-    try:
-        cmp1 = company.objects.get(id=request.session["uid"])
-        item = itemtable.objects.filter(cid=cmp1).exclude(inventry="")
-        stock = stockadjust.objects.filter(cid=cmp1)
-        
-        context = {'item': item,'stock':stock,'cmp1':cmp1}
-        return render(request, 'app1/stocksummary.html', context)
-    except:
-        return redirect('godash')       
-
-
-
-@login_required(login_url='regcomp')
-def stockvaluation(request):
-        cmp1 = company.objects.get(id=request.session["uid"])
-        item = itemtable.objects.filter(cid=cmp1).exclude(inventry="").annotate(total=F('stock')*F('purchase_cost'))
-        stock = stockadjust.objects.filter(cid=cmp1)
-        
-        context = {'item': item,'stock':stock,'cmp1':cmp1}
-        return render(request, 'app1/stockvaluation.html', context)
-     
-@login_required(login_url='regcomp')
-def deletestockadjust(request, id):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        try:
-            sl = stockadjust.objects.get(id=id)
-            sl.delete()
-            return redirect('gostock_adjust',{'cmp1': cmp1})
-        except:
-            return redirect('gostock_adjust')
-    except:
-        return redirect('gostock_adjust')
-
-
-@login_required(login_url='regcomp')
-def gstr1(request):
-    try:
-        cmp1 = company.objects.get(id=request.session["uid"])
-        invoices = invoice.objects.filter(cid=cmp1).count()
-        cgst = invoice.objects.filter(cid=cmp1).aggregate(total_cgst=Sum('CGST'),
-                                                           total_igst=Sum('IGST'),
-                                                           total_sgst=Sum('SGST'),
-                                                           total_amt=Sum('subtotal'),
-                                                           total_tcs=Sum('TCS'),
-                                                           total_invamt=Sum('grandtotal'))
-        
-        
-
-        context = {'cmp1':cmp1,'invoices':invoices,'cgst':cgst}
-        return render(request, 'app1/gstr1.html', context)
-    except:
-        return redirect('godash')  
-
-
-@login_required(login_url='regcomp')
-def gstr3b(request):
-    try:
-        cmp1 = company.objects.get(id=request.session["uid"])
-        invoices = invoice.objects.filter(cid=cmp1).count()
-        cgst = invoice.objects.filter(cid=cmp1).annotate(total=Sum('SGST'))
-        
-
-
-        context = {'cmp1':cmp1,'invoices':invoices,'cgst':cgst}
-        return render(request, 'app1/gstr3b.html', context)
-    except:
-        return redirect('godash')        
-
-@login_required(login_url='regcomp')
-def goewaybill(request):
-    try:
-        cmp1 = company.objects.get(id=request.session["uid"])
-        invoices = invoice.objects.filter(cid=cmp1,grandtotal__gte=50000)
-        context = {'cmp1':cmp1,'invoices':invoices}
-        return render(request, 'app1/eway_bill.html', context)
-    except:
-        return redirect('godash')         
-
-@login_required(login_url='regcomp')
-def addewaybill(request, id):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        invo3 = invoice.objects.get(invoiceid=id, cid=cmp1)
-        item = itemtable.objects.filter(cid=cmp1).all()
-        trans = etransporter.objects.filter(cid=cmp1).all()
-        
-
-        invitem = invoice_item.objects.filter(invoice =id )
-        context = {'invoice': invo3, 'cmp1': cmp1, 'item':item, 'trans': trans,'invitem':invitem}
-        return render(request, 'app1/addeway_bill.html', context)
-    except:
-        return redirect('goewaybill')        
-
-@login_required(login_url='regcomp')
-def create_transporter(request):
-    try:
-        if request.method == 'POST':
-            cmp1 = company.objects.get(id=request.session['uid'])
-            tname = request.POST['tname']
-            tid = request.POST['tid']
-            
-            item = etransporter(name=tname,
-                                tid=tid,
-                                cid=cmp1)
-            item.save()
-            return render(request,'app1/addeway_bill.html')
-        return render(request,'app1/addeway_bill.html')
-    except:
-        return redirect('goewaybill')      
-
-
-
-@login_required(login_url='regcomp')
-def create_eway_inv(request):
-    if request.method == 'POST':
-        cmp1 = company.objects.get(id=request.session['uid'])
-        ttype = request.POST['s_type']
-        trans = request.POST['transporter']
-        distance = request.POST['dist']
-        mode = request.POST['tmode']
-        vehicle = request.POST['vtype']
-        vehicleno = request.POST['vno']
-        docno = request.POST.get('tdoc_no')
-        date = request.POST['tdoc_date']
-        
-            
-        eway = ewayinv(transaction_stype=ttype,transporter=trans,distance=distance,
-                                transport_mode=mode,vehicle_type=vehicle,
-                                vehicle_no=vehicleno,
-                                transport_doc_no=docno,
-                                transport_doc_date=date,
-                                cid=cmp1)
-        eway.save()                      
-        return redirect('goewaybill')
-    return render(request,'app1/addeway_bill.html')          
-
-
-def view_eway_inv(request):
-    cmp1 = company.objects.get(id=request.session['uid'])
-
-
-
-    context ={
-        'cmp1':cmp1
-
-    }
-
-
-    return render(request,'app1/e_way_inv.html',context)    
-
-
-def base1(request):
-        cmp1 = company.objects.get(id=request.session['uid'])
-        context = {'cmp1':cmp1}
-        return render(request, 'app1/base1.html',context)  
-  
-
-@login_required(login_url='regcomp')
-def temp_debit(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/tem_debitnote.html',{'cmp1':cmp1})
-    except:
-        return redirect('gotemplates')
-
-
-@login_required(login_url='regcomp')
-def bnk_recon_report(request):
-    try:
-        cmp1 = company.objects.get(id=request.session["uid"])
-        context = {'cmp1':cmp1}
-        return render(request, 'app1/bnkrecon_report.html', context)
-    except:
-        return redirect('godash')              
 
 
 #Jisha
@@ -29665,47 +27848,333 @@ def deleteexpense(request, id):
         expnce.delete() 
         return redirect('goexpenses')
     return redirect('/')
- 
 
+@login_required(login_url='regcomp')
 def bnnk(request):
-    g=accounts.objects.filter(acctype='Current Liabilities')
-    h=accounts.objects.filter(acctype='Account Receivable')
-    i=accounts.objects.filter(acctype='Current Assets')
-    bnk=accounts.objects.filter(acctype='Bank')
-    fx=accounts.objects.filter(acctype='Fixed Assets')
-    nca=accounts.objects.filter(acctype='Non-Current Assets')
-    apy=accounts.objects.filter(acctype='Accounts Payable')
-    cd=accounts.objects.filter(acctype='Credit Card')
-    ncl=accounts.objects.filter(acctype='Non-Current Liabilities')
-    eq=accounts.objects.filter(acctype='Equity')
-    inc=accounts.objects.filter(acctype='Income')
-    oi=accounts.objects.filter(acctype='Other Incomes')
-    cg=accounts.objects.filter(acctype='Cost Of Goods')
-    ex=accounts.objects.filter(acctype='Expenses')
+    
+    i=accounts1.objects.filter(acctype='Bank')
+    c=accounts1.objects.filter(acctype='Cash')
+    u=accounts1.objects.filter(acctype='Undepposited Funds')
+    
+   
 
-    context={'g':g,'h':h,'i':i,'bnk':bnk,'fx':fx,'nca':nca,'apy':apy,'cd':cd,'ncl':ncl,'eq':eq,'inc':inc,
-    'oi':oi,'cg':cg,'ex':ex}
+    context={'i':i,'c':c,'u':u}
     return render(request,'app1/bnk.html',context)
 
 
 def bnk1(request,pk):
-    bk=accounts.objects.get(accountsid=pk)
+    bk=accounts1.objects.get(accounts1id=pk)
     context={'bk':bk,}
     return render(request,"app1/bnk1.html",context)
 
-      
-@login_required(login_url='regcomp')
-def recon_bank_page(request):
-    try:
-        cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/reconcil_page.html')
-    except:
-        return redirect('gotemplates')  
+# rahnas----------
 
 @login_required(login_url='regcomp')
-def recon_acc_page(request):
+def temp_payrec(request):
     try:
         cmp1 = company.objects.get(id=request.session['uid'])
-        return render(request,'app1/reconcil_acc.html')
+        return render(request,'app1/tem_payment_receipt.html')
     except:
-        return redirect('gotemplates')         
+        return redirect('gotemplates')
+
+@login_required(login_url='regcomp')
+def temp_vendpay(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/tem_vendor_payment.html')
+    except:
+        return redirect('gotemplates')        
+
+@login_required(login_url='regcomp')
+def temp_custst(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/tem_cust_stmnt.html')
+    except:
+        return redirect('gotemplates')                
+
+@login_required(login_url='regcomp')
+def temp_vendst(request):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        return render(request,'app1/tem_vend_stmnt.html')
+    except:
+        return redirect('gotemplates')       
+
+def accpayment(request):
+    cmp1 = company.objects.get(id=request.session["uid"])
+    acctype = request.POST.get('acctype')
+        
+    name = request.POST.get('name')
+    description = request.POST.get('description')
+    
+    balance = request.POST.get('balance')
+    asof = request.POST.get('asof')
+       
+        
+    account = accounts(acctype=acctype, name=name, description=description,
+                                    balance=balance, asof=asof, cid=cmp1)
+    account.save()
+                
+    return redirect('paymentindex')
+        
+def trial(request):
+    tr=accounts1.objects.filter(acctype='Current Assets')
+    ac=accounts1.objects.filter(acctype='Account Receivable')
+    cul=accounts1.objects.filter(acctype='Current Liabilities')
+    fx=accounts1.objects.filter(acctype='Fixed Assets')
+    noca=accounts1.objects.filter(acctype='Non-Current Assetss')
+    acp=accounts1.objects.filter(acctype='Accounts Payable')
+    cr=accounts1.objects.filter(acctype='Credit Card')
+    ncl=accounts1.objects.filter(acctype='Non-Current Liabilities')
+    eq=accounts1.objects.filter(acctype='Equity')
+    inc=accounts1.objects.filter(acctype='Income')
+    onc=accounts1.objects.filter(acctype='Other Incomes')
+    co=accounts1.objects.filter(acctype='Cost Of Goods Sold')
+    ex=accounts1.objects.filter(acctype='Expenses')
+    ox=accounts1.objects.filter(acctype='Other Expenses')
+    
+
+    sum1=0
+    sum2=0
+    for i in tr:
+        sum1+=i.balance
+    for j in tr:
+        sum2+=j.dbbalance  
+
+    sum3=0
+    sum4=0
+    for a in ac:
+        sum3+=a.balance
+    for b in ac:
+        sum4+=b.dbbalance   
+
+    cl1=0
+    cl2=0
+    for a in cul:
+        cl1+=a.balance
+        cl2+=b.dbbalance 
+
+    fx1=0
+    fx2=0
+    for a in fx:
+        fx1+=a.dbbalance
+        fx2+=a.dbbalance    
+
+    nc1=0.0
+    nc2=0.0
+    for a in noca:
+        nc1+=a.balance       
+        nc2+=a.dbbalance 
+
+    acp1=0
+    acp2=0
+    for a in acp:
+        acp1+=a.balance
+        acp2+=a.dbbalance  
+
+    cr1=0
+    cr2=0
+    for a in cr:
+        cr1+=a.balance
+        cr2+=a.dbbalance     
+
+    ncl1=0
+    ncl2=0
+    for a in ncl:
+        ncl1+=a.balance
+        ncl2+=a.dbbalance   
+
+    eq1=0
+    eq2=0
+    for a in eq:
+        eq1+=a.balance
+        eq2+=a.dbbalance  
+
+    inc1=0
+    inc2=0
+    for a in inc:
+        inc1+=a.balance
+        inc2+=a.dbbalance      
+
+
+    onc1=0
+    onc2=0
+    for i in onc:
+        onc1+=i.balance
+        onc2+=i.dbbalance   
+
+
+    co1=0
+    co2=0
+    for a in co:
+        co1+=a.balance
+        co2+=a.dbbalance      
+
+    ex1=0
+    ex2=0
+    for a in ex:
+        ex1+=a.balance
+        ex2+=a.dbbalance     
+
+    ox1=0
+    ox2=0
+    for a in ox:
+        ox1+=a.balance
+        ox2+=a.dbbalance    
+
+    crtot=sum1+sum3+cl1+fx1+nc1+acp1+cr1+ncl1+eq1+inc1+onc1+co1+ex1+ox1
+    drtot=sum2+sum4+cl2+fx2+nc2+acp2+cr2+ncl2+eq2+inc2+onc2+co2+ex2+ox2
+
+    diff=crtot-drtot
+
+
+
+
+
+    context={'tr':tr,'sum1':sum1,'sum2':sum2,'sum3':sum3,'sum4':sum4,'cl1':cl1,'cl2':cl2,'fx1':fx1,'fx2':fx2,
+    'nc1':nc1,'nc2':nc2,'acp1':acp1,'acp2':acp2,'cr1':cr1,'cr2':cr2,'ncl1':ncl1,'ncl2':ncl2,'eq1':eq1,'eq2':eq2,
+    'inc1':inc1,'inc2':inc2,'onc1':onc1,'onc2':onc2,'co1':co1,'co2':co2,'ex1':ex1,'ex2':ex2,'ox1':ox1,'ox2':ox2,
+    'crtot':crtot,'drtot':drtot,'diff':diff}
+    return render(request,"app1/trialbalance.html",context)
+
+def cras(request):
+    cras=accounts1.objects.filter(acctype='Current Assets')
+
+    cr=0
+    dr=0
+    for a in cras:
+        cr+=a.balance
+        dr+=a.dbbalance
+
+
+    context={'cras':cras,'cr':cr,'dr':dr}
+    return render(request,"app1/crassets.html",context)  
+
+
+
+def acre(request):
+    ac=accounts1.objects.filter(acctype='Account Receivable')
+    context={'ac':ac}
+    return render(request,"app1/acre.html",context)  
+
+
+
+def curli(request):
+    li= accounts1.objects.filter(acctype='Current Liabilities')   
+    context={'li':li} 
+    return render(request,"app1/curli.html",context)
+
+
+def fix(request):
+    fix=accounts1.objects.filter(acctype='Fixed Assets') 
+    context={'fix':fix}
+    return render(request,"app1/fix.html",context)
+
+def nonass(request):
+    nona=accounts1.objects.filter(acctype='Non-Current Assets')
+    context={'nona':nona} 
+    return render(request,"app1/nonass.html",context) 
+
+
+def accpay(request):
+    acp= accounts1.objects.filter(acctype='Accounts Payable')  
+    context={'acp':acp}
+    return render(request,"app1/accpay.html",context)
+
+def credc(request):
+    cre= accounts1.objects.filter(acctype='Credit Card')  
+    context={'cre':cre}
+    return render(request,"app1/credc.html",context)    
+
+
+def nonli(request):
+    nli= accounts1.objects.filter(acctype='Non-Current Liabilities')  
+    context={'nli':nli}
+    return render(request,"app1/nonli.html",context)        
+
+
+def eqt(request):
+    eq= accounts1.objects.filter(acctype='Equity')  
+    context={'eq':eq}
+    return render(request,"app1/eqt.html",context)    
+
+def incm(request):
+    inc= accounts1.objects.filter(acctype='Income')  
+    context={'inc':inc}
+    return render(request,"app1/incm.html",context) 
+
+
+def oincm(request):
+    oinc= accounts1.objects.filter(acctype='Other Incomes')  
+    context={'oinc':oinc}
+    return render(request,"app1/oincm.html",context)                
+
+
+def cog(request):
+    co= accounts1.objects.filter(acctype='Cost Of Goods Sold')  
+    context={'co':co}
+    return render(request,"app1/cog.html",context) 
+
+
+def exp(request):
+    ex=accounts1.objects.filter(acctype='Expenses')  
+    context={'ex':ex}
+    return render(request,"app1/exp.html",context)                         
+
+
+    
+
+def acres(request,pk):
+    cr=accounts1.objects.get(accounts1id=pk)
+    context={'cr':cr}
+    return render(request,'app1/ledger.html',context)   
+
+#rahanas
+
+@login_required(login_url='regcomp')
+def recon_bank_page(request,pk):
+        cmp1 = company.objects.get(id=request.session['uid'])
+        bk=accounts1.objects.get(accounts1id=pk)
+        context={'bk':bk}
+        return render(request,'app1/reconcil_page.html',context)
+ 
+
+@login_required(login_url='regcomp')
+def recon_acc_page(request,pk):
+    try:
+        cmp1 = company.objects.get(id=request.session['uid'])
+        bk=accounts1.objects.get(accounts1id=pk)
+        context={'bk':bk}
+        return render(request,'app1/reconcil_acc.html',context)
+    except:
+        return redirect('gotemplates')      
+
+@login_required(login_url='regcomp')
+def reconcil2_page(request,pk):
+        cmp1 = company.objects.get(id=request.session['uid'])
+        bk=accounts1.objects.get(accounts1id=pk)
+        recon = reconcile.objects.get(aid=bk)
+        context={'bk':bk,'recon':recon}
+        return render(request,'app1/reconcil2.html',context)
+            
+
+@login_required(login_url='regcomp')
+def create_reconcil(request,pk):
+    if request.method == 'POST':
+        cmp1 = company.objects.get(id=request.session['uid'])
+        
+        raid = accounts1.objects.get(accounts1id=pk)
+        rstart_date = request.POST['sdate']
+        rend_date = request.POST['edate']
+        rclosing_balance = request.POST.get('cbalance')
+        
+        rcn = reconcile(start_date=rstart_date,
+                            end_date=rend_date,
+                            closing_balance=rclosing_balance,
+                            aid=raid,
+                            cid=cmp1)
+        rcn.save()
+    else:                          
+        return redirect('gomjoural')
+    return redirect('reconcil2_page' , pk=raid.accounts1id)       

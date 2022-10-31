@@ -52,16 +52,30 @@
   
 <!--        <a href="javascript:history.go(-1);" class="close">+</a> -->
    
-    <div class="container card radius-15">
+    <div class="container card radius-15 ">
 
         <div class="card radius-15">
             <div class="card-body">
                 <div class="card-title">
+                    <div class="row">
+                        <div class="col-md-11">
                     <h5 >Account  : {{ bk.name }}</h5><br>
                     <h7>Balance Amount : {{ bk.balance }}</h7>
-                  
-               
-                </div>
+                        </div>
+                        <div class="col-md-1">
+                             <li class="dropdown dropdown-list-toggle">
+                            <a href="#" data-toggle="dropdown">
+                              <i  class='bx bxs-cog bx-sm'></i> </a>
+
+                                <div class="dropdown-menu  dropdown-menu-right" style="width:250px">
+                                  <ul  style="width:220px">
+                                  <li><a  href="{% url 'recon_bank_page' bk.accounts1id %}"   class="dropdown-item">Reconcile Account</a></li>
+                                  
+                                </ul>
+                                </div>
+                            </li>
+                        </div>
+                    </div>
                 <hr/>
             </div>
            
@@ -116,7 +130,7 @@
                             <div class="col-md-6">
                                 <a href="" data-dismiss="modal" data-target="#newaccmodelbank"
                                 data-toggle="modal" class="btn btn-info ">+</a>
-                                <a>Add New Account</a>
+                                <a>Add New </a>
                             </div>
                             
                             <div class="col-md-6">
@@ -389,25 +403,19 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content" style="background-color: #213b52;">
             <div class="modal-header">
-                <h3 class="m-3">Account</h3>
+                <h3 class="m-3">New Expense</h3>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
             <div class="modal-body">
                 <div class="card p-3 m-3">
-                    <form method="post" action="{% url 'createaccount' %}">
+                    <form method="post" action="">
                         {% csrf_token %}
                         <div class="row mt-2 mb-2">
                             <div class="col-md-6">
                                 <label for="acctyp">Account Type</label>
-                                <select name="acctype" id="select1"
-                                        class="custom-select-md form-control w-100">
-                                       
-                                        <option ></option>
-                                      
-                                    
-                                </select>
+                               <input type="text" class="form-control">
                             </div>
                             <div class="col-md-6">
                                 <label for="name">*Name</label>
@@ -418,14 +426,7 @@
                         <div class="row mt-2 mb-2">
                             <div class="col-md-6">
                                 <label for="detype">*Detail Type</label>
-                                <select name="detype" 
-                                        class="custom-select-md form-control w-100">
-                                   
-                                        <option >Bank</option>
-                                        <option>Petty cash</option>
-                                        <option>Undeposited</option>
-                                    
-                                </select>
+                                <input type="text" class="form-control">
                             </div>
                             <div class="col-md-6">
                                 <label for="description">Description</label>
@@ -452,7 +453,7 @@
                                 <div class="mt-2">
                                     <select name="gst" id="gst"
                                             class="custom-select-md form-control w-100"
-                                            disabled="disabled">
+                                           >
                                         <option value="Deferred CGST">Deferred CGST</option>
                                         <option value="Deferred GST Input Credit">Deferred
                                             GST Input Credit

@@ -98,15 +98,18 @@
                                 <tr>
                                     <td style="color: black; padding-left: 30px;"><b>Income</b></td>
                                 </tr>
-                                {% for i in account1 %}
-                                    {% if i.balance != 0.0 %}
+                                <tr>
+                                    <th style="color: black; padding-left: 30px;">sales</th>
+                                </tr>
+                                {% for inv in inv %}
+                                    
                                         <tr>
                                             <td class="center font-weight-light"
-                                                style="color: black; width: 85%; padding-left: 60px">{{ i.name }}</td>
+                                                style="color: black; width: 85%; padding-left: 60px">{{ inv.customername }}</td>
                                             <td class="center font-weight-light"
-                                                style="color: black;">{{ i.balance }}</td>
+                                                style="color: black;">{{ inv.grandtotal }}</td>
                                         </tr>
-                                    {% endif %}
+                                   
                                 {% endfor %}
                                 {% for i in account2 %}
                                     {% if i.balance != 0.0 %}
@@ -123,7 +126,7 @@
                                     <td style="color: black; padding-left: 60px; width: 85%;" class="border-secondary">
                                         <b>Total Income</b></td>
                                     <td style="color: black;"
-                                        class="center font-weight-light font-weight-bold border-secondary">{{ tin }}</td>
+                                        class="center font-weight-light font-weight-bold border-secondary">{{ sum2 }}</td>
                                 </tr>
 
 
@@ -148,15 +151,15 @@
                                         </tr>
                                     {% endif %}
                                 {% endfor %}
-                                {% for i in account4 %}
-                                    {% if i.balance != 0.0 %}
+                                {% for pur in pur %}
+                                    
                                         <tr>
                                             <td class="center font-weight-light"
-                                                style="color: black; width: 85%; padding-left: 90px">{{ i.name }}</td>
+                                                style="color: black; width: 85%; padding-left: 90px">{{ pur.vendor_name }}</td>
                                             <td class="center font-weight-light"
-                                                style="color: black;">{{ i.balance }}</td>
+                                                style="color: black;">{{ pur.grand_total }}</td>
                                         </tr>
-                                    {% endif %}
+                                    
                                 {% endfor %}
 
 
@@ -164,7 +167,7 @@
                                     <td style="color: black; padding-left: 60px; width: 85%;" class="border-secondary">
                                         <b>Gross Profit</b></td>
                                     <td style="color: black;"
-                                        class="center font-weight-light font-weight-bold border-secondary">{{ gros }}</td>
+                                        class="center font-weight-light font-weight-bold border-secondary">{{ sum1 }}</td>
                                 </tr>
 
 
@@ -213,15 +216,15 @@
                                     <td class="center font-weight-light font-weight-bold border-secondary"></td>
                                 </tr>
 
-                                {% for i in account7 %}
-                                    {% if i.balance != 0.0 %}
+                                {% for ex in ex %}
+                                    
                                         <tr>
                                             <td class="center font-weight-light"
-                                                style="color: black; width: 85%; padding-left: 90px">{{ i.name }}</td>
+                                                style="color: black; width: 85%; padding-left: 90px">{{ ex.expensetype }}</td>
                                             <td class="center font-weight-light"
-                                                style="color: black;">{{ i.balance }}</td>
+                                                style="color: black;">{{ ex.amount }}</td>
                                         </tr>
-                                    {% endif %}
+                                 
                                 {% endfor %}
 
                                 {% for i in account8 %}
@@ -266,14 +269,14 @@
                                 <tr>
                                     <td style="color: black; width: 85%" class="border-secondary"><b>TOTAL EXPENSE</b>
                                     </td>
-                                    <td class="center border-secondary" style="color: black;"><b>{{ toex }}</b></td>
+                                    <td class="center border-secondary" style="color: black;"><b>{{ sum3 }}</b></td>
                                 </tr>
 
 
                                 <tr>
                                     <td style="color: black; width: 85%" class="border-secondary"><b>PROFIT OR LOSS</b>
                                     </td>
-                                    <td class="center border-secondary" style="color: black;"><b>{{ prolo }}</b></td>
+                                    <td class="center border-secondary" style="color: black;"><b>{{ sumtot }}</b></td>
                                 </tr>
                                 </tbody>
                             </table>

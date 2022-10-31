@@ -2,10 +2,6 @@
 
 {% block body %}
 
-{% if user.is_authenticated %}
-{% csrf_token %}
-{% load static %}
-
 <div class="page-content">
     <div class="card radius-15 h-20">
         <div class="row">
@@ -66,7 +62,25 @@
                   </div>
                 </div>
                  
-                 
+                  <!--<div class="col">
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-outline-info dropdown-toggle text-grey"
+                                data-toggle="dropdown">Sort by
+                        </button>
+                        <div class="dropdown-menu" style="background-color: black;">
+                            <a class="dropdown-item" href="{% url 'iordername' %}"
+                               style="height: 40px; font-size: 15px; color: white;">Name</a>
+                            <a class="dropdown-item" href="{% url 'iod_rate' %}"
+                               style="height: 40px; font-size: 15px; color: white;">Rate</a>
+                            <a class="dropdown-item" href="{% url 'iodhsn' %}"
+                               style="height: 40px; font-size: 15px; color: white;">HSN</a>
+                            <a class="dropdown-item" href="{% url 'iod_import' %}"
+                               style="height: 40px; font-size: 15px; color: white;">Import item</a>
+                            <a class="dropdown-item" href="{% url 'iod_export' %}"
+                               style="height: 40px; font-size: 15px; color: white;">Export item</a>
+                        </div>
+                </div>
+            </div>-->
                 <div class="col">
                             <div class="dropdown">
                                 <a href="{% url 'add_mjournal' %}">     <button type="button" class="btn btn-outline-info  text-grey"
@@ -182,8 +196,6 @@
        
        
      </script>
-   
-     {% endif %}
 
  
 
